@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import classLister from 'css-module-class-lister';
+import classer from 'react-classer';
 import styles from './BurgerIngredient.module.css';
 import PropTypes from 'prop-types';
 
-const classes = classLister( styles );
+const classes = classer( styles );
 
 class BurgerIngredient extends Component {
   render() {
     const ingredient = {
       'bread-top': (
-        <div className={classes( 'BreadTop' )}>
-          <div className={classes( 'Seeds1' )} />
-          <div className={classes( 'Seeds2' )} />
+        <div {...classes( 'BreadTop' )}>
+          <div {...classes( 'Seeds1' )} />
+          <div {...classes( 'Seeds2' )} />
         </div>
       ),
-      'bread-bottom': <div className={classes( 'BreadBottom' )} />,
-      meat: <div className={classes( 'Meat' )} />,
-      cheese: <div className={classes( 'Cheese' )} />,
-      salad: <div className={classes( 'Salad' )} />,
-      bacon: <div className={classes( 'Bacon' )} />,
+      'bread-bottom': <div {...classes( 'BreadBottom' )} />,
+      meat: <div {...classes( 'Meat' )} />,
+      cheese: <div {...classes( 'Cheese' )} />,
+      salad: <div {...classes( 'Salad' )} />,
+      bacon: <div {...classes( 'Bacon' )} />,
     };
     return ingredient[this.props.type] || null;
   }

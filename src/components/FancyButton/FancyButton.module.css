@@ -1,0 +1,54 @@
+.btn {
+    background-color: white;
+    padding: 6px 6px;
+    border: 1px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 4px;
+    margin: 4px;
+  }
+  
+  .btn:hover {
+    background-color: gray;
+    box-shadow: 0 0 8px 1px black;
+    color: bisque;
+  }
+  
+  .btn.Green {
+    background-color: rgb(12, 114, 12);
+    color: blanchedalmond;
+  }
+  
+  .btn.Green:hover {
+    color: rgba(0, 0, 0, 0.747);
+    background-color: rgb(22, 211, 22);
+  }
+  
+  .btn.Orange {
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 166, 0);
+  }
+  
+  .btn.Orange:hover {
+    color: rgba(0, 0, 0, 0.747);
+    background-color: rgb(255, 173, 22);
+  }
+  .btn.Red {
+    color: rgb(255, 255, 255);
+    background-color: rgb(231, 16, 16);
+  }
+  .btn.Red:hover {
+    color: rgba(0, 0, 0, 0.747);
+    background-color: red;
+  }
+  .btn.Black {
+    color: rgb(48, 40, 40);
+    background-color: rgb(0, 0, 0);
+    box-shadow: none;
+  }
+  .btn.Black:hover {
+    /* background-color:unset; */
+    box-shadow: none;
+  }
+  

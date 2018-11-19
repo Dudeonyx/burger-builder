@@ -1,14 +1,14 @@
 import React from 'react';
 import Aux from '../../hocs/ax';
 import styles from './Layout.module.css';
-import classLister from 'css-module-class-lister';
+import classer from 'react-classer';
 
-const classes = classLister( styles );
+const classes = classer( styles );
 
 const Layout = props => (
   <Aux>
     <div>Toolbar, Side Drawer, Backdrop</div>
-    <main className={classes( 'main' )}>{props.children}</main>
+    <main {...classes( 'main' )}>{props.children}</main>
   </Aux>
 );
 
