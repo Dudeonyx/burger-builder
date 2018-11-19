@@ -1,21 +1,18 @@
 import React from 'react';
 import styles from './BuildControl.module.css';
-import classer from 'react-classer';
-
-const classes = classer( styles );
 
 const buildControl = props => {
   return (
-    <div {...classes( 'BuildControl' )}>
-      <div {...classes( 'Label' )}>{props.label}</div>
+    <div className={styles.BuildControl}>
+      <div className={styles.Label}>{props.label}</div>
       <button
         onClick={props.removed}
-        {...classes( 'Less' )}
+        className={styles.Less}
         disabled={props.disabled}
       >
         Less
       </button>
-      <button onClick={props.added} {...classes( 'More' )}>
+      <button onClick={props.added} className={styles.More}>
         More
       </button>
     </div>

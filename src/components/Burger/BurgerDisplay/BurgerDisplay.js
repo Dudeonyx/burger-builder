@@ -1,10 +1,7 @@
 import React from 'react';
-import classer from 'react-classer';
 import styles from './BurgerDisplay.module.css';
-import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
-import jsxArrayFromObject from '../../hocs/jsxArrayFromObject';
-
-const classes = classer( styles );
+import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
+import jsxArrayFromObject from '../../../hocs/jsxArrayFromObject';
 
 const burgerDisplay = props => {
   let allIngredients = jsxArrayFromObject(
@@ -17,7 +14,7 @@ const burgerDisplay = props => {
   }
   console.log( allIngredients );
   return (
-    <div {...classes( 'Burger' )}>
+    <div className={styles.Burger}>
       <BurgerIngredient type="bread-top" />
       {allIngredients}
       <BurgerIngredient type="bread-bottom" />
@@ -25,4 +22,4 @@ const burgerDisplay = props => {
   );
 };
 
-export default burgerDisplay;
+export default React.memo( burgerDisplay );

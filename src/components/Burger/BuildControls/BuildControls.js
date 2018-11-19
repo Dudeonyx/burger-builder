@@ -1,8 +1,6 @@
 import React from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import styles from './BuildControls.module.css';
-import classer from 'react-classer';
-const classes = classer( styles );
 
 const buildControls = props => {
   const controls = [
@@ -12,8 +10,14 @@ const buildControls = props => {
     { label: 'Meat', type: 'meat' },
   ];
   console.log( props );
+  const disabledCheck = {
+    ...props.ingredients,
+  };
+  Object.entries( disabledCheck ).forEach( ( [key, value] ) => {
+    disabledCheck[key] = value <= 0;
+  } );
   return (
-    <div {...classes( 'BuildControls' )}>
+    <div className={styles.BuildControls}>
       <p>
         Current Price: <strong>${props.price.toFixed( 2 )}</strong>
       </p>
@@ -23,14 +27,18 @@ const buildControls = props => {
           label={ctrl.label}
           added={() => props.increase( ctrl.type )}
           removed={() => props.decrease( ctrl.type )}
-          disabled={props.disabledCheck[ctrl.type]}
+          disabled={disabledCheck[ctrl.type]}
         />
       ) )}
-      <button {...classes( 'OrderButton' )} disabled={!props.purchasable}>
+      <button
+        onClick={props.purchaseStart}
+        className={styles.OrderButton}
+        disabled={!props.purchasable}
+      >
         ORDER NOW
       </button>
     </div>
   );
 };
 
-export default buildControls;
+export default React.memo( buildControls );

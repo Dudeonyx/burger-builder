@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Aux from '../../hocs/ax';
-import BurgerDisplay from '../../components/Burger/BurgerDisplay';
+import BurgerDisplay from '../../components/Burger/BurgerDisplay/BurgerDisplay';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -19,6 +21,7 @@ export default class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchasable: false,
+    purchasing: false,
   };
 
   updatePurchasable = ingredients => {
@@ -49,6 +52,18 @@ export default class BurgerBuilder extends Component {
     } );
     this.updatePurchasable( newIngredients );
   };
+
+  purchaseStartHandler = () => {
+    this.setState( { purchasing: true } );
+  };
+  purchaseCancelHandler = () => {
+    this.setState( { purchasing: false } );
+  };
+  purchaseContinueHandler = () => {
+    console.log( 'You continued!!!' );
+    this.setState( { purchasing: false } );
+  };
+
   render() {
     const disabledCheck = {
       ...this.state.ingredients,
@@ -56,17 +71,27 @@ export default class BurgerBuilder extends Component {
     Object.entries( disabledCheck ).forEach( ( [key, value] ) => {
       disabledCheck[key] = value <= 0;
     } );
+
     return (
       <Aux>
+        <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+            purchaseCancel={this.purchaseCancelHandler}
+            purchaseContinue={this.purchaseContinueHandler}
+          />
+        </Modal>
         <div>
           <BurgerDisplay ingredients={this.state.ingredients} />
         </div>
         <BuildControls
+          ingredients={this.state.ingredients}
           price={this.state.totalPrice}
           increase={this.ingredientIncreaseHandler}
           decrease={this.ingredientDecreaseHandler}
-          disabledCheck={disabledCheck}
           purchasable={this.state.purchasable}
+          purchaseStart={this.purchaseStartHandler}
         />
       </Aux>
     );
