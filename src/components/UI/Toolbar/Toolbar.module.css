@@ -1,0 +1,15 @@
+.Toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    background-color: chocolate;
+    color: whitesmoke;
+}
+
+.Toolbar ul{
+    margin: 3px 0;
+}

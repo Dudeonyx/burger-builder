@@ -10,6 +10,9 @@
     padding: 10px 0;
     /* font-size: 0.9rem; */
 }
+.BuildControls p {
+    margin: 10px 0;
+}
 .OrderButton {
     background-color: #becf2d;
     padding: 10px;

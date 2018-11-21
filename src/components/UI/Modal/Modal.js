@@ -13,6 +13,7 @@ const Modal = props => {
           transform: props.show ? '' : 'translate(-50%, -200%)',
           opacity: props.show ? '1' : '0',
           maxWidth: props.show ? '100%' : '0%',
+          visibility: props.show ? '' : 'hidden',
         }}
       >
         {props.children}
