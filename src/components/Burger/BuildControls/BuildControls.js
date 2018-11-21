@@ -9,7 +9,6 @@ const buildControls = props => {
     { label: 'Cheese', type: 'cheese' },
     { label: 'Meat', type: 'meat' },
   ];
-  console.log( props );
   const disabledCheck = {
     ...props.ingredients,
   };

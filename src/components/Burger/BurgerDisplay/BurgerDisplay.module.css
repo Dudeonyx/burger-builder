@@ -21,15 +21,21 @@
     width: 330px;
   }
 }
-/* @media (min-width: 500px) and (max-height: 400px) {
+@media (min-width: 500px) and (max-height: 400px) {
   .Burger {
     height: 310px;
     width: 350px;
   }
-} */
+}
 @media (min-width: 1000px) and (min-height: 600px) {
   .Burger {
     height: 400px;
     width: 420px;
+  }
+}
+@media (min-width: 700px) and (min-height: 900px) {
+  .Burger {
+    height: 700px;
+    width: 680px;
   }
 }

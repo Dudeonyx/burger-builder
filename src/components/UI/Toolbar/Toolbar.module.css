@@ -5,11 +5,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 5px;
+    padding: 0px 5px;
     background-color: chocolate;
     color: whitesmoke;
+    height: 3em;
 }
 
-.Toolbar ul{
-    margin: 3px 0;
+.Toolbar nav {
+    height: 100%;
+}
+
+@media (max-width: 499px) {
+    .DesktopOnly {
+        display: none;
+    }
 }

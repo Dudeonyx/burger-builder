@@ -3,6 +3,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 2px 0;
+    --width: 50px
 }
 
 .BuildControl button {
@@ -10,10 +11,10 @@
     font: inherit;
     padding: 5px;
     margin: 0 5px;
-    width: 80px;
     border: 1px solid #AA6817;
     cursor: pointer;
     outline: none;
+    width: var(--width);
 }
 
 .BuildControl button:disabled {
@@ -32,7 +33,7 @@
 .Label {
     padding: 10px;
     font-weight: bold;
-    width: 80px;
+    width: var(--width);
 }
 
 .BuildControl .Less {  
@@ -53,4 +54,9 @@
 .BuildControl .More:hover,.BuildControl .More:active {
     background-color: #99703F;
     color: white;
+}
+@media (min-width: 320px) {
+    .Label, .BuildControl button {
+        width: 80px;
+    }
 }

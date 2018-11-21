@@ -12,7 +12,6 @@ const burgerDisplay = props => {
   if ( allIngredients.length === 0 ) {
     allIngredients = <p>Please start adding ingredients</p>;
   }
-  console.log( allIngredients );
   return (
     <div className={styles.Burger}>
       <BurgerIngredient type="bread-top" />

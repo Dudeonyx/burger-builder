@@ -60,7 +60,7 @@ export default class BurgerBuilder extends Component {
     this.setState( { purchasing: false } );
   };
   purchaseContinueHandler = () => {
-    console.log( 'You continued!!!' );
+    alert( 'You Ordered!!!' );
     this.setState( { purchasing: false } );
   };
 
@@ -82,9 +82,7 @@ export default class BurgerBuilder extends Component {
             purchaseContinue={this.purchaseContinueHandler}
           />
         </Modal>
-        <div>
-          <BurgerDisplay ingredients={this.state.ingredients} />
-        </div>
+        <BurgerDisplay ingredients={this.state.ingredients} />
         <BuildControls
           ingredients={this.state.ingredients}
           price={this.state.totalPrice}
