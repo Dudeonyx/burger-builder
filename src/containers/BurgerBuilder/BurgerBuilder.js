@@ -72,12 +72,12 @@ export default class BurgerBuilder extends Component {
       phone: '123-255-8416',
       areaCode: '+56',
       email: 'test@testing.on',
-      delivery: 'cheapest',
+      deliveryMethod: 'cheapest',
       ingredients: this.state.ingredients,
       price: this.state.totalPrice,
     };
     try {
-      const response = axios.post( '/orders.json', orders );
+      const response = await axios.post( '/orders.json', orders );
       console.log( response );
       this.setState( { purchasing: false } );
       setImmediate( () => alert( 'You Ordered!!!' ) );
