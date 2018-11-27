@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Aux from '../../hocs/ax';
 import BurgerDisplay from '../../components/Burger/BurgerDisplay/BurgerDisplay';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/OrderSummary/OrderSummary';
+
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -59,14 +60,35 @@ export default class BurgerBuilder extends Component {
   purchaseCancelHandler = () => {
     this.setState( { purchasing: false } );
   };
-  purchaseContinueHandler = () => {
-    setImmediate( () => alert( 'You Ordered!!!' ) );
-    this.setState( { purchasing: false } );
+  purchaseContinueHandler = async () => {
+    const orders = {
+      name: 'OnyekaChukwu',
+      address: {
+        street: 'Adjenughure Street',
+        city: 'Effural',
+        state: 'Selta',
+        country: 'Nier',
+      },
+      phone: '123-255-8416',
+      areaCode: '+56',
+      email: 'test@testing.on',
+      delivery: 'cheapest',
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+    };
+    try {
+      const response = axios.post( '/orders.json', orders );
+      console.log( response );
+      this.setState( { purchasing: false } );
+      setImmediate( () => alert( 'You Ordered!!!' ) );
+    } catch ( error ) {
+      console.log( error );
+    }
   };
 
   render() {
     return (
-      <Aux>
+      <>
         <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
           <OrderSummary
             ingredients={this.state.ingredients}
@@ -84,7 +106,7 @@ export default class BurgerBuilder extends Component {
           purchasable={this.state.purchasable}
           purchaseStart={this.purchaseStartHandler}
         />
-      </Aux>
+      </>
     );
   }
 }
