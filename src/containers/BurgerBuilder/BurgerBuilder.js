@@ -62,16 +62,18 @@ export default class BurgerBuilder extends Component {
   };
   purchaseContinueHandler = async () => {
     const orders = {
-      name: 'OnyekaChukwu',
-      address: {
-        street: 'Adjenughure Street',
-        city: 'Effural',
-        state: 'Selta',
-        country: 'Nier',
+      customer: {
+        name: 'OnyekaChukwu',
+        address: {
+          street: 'Adjenughure Street',
+          city: 'Effural',
+          state: 'Selta',
+          country: 'Nier',
+        },
+        phone: '123-255-8416',
+        areaCode: '+56',
+        email: 'test@testing.on',
       },
-      phone: '123-255-8416',
-      areaCode: '+56',
-      email: 'test@testing.on',
       deliveryMethod: 'cheapest',
       ingredients: this.state.ingredients,
       price: this.state.totalPrice,
