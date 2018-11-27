@@ -8,6 +8,7 @@ const OrderSummary = props => {
       {`${igKey}: ${igVal}`}
     </li>
   ) );
+  console.log('[OrderSummary]');
   return (
     <Aux>
       <h3 style={{ fontWeight: 'bold' }}>Order Summary</h3>

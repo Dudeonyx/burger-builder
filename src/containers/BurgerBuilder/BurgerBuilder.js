@@ -60,18 +60,11 @@ export default class BurgerBuilder extends Component {
     this.setState( { purchasing: false } );
   };
   purchaseContinueHandler = () => {
-    alert( 'You Ordered!!!' );
+    setImmediate( () => alert( 'You Ordered!!!' ) );
     this.setState( { purchasing: false } );
   };
 
   render() {
-    const disabledCheck = {
-      ...this.state.ingredients,
-    };
-    Object.entries( disabledCheck ).forEach( ( [key, value] ) => {
-      disabledCheck[key] = value <= 0;
-    } );
-
     return (
       <Aux>
         <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>

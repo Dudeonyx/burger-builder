@@ -4,6 +4,7 @@ import Aux from '../../../hocs/ax';
 import Backdrop from '../Backdrop/Backdrop';
 
 const Modal = props => {
+  console.log( '[Modal]' );
   return (
     <Aux>
       <Backdrop show={props.show} hider={props.hider} />
@@ -22,4 +23,7 @@ const Modal = props => {
   );
 };
 
-export default Modal;
+const isPropsShowEqual = ( prevProps, nextProps ) => {
+  return prevProps.show === nextProps.show;
+};
+export default React.memo( Modal, isPropsShowEqual );
