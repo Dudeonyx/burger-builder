@@ -24,6 +24,7 @@ export default class BurgerBuilder extends Component {
     purchasable: false,
     purchasing: false,
     loading: false,
+    orders: [],
   };
 
   updatePurchasable = ingredients => {
@@ -62,30 +63,33 @@ export default class BurgerBuilder extends Component {
     this.setState( { purchasing: false } );
   };
   purchaseContinueHandler = async () => {
-    const orders = {
-      customer: {
-        name: 'OnyekaChukwu',
-        address: {
-          street: 'Adjenughure Street',
-          city: 'Effural',
-          state: 'Selta',
-          country: 'Nier',
-        },
-        phone: '123-255-8416',
-        areaCode: '+56',
-        email: 'test@testing.on',
-      },
-      deliveryMethod: 'cheapest',
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-    };
     try {
-      const response = await axios.post( '/orders.json', orders );
+      const order = {
+        customer: {
+          name: 'OnyekaChukwu',
+          address: {
+            street: 'Adjenughure Street',
+            city: 'Effural',
+            state: 'Selta',
+            country: 'Nier',
+          },
+          phone: '123-255-8416',
+          areaCode: '+56',
+          email: 'test@testing.on',
+        },
+        deliveryMethod: 'cheapest',
+        ingredients: this.state.ingredients,
+        price: this.state.totalPrice,
+      };
+      const response = await axios.post( '/orders.json', order );
       console.log( response );
-      this.setState( { purchasing: false } );
-      setImmediate( () => alert( 'You Ordered!!!' ) );
+      this.setState( prevState => ( {
+        orders: prevState.orders.concat( response.data.name ),
+      } ) );
     } catch ( error ) {
       console.log( error );
+    } finally {
+      this.setState( { purchasing: false } );
     }
   };
 
