@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import BurgerDisplay from '../../components/Burger/BurgerDisplay/BurgerDisplay';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/OrderSummary/OrderSummary';
+import React, { Component, lazy } from 'react';
 
+import Loader from '../../components/UI/Loader/Loader';
 import axios from '../../axios-orders';
+
+const BurgerDisplay = lazy( () => import( '../../components/Burger/BurgerDisplay/BurgerDisplay' ) );
+const BuildControls = lazy( () => import( '../../components/Burger/BuildControls/BuildControls' ) );
+const Modal = lazy( () => import( '../../components/UI/Modal/Modal' ) );
+const OrderSummary = lazy( () => import( '../../components/OrderSummary/OrderSummary' ) );
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -64,23 +66,8 @@ export default class BurgerBuilder extends Component {
   };
   purchaseContinueHandler = async () => {
     try {
-      const order = {
-        customer: {
-          name: 'OnyekaChukwu',
-          address: {
-            street: 'Adjenughure Street',
-            city: 'Effural',
-            state: 'Selta',
-            country: 'Nier',
-          },
-          phone: '123-255-8416',
-          areaCode: '+56',
-          email: 'test@testing.on',
-        },
-        deliveryMethod: 'cheapest',
-        ingredients: this.state.ingredients,
-        price: this.state.totalPrice,
-      };
+      this.setState( { loading: true } );
+      const order = this.generateOrder();
       const response = await axios.post( '/orders.json', order );
       console.log( response );
       this.setState( prevState => ( {
@@ -89,31 +76,62 @@ export default class BurgerBuilder extends Component {
     } catch ( error ) {
       console.log( error );
     } finally {
-      this.setState( { purchasing: false } );
+      this.setState( { purchasing: false, loading: false } );
     }
   };
 
+  generateOrder() {
+    return {
+      customer: {
+        name: 'OnyekaChukwu',
+        address: {
+          street: 'Adjenughure Street',
+          city: 'Effural',
+          state: 'Selta',
+          country: 'Nier',
+        },
+        phone: '123-255-8416',
+        areaCode: '+56',
+        email: 'test@testing.on',
+      },
+      deliveryMethod: 'cheapest',
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+    };
+  }
+
   render() {
+    const orderSummary = this.state.loading ? (
+      <Loader />
+    ) : (
+      <OrderSummary
+        ingredients={this.state.ingredients}
+        price={this.state.totalPrice}
+        purchaseCancel={this.purchaseCancelHandler}
+        purchaseContinue={this.purchaseContinueHandler}
+      />
+    );
     return (
-      <>
-        <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
-          <OrderSummary
+      <React.Suspense fallback={<Loader />}>
+        <React.Suspense fallback={<div />}>
+          <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
+            {orderSummary}
+          </Modal>
+        </React.Suspense>
+        <React.Suspense fallback={<Loader />}>
+          <BurgerDisplay ingredients={this.state.ingredients} />
+        </React.Suspense>
+        <React.Suspense fallback={<Loader />}>
+          <BuildControls
             ingredients={this.state.ingredients}
             price={this.state.totalPrice}
-            purchaseCancel={this.purchaseCancelHandler}
-            purchaseContinue={this.purchaseContinueHandler}
+            increase={this.ingredientIncreaseHandler}
+            decrease={this.ingredientDecreaseHandler}
+            purchasable={this.state.purchasable}
+            purchaseStart={this.purchaseStartHandler}
           />
-        </Modal>
-        <BurgerDisplay ingredients={this.state.ingredients} />
-        <BuildControls
-          ingredients={this.state.ingredients}
-          price={this.state.totalPrice}
-          increase={this.ingredientIncreaseHandler}
-          decrease={this.ingredientDecreaseHandler}
-          purchasable={this.state.purchasable}
-          purchaseStart={this.purchaseStartHandler}
-        />
-      </>
+        </React.Suspense>
+      </React.Suspense>
     );
   }
 }

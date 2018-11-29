@@ -1,5 +1,4 @@
 import React from 'react';
-import Aux from '../../hocs/ax';
 import Button from '../Button/Button';
 
 const OrderSummary = props => {
@@ -8,14 +7,12 @@ const OrderSummary = props => {
       {`${igKey}: ${igVal}`}
     </li>
   ) );
-  console.log('[OrderSummary]');
+  console.log( '[OrderSummary]' );
   return (
-    <Aux>
+    <>
       <h3 style={{ fontWeight: 'bold' }}>Order Summary</h3>
       <ul style={{}}>{summary}</ul>
-      <p style={{ fontWeight: 'bold' }}>
-        Total Cost: ${props.price.toFixed( 2 )}
-      </p>
+      <p style={{ fontWeight: 'bold' }}>Total Cost: ${props.price.toFixed( 2 )}</p>
       <p>Proceed to Checkout?</p>
       <div>
         <Button onClick={props.purchaseCancel} type="Danger">
@@ -25,7 +22,7 @@ const OrderSummary = props => {
           ORDER
         </Button>
       </div>
-    </Aux>
+    </>
   );
 };
 

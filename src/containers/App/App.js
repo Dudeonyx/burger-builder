@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
-import Layout from '../../components/Layout/Layout';
-import BurgerBuilder from '../BurgerBuilder/BurgerBuilder';
+import React, { Component, lazy } from 'react';
+import Loader from '../../components/UI/Loader/Loader';
+
+const Layout = lazy( () => import( '../../components/Layout/Layout' ) );
+const BurgerBuilder = lazy( () => import( '../BurgerBuilder/BurgerBuilder' ) );
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <React.Suspense fallback={<Loader />}>
         <Layout>
-          <BurgerBuilder />
+          <React.Suspense fallback={<Loader />}>
+            <BurgerBuilder />
+          </React.Suspense>
         </Layout>
-      </div>
+      </React.Suspense>
     );
   }
 }

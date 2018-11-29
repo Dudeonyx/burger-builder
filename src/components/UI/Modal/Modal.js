@@ -1,12 +1,11 @@
 import React from 'react';
 import styles from './Modal.module.css';
-import Aux from '../../../hocs/ax';
 import Backdrop from '../Backdrop/Backdrop';
 
 const Modal = props => {
   console.log( '[Modal]' );
   return (
-    <Aux>
+    <>
       <Backdrop show={props.show} hider={props.hider} />
       <div
         className={styles.Modal}
@@ -19,11 +18,11 @@ const Modal = props => {
       >
         {props.children}
       </div>
-    </Aux>
+    </>
   );
 };
 
 const isPropsShowEqual = ( prevProps, nextProps ) => {
-  return prevProps.show === nextProps.show;
+  return prevProps.show === nextProps.show && nextProps.children === prevProps.children;
 };
 export default React.memo( Modal, isPropsShowEqual );
