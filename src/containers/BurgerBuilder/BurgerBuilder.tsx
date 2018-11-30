@@ -4,19 +4,18 @@ import Loader from '../../components/UI/Loader/Loader';
 import axios from '../../axios-orders';
 
 const BurgerDisplay = lazy( () =>
-  import( /* webpackChunkName: "BrgrDspl" */
+  import( /* webpackChunkName: "BurgerDisplay" */
   '../../components/Burger/BurgerDisplay/BurgerDisplay' ),
 );
 const BuildControls = lazy( () =>
-  import( /* webpackChunkName: "BldCtrls" */
+  import( /* webpackChunkName: "BuildControls" */
   '../../components/Burger/BuildControls/BuildControls' ),
 );
-const Modal = lazy(
-  /* webpackChunkName: "Modal" */ () =>
-    import( '../../components/UI/Modal/Modal' ),
+const Modal = lazy( () =>
+  import( /* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal' ),
 );
 const OrderSummary = lazy( () =>
-  import( /* webpackChunkName: "OrdSmry" */ '../../components/OrderSummary/OrderSummary' ),
+  import( /* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary' ),
 );
 
 const INGREDIENT_PRICES = {

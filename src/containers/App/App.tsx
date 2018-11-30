@@ -1,8 +1,12 @@
 import React, { Component, lazy } from 'react';
 import Loader from '../../components/UI/Loader/Loader';
 
-const Layout = lazy( () => import( '../Layout/Layout' ) );
-const BurgerBuilder = lazy( () => import( '../BurgerBuilder/BurgerBuilder' ) );
+const Layout = lazy( () =>
+  import( /* webpackChunkName: "Layout" */ '../Layout/Layout' ),
+);
+const BurgerBuilder = lazy( () =>
+  import( /* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder' ),
+);
 
 class App extends Component {
   render() {

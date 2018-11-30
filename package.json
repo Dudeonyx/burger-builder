@@ -18,7 +18,6 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "serve": "yarn run serve -s build",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
@@ -57,12 +56,9 @@
     "babel-loader": "^8.0.4",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "gh-pages": "^2.0.1",
+    "prettier-tslint": "^0.4.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "ts-jest": "^23.10.5",
     "typescript": "^3.2.1"
-  },
-  "optionalDependencies": {
-    "@storybook/cli": "next",
-    "serve": "latest"
   }
 }

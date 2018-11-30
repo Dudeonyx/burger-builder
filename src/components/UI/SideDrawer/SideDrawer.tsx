@@ -8,9 +8,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import styles from './SideDrawer.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
-const Logo = lazy( () =>
-  import( /* webpackChunkName: "Logoss" */ '../Logo/Logo' ),
-);
+const Logo = lazy( () => import( '../Logo/Logo' ) );
 
 export interface ISideDrawerProps {
   open: boolean;
