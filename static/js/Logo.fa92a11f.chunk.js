@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{69:function(e,o,n){"use strict";n.r(o);var t=n(0),a=n.n(t),r=n(70),g=n.n(r),i=n(71),c=n.n(i);o.default=function(e){return a.a.createElement("a",{href:e.link,className:c.a.Logo,style:{height:e.height}},a.a.createElement("img",{src:g.a,alt:"A Burger Logo"}))}},70:function(e,o,n){e.exports=n.p+"static/media/26.1 burger-logo.png.b8503d26.png"},71:function(e,o,n){e.exports={Logo:"Logo_Logo__1TE_7"}}}]);
+//# sourceMappingURL=Logo.fa92a11f.chunk.js.map
