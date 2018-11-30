@@ -24,8 +24,8 @@ self.__precacheManifest = [
     "url": "/burger-builder/static/js/Layout.3ccd6a20.chunk.js"
   },
   {
-    "revision": "a4baac322bcae9da8991",
-    "url": "/burger-builder/static/js/BurgerBuilder.a4baac32.chunk.js"
+    "revision": "2793420e8e9b06f7977c",
+    "url": "/burger-builder/static/js/BurgerBuilder.2793420e.chunk.js"
   },
   {
     "revision": "af4e3fc157a48f9666ac",
@@ -36,8 +36,8 @@ self.__precacheManifest = [
     "url": "/burger-builder/static/js/SideDrawer.af4e3fc1.chunk.js"
   },
   {
-    "revision": "5aa3beb89c99a8be0b50",
-    "url": "/burger-builder/static/js/runtime~main.5aa3beb8.js"
+    "revision": "4dde4cf2fca40a7c60c6",
+    "url": "/burger-builder/static/js/runtime~main.4dde4cf2.js"
   },
   {
     "revision": "844f8f5a06197af7c676",
@@ -84,7 +84,7 @@ self.__precacheManifest = [
     "url": "/burger-builder/static/css/BurgerDisplay.b6dc31ae.chunk.css"
   },
   {
-    "revision": "f160bb2ece899411c3375cfd41bbd24d",
+    "revision": "1aba846937eb4174bbe489e205b4c314",
     "url": "/burger-builder/index.html"
   }
 ];
