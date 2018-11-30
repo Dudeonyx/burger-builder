@@ -1,7 +1,7 @@
 import React, { Component, lazy } from 'react';
 import Loader from '../../components/UI/Loader/Loader';
 
-const Layout = lazy( () => import( '../../components/Layout/Layout' ) );
+const Layout = lazy( () => import( '../Layout/Layout' ) );
 const BurgerBuilder = lazy( () => import( '../BurgerBuilder/BurgerBuilder' ) );
 
 class App extends Component {

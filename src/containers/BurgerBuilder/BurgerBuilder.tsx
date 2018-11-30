@@ -3,10 +3,21 @@ import React, { Component, lazy } from 'react';
 import Loader from '../../components/UI/Loader/Loader';
 import axios from '../../axios-orders';
 
-const BurgerDisplay = lazy( () => import( '../../components/Burger/BurgerDisplay/BurgerDisplay' ) );
-const BuildControls = lazy( () => import( '../../components/Burger/BuildControls/BuildControls' ) );
-const Modal = lazy( () => import( '../../components/UI/Modal/Modal' ) );
-const OrderSummary = lazy( () => import( '../../components/OrderSummary/OrderSummary' ) );
+const BurgerDisplay = lazy( () =>
+  import( /* webpackChunkName: "BrgrDspl" */
+  '../../components/Burger/BurgerDisplay/BurgerDisplay' ),
+);
+const BuildControls = lazy( () =>
+  import( /* webpackChunkName: "BldCtrls" */
+  '../../components/Burger/BuildControls/BuildControls' ),
+);
+const Modal = lazy(
+  /* webpackChunkName: "Modal" */ () =>
+    import( '../../components/UI/Modal/Modal' ),
+);
+const OrderSummary = lazy( () =>
+  import( /* webpackChunkName: "OrdSmry" */ '../../components/OrderSummary/OrderSummary' ),
+);
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -14,7 +25,21 @@ const INGREDIENT_PRICES = {
   bacon: 0.8,
   meat: 1.4,
 };
-export default class BurgerBuilder extends Component {
+interface IBurgerBuilderState {
+  ingredients: Iingredients;
+  totalPrice: number;
+  purchasable: boolean;
+  purchasing: boolean;
+  loading: boolean;
+  orders: string[];
+}
+interface Iingredients {
+  salad: number;
+  bacon: number;
+  cheese: number;
+  meat: number;
+}
+class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
   state = {
     ingredients: {
       salad: 0,
@@ -29,41 +54,41 @@ export default class BurgerBuilder extends Component {
     orders: [],
   };
 
-  updatePurchasable = ingredients => {
+  updatePurchasable = ( ingredients: Iingredients ) => {
     const status = Object.values( ingredients ).some( igVal => igVal !== 0 );
     this.setState( {
       purchasable: status,
     } );
-  };
+  }
 
-  ingredientIncreaseHandler = type => {
+  ingredientIncreaseHandler = ( type: keyof Iingredients ): void => {
     const newIngredients = { ...this.state.ingredients };
     newIngredients[type] += 1;
-    let newTotalPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
+    const newTotalPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
     this.setState( {
       ingredients: newIngredients,
       totalPrice: newTotalPrice,
     } );
     this.updatePurchasable( newIngredients );
-  };
-  ingredientDecreaseHandler = type => {
+  }
+  ingredientDecreaseHandler = ( type: keyof Iingredients ) => {
     if ( this.state.ingredients[type] <= 0 ) return;
     const newIngredients = { ...this.state.ingredients };
     newIngredients[type] -= 1;
-    let newTotalPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
+    const newTotalPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
     this.setState( {
       ingredients: newIngredients,
       totalPrice: newTotalPrice,
     } );
     this.updatePurchasable( newIngredients );
-  };
+  }
 
   purchaseStartHandler = () => {
     this.setState( { purchasing: true } );
-  };
+  }
   purchaseCancelHandler = () => {
     this.setState( { purchasing: false } );
-  };
+  }
   purchaseContinueHandler = async () => {
     try {
       this.setState( { loading: true } );
@@ -78,7 +103,7 @@ export default class BurgerBuilder extends Component {
     } finally {
       this.setState( { purchasing: false, loading: false } );
     }
-  };
+  }
 
   generateOrder() {
     return {
@@ -104,20 +129,20 @@ export default class BurgerBuilder extends Component {
     const orderSummary = this.state.loading ? (
       <Loader />
     ) : (
-      <OrderSummary
-        ingredients={this.state.ingredients}
-        price={this.state.totalPrice}
-        purchaseCancel={this.purchaseCancelHandler}
-        purchaseContinue={this.purchaseContinueHandler}
-      />
+      <React.Suspense fallback={<Loader />}>
+        <OrderSummary
+          ingredients={this.state.ingredients}
+          price={this.state.totalPrice}
+          purchaseCancel={this.purchaseCancelHandler}
+          purchaseContinue={this.purchaseContinueHandler}
+        />
+      </React.Suspense>
     );
     return (
       <React.Suspense fallback={<Loader />}>
-        <React.Suspense fallback={<div />}>
-          <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
-            {orderSummary}
-          </Modal>
-        </React.Suspense>
+        <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
+          {orderSummary}
+        </Modal>
         <React.Suspense fallback={<Loader />}>
           <BurgerDisplay ingredients={this.state.ingredients} />
         </React.Suspense>
@@ -135,3 +160,5 @@ export default class BurgerBuilder extends Component {
     );
   }
 }
+
+export default BurgerBuilder;
