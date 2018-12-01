@@ -1,7 +1,7 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 
-const req = require.context('../src', true, /\.stories\.(?:tsx?|jsx?)$/);
+const req = require.context('../src', true, /(?:\.stories\.tsx$)|(?:stories\/.*\.tsx$)/);
 function loadStories() {
   addDecorator(
     withInfo({

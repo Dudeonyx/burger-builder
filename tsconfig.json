@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "*": ["types/*"] },
     "target": "es5",
     "allowJs": true,
     "lib": ["dom", "es2015.promise", "es6", "esnext"],
