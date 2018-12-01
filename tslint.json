@@ -1,7 +1,3 @@
 {
-  "extends": "../linter-cfgs/tslint.json",
-  "rules": {
-    "space-within-parens": [true, 1],
-    "space-in-parens": false
-  }
+  "extends": "../linter-cfgs/tslint.json" 
 }

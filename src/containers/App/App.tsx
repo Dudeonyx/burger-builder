@@ -1,20 +1,23 @@
 import React, { Component, lazy } from 'react';
 import Loader from '../../components/UI/Loader/Loader';
+import ErrorBoundary from '../../HOCs/ErrorBoundary';
 
-const Layout = lazy( () =>
-  import( /* webpackChunkName: "Layout" */ '../Layout/Layout' ),
+const Layout = lazy(() =>
+  import(/* webpackChunkName: "Layout" */ '../Layout/Layout'),
 );
-const BurgerBuilder = lazy( () =>
-  import( /* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder' ),
+const BurgerBuilder = lazy(() =>
+  import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
 
 class App extends Component {
-  render() {
+  public render() {
     return (
       <React.Suspense fallback={<Loader />}>
         <Layout>
           <React.Suspense fallback={<Loader />}>
-            <BurgerBuilder />
+            <ErrorBoundary>
+              <BurgerBuilder />
+            </ErrorBoundary>
           </React.Suspense>
         </Layout>
       </React.Suspense>

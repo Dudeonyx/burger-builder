@@ -27,9 +27,33 @@ storiesOf( 'Button', module )
 storiesOf( 'Loader', module ).add( 'Default', () => <Loader /> );
 
 storiesOf( 'Logo', module )
-  .add( 'Logo', () => <Logo link="##" /> )
-  .add( 'height: 11%', () => <Logo height="11%" link="##" /> )
-  .add( 'height: 50%', () => <Logo height="50%" link="##" /> )
-  .add( 'HQ', () => <Logo link="##" /> )
-  .add( 'HQ height: 11%', () => <Logo height="11%" link="##" /> )
-  .add( 'HQ height: 50%', () => <Logo height="50%" link="##" /> );
+  .add( 'Logo', () => (
+    <div style={{ height: '200px' }}>
+      <Logo link="##" />
+    </div>
+  ) )
+  .add( 'height: 11%', () => (
+    <div style={{ height: '200px' }}>
+      <Logo height="11%" link="##" />
+    </div>
+  ) )
+  .add( 'height: 50%', () => (
+    <div style={{ height: '200px' }}>
+      <Logo height="50%" link="##" />
+    </div>
+  ) )
+  .add( 'HQ', () => (
+    <div style={{ height: '200px' }}>
+      <Logo link="##" HQ={true} />
+    </div>
+  ) )
+  .add( 'HQ height: 11%', () => (
+    <div style={{ height: '200px' }}>
+      <Logo height="11%" link="##" HQ={true} />
+    </div>
+  ) )
+  .add( 'HQ height: 50%', () => (
+    <div style={{ height: '200px' }}>
+      <Logo height="50%" link="##" HQ={true} />
+    </div>
+  ) );
