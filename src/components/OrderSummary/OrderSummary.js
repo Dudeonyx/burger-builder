@@ -7,7 +7,7 @@ const OrderSummary = props => {
       {`${igKey}: ${igVal}`}
     </li>
   ) );
-  console.log( '[OrderSummary]' );
+  // console.log( '[OrderSummary]' );
   return (
     <>
       <h3 style={{ fontWeight: 'bold' }}>Order Summary</h3>

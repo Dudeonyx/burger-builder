@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 
-const NavigationItems = props => {
+export interface INavigationItems {}
+const NavigationItems: FunctionComponent<INavigationItems> = () => {
   const navItems = [
     { url: '/', name: 'BurgerBuilder' },
     { url: '/', name: 'Checkout' },
     { url: '/', name: 'About Us' },
   ];
-  let current = 'BurgerBuilder';
+  const current = 'BurgerBuilder';
   return (
     <ul className={styles.NavigationItems}>
       {navItems.map( ( { url, name } ) => (
+        // tslint:disable-next-line:jsx-no-multiline-js
         <NavigationItem
           key={name}
           link={url}

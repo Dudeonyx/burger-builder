@@ -6,12 +6,24 @@ import React, {
 import styles from './Modal.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
+/** @interface */
 export interface IModal {
+  /** A boolean indicating visibility of the modal
+   * @default false
+   */
   show: boolean;
+  /** An event handler that sets "show" to false
+   * @default "() => {}"
+   */
   hider: MouseEventHandler;
 }
-const Modal: FunctionComponent<IModal> = ( { children, show, hider } ) => {
-  console.log( '[Modal]' );
+/** A reuseable Modal */
+export const Modal: FunctionComponent<IModal> = ( {
+  children,
+  show = false,
+  hider,
+} ) => {
+  // console.log( '[Modal]' );
   const inlineCss: CSSProperties = show
     ? {
         /* tslint:disable:ter-indent */

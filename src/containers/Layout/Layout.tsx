@@ -12,15 +12,42 @@ const SideDrawer = lazy( () =>
   import( /* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer/SideDrawer' ),
 );
 
+/** @interface ILayoutState */
 interface ILayoutState {
+  /**
+   * Show side drawer?
+   *
+   * @type {boolean}
+   * @memberof ILayoutState
+   */
   showSideDrawer: boolean;
 }
+/**
+ * A basic reuseable layout component
+ * @class Layout
+ * @extends {Component<{ children: JSX.Element }, ILayoutState>}
+ */
 class Layout extends Component<{ children: JSX.Element }, ILayoutState> {
-  state = {
+  /**
+   * @implements {ILayoutState}
+   * @memberof Layout
+   */
+  readonly state = {
     showSideDrawer: false,
   };
 
-  hideSideDrawerHandler = () => this.setState( { showSideDrawer: false } );
+  /**
+   * Handler that hides the side drawer
+   *
+   * @memberof Layout
+   */
+  public hideSideDrawerHandler = () => this.setState( { showSideDrawer: false } );
+  /**
+   * Handler that toggles the visibility
+   * of the side drawer
+   *
+   * @memberof Layout
+   */
   toggleSideDrawerHandler = () =>
     this.setState( prevState => ( { showSideDrawer: !prevState.showSideDrawer } ) )
 

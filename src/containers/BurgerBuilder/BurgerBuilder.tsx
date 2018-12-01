@@ -93,7 +93,7 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
       this.setState( { loading: true } );
       const order = this.generateOrder();
       const response = await axios.post( '/orders.json', order );
-      console.log( response );
+      // console.log( response );
       this.setState( prevState => ( {
         orders: prevState.orders.concat( response.data.name ),
       } ) );
@@ -120,7 +120,8 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
       },
       deliveryMethod: 'cheapest',
       ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
+      price: this.state.totalPrice.toFixed( 2 ),
+      date: Date(),
     };
   }
 
