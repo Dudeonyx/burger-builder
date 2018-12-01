@@ -14,11 +14,11 @@ class App extends Component {
     return (
       <React.Suspense fallback={<Loader />}>
         <Layout>
-          <React.Suspense fallback={<Loader />}>
-            <ErrorBoundary>
+          <ErrorBoundary>
+            <React.Suspense fallback={<Loader />}>
               <BurgerBuilder />
-            </ErrorBoundary>
-          </React.Suspense>
+            </React.Suspense>
+          </ErrorBoundary>
         </Layout>
       </React.Suspense>
     );

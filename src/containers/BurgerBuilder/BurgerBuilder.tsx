@@ -1,15 +1,16 @@
 import React, { Component, lazy } from 'react';
 
+import { AxiosResponse } from 'axios';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
-import AxiosErrorBoundary from '../../HOCs/AxiosErrorBoundary';
+import withErrorHandler from '../../HOCs/withErrorHandler';
 
 const BurgerDisplay = lazy(() =>
-  import(/* webpackChunkName: "BurgerDisplay" */
+  import(/* webpackChunkName: "BurgerDisplay", webpackPreload: true */
   '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
 const BuildControls = lazy(() =>
-  import(/* webpackChunkName: "BuildControls" */
+  import(/* webpackChunkName: "BuildControls", webpackPreload: true */
   '../../components/Burger/BuildControls/BuildControls'),
 );
 const Modal = lazy(() =>
@@ -27,12 +28,13 @@ const INGREDIENT_PRICES = {
   meat: 1.4,
 };
 interface IBurgerBuilderState {
-  ingredients: Iingredients;
+  ingredients: Iingredients | null;
   totalPrice: number;
   purchasable: boolean;
   purchasing: boolean;
   loading: boolean;
   orders: string[];
+  error: Error | null;
 }
 interface Iingredients {
   salad: number;
@@ -42,39 +44,43 @@ interface Iingredients {
 }
 class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
   /*  tslint:disable:object-literal-sort-keys */
-  public state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-    },
+  public state: IBurgerBuilderState = {
+    ingredients: null,
     totalPrice: 4,
     purchasable: false,
     purchasing: false,
     loading: false,
     orders: [],
+    error: null,
   };
   /*  tslint:enable:object-literal-sort-keys */
-
-  public updatePurchasable = (ingredients: Iingredients) => {
-    const status = Object.values(ingredients).some((igVal) => igVal !== 0);
-    this.setState({
-      purchasable: status,
-    });
+  /**
+   * componentDidMount
+   */
+  public componentDidMount() {
+    this.fetchIngredients();
+  }
+  public updatePurchasable = (ingredients: Iingredients): boolean => {
+    return Object.values(ingredients).some((igVal) => igVal !== 0);
   }
 
   public ingredientIncreaseHandler = (type: keyof Iingredients): void => {
+    if (!this.state.ingredients) {
+      return;
+    }
     const newIngredients = { ...this.state.ingredients };
     newIngredients[type] += 1;
     const newTotalPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
     this.setState({
       ingredients: newIngredients,
+      purchasable: this.updatePurchasable(newIngredients),
       totalPrice: newTotalPrice,
     });
-    this.updatePurchasable(newIngredients);
   }
   public ingredientDecreaseHandler = (type: keyof Iingredients) => {
+    if (!this.state.ingredients) {
+      return;
+    }
     if (this.state.ingredients[type] <= 0) {
       return;
     }
@@ -83,9 +89,9 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     const newTotalPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
     this.setState({
       ingredients: newIngredients,
+      purchasable: this.updatePurchasable(newIngredients),
       totalPrice: newTotalPrice,
     });
-    this.updatePurchasable(newIngredients);
   }
 
   public purchaseStartHandler = () => {
@@ -98,12 +104,11 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     try {
       this.setState({ loading: true });
       const order = this.generateOrder();
-      const response = await axios.post('/orders', order);
+      const response = await axios.post('/orders.json', order);
       // tslint:disable-next-line:no-console
       console.log(response);
-      this.setState((prevState) => ({
-        orders: prevState.orders.concat(response.data.name),
-      }));
+      const orders = this.state.orders.concat(response.data.name);
+      this.setState({ orders });
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.log(error);
@@ -112,7 +117,68 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     }
   }
 
-  public generateOrder() {
+  public render() {
+    let burger = this.state.error ? (
+      <p>
+        Ingredients failed to load. Please{' '}
+        <span
+          style={{ color: 'red', cursor: 'pointer' }}
+          onClick={this.fetchIngredients}
+        >
+          retry
+        </span>
+      </p>
+    ) : (
+      <Loader />
+    );
+
+    let orderSummary = null;
+
+    if (this.state.ingredients) {
+      burger = (
+        <>
+          <React.Suspense fallback={<Loader />}>
+            <BurgerDisplay ingredients={this.state.ingredients} />
+          </React.Suspense>
+          <React.Suspense fallback={<Loader />}>
+            <BuildControls
+              ingredients={this.state.ingredients}
+              price={this.state.totalPrice}
+              increase={this.ingredientIncreaseHandler}
+              decrease={this.ingredientDecreaseHandler}
+              purchasable={this.state.purchasable}
+              purchaseStart={this.purchaseStartHandler}
+            />
+          </React.Suspense>
+        </>
+      );
+
+      orderSummary = (
+        <React.Suspense fallback={<Loader />}>
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            price={this.state.totalPrice}
+            purchaseCancel={this.purchaseCancelHandler}
+            purchaseContinue={this.purchaseContinueHandler}
+          />
+        </React.Suspense>
+      );
+    }
+
+    if (this.state.loading) {
+      orderSummary = <Loader />;
+    }
+    return (
+      <React.Suspense fallback={<Loader />}>
+        <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
+          {orderSummary}
+        </Modal>
+        {burger}
+      </React.Suspense>
+    );
+  }
+
+  private generateOrder() {
     /*  tslint:disable:object-literal-sort-keys */
     return {
       customer: {
@@ -135,45 +201,21 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     /*  tslint:enable:object-literal-sort-keys */
   }
 
-  public render() {
-    const orderSummary = this.state.loading ? (
-      <Loader />
-    ) : (
-      <React.Suspense fallback={<Loader />}>
-        <OrderSummary
-          ingredients={this.state.ingredients}
-          price={this.state.totalPrice}
-          purchaseCancel={this.purchaseCancelHandler}
-          purchaseContinue={this.purchaseContinueHandler}
-        />
-      </React.Suspense>
-    );
-    return (
-      <React.Suspense fallback={<Loader />}>
-        <AxiosErrorBoundary axios={axios}>
-          <Modal
-            show={this.state.purchasing}
-            hider={this.purchaseCancelHandler}
-          >
-            {orderSummary}
-          </Modal>
-          <React.Suspense fallback={<Loader />}>
-            <BurgerDisplay ingredients={this.state.ingredients} />
-          </React.Suspense>
-          <React.Suspense fallback={<Loader />}>
-            <BuildControls
-              ingredients={this.state.ingredients}
-              price={this.state.totalPrice}
-              increase={this.ingredientIncreaseHandler}
-              decrease={this.ingredientDecreaseHandler}
-              purchasable={this.state.purchasable}
-              purchaseStart={this.purchaseStartHandler}
-            />
-          </React.Suspense>
-        </AxiosErrorBoundary>
-      </React.Suspense>
-    );
+  private fetchIngredients = async () => {
+    this.setState({ error: null });
+    try {
+      const response: AxiosResponse<Iingredients> = await axios.get(
+        '/ingredients.json',
+      );
+      this.setState({
+        ingredients: response.data,
+        purchasable: this.updatePurchasable(response.data),
+      });
+    } catch (error) {
+      // tslint:disable-next-line:no-console
+      this.setState({ error });
+    }
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);

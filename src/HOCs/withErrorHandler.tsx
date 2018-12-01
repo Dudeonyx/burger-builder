@@ -1,19 +1,34 @@
 import { AxiosInstance } from 'axios';
-import React, { Component, ComponentType } from 'react';
-import Modal from '../components/UI/Modal/Modal';
-import { IAxiosErrorBoundaryState } from './AxiosErrorBoundary';
+import React, { Component, ComponentType, lazy } from 'react';
 
-export function withErrorHandler<P extends object>(
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal'),
+);
+
+export interface IWithErrorHandlerState {
+  error: Error | null;
+}
+
+/** @template P
+ * @param {ComponentType<P>} WrappedComponent
+ * @param {AxiosInstance} axios
+ * @returns
+ */
+function withErrorHandler<P extends object>(
   WrappedComponent: ComponentType<P>,
   axios: AxiosInstance,
 ) {
   return class WithErrorHandler extends Component<P> {
-    public state: IAxiosErrorBoundaryState = {
+    public state: IWithErrorHandlerState = {
       error: null,
     };
 
-    public componentDidMount = () => {
-      axios.interceptors.request.use(
+    private req: number | null = null;
+
+    private res: number | null = null;
+
+    public componentWillMount() {
+      this.req = axios.interceptors.request.use(
         (req) => {
           this.setState({ error: null });
           return req;
@@ -22,13 +37,22 @@ export function withErrorHandler<P extends object>(
           throw error;
         },
       );
-      axios.interceptors.response.use(
+      this.res = axios.interceptors.response.use(
         (req) => req,
         (error) => {
           this.setState({ error });
           throw error;
         },
       );
+    }
+
+    public componentWillUnmount() {
+      if (this.req) {
+        axios.interceptors.request.eject(this.req);
+      }
+      if (this.res) {
+        axios.interceptors.response.eject(this.res);
+      }
     }
 
     public errorConfirmed = () => {
@@ -38,12 +62,16 @@ export function withErrorHandler<P extends object>(
     public render() {
       return (
         <>
-          <Modal show={!!this.state.error} hider={this.errorConfirmed}>
-            {this.state.error ? this.state.error.message : null}
-          </Modal>
+          {this.state.error ? (
+            <Modal show={!!this.state.error} hider={this.errorConfirmed}>
+              {this.state.error.message}
+            </Modal>
+          ) : null}
           <WrappedComponent {...this.props} />
         </>
       );
     }
   };
 }
+
+export default withErrorHandler;

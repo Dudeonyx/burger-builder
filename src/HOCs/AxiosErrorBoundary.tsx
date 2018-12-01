@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
-import React, { Component } from 'react';
-import { Modal } from '../components/UI/Modal/Modal';
-
+import React, { Component, lazy } from 'react';
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal'),
+);
 export interface IAxiosErrorBoundaryProps {
   axios: AxiosInstance;
 }
