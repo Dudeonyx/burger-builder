@@ -1,3 +1,6 @@
 {
-  "extends": "../linter-cfgs/tslint.json" 
+  "extends": "../linter-cfgs/tslint.json",
+  "rules": {
+    "ordered-imports": false
+  }
 }

@@ -3,13 +3,19 @@ import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import styles from './OrderText.module.css';
 
 export interface IOrderIngredientsPrice {
+  /**
+   * @type {Iingredients}
+   * @memberof IOrderIngredientsPrice
+   */
   ingredients: Iingredients;
+  /**
+   * @type {number}
+   * @memberof IOrderIngredientsPrice
+   */
   totalCost: number;
 }
 export interface IOrderTextProps extends IOrderIngredientsPrice {
-  /**
-   *
-   *
+  /** A heading to display
    * @type {string}
    * @memberof IOrderTextProps
    */
@@ -21,6 +27,11 @@ export interface IOrderTextProps extends IOrderIngredientsPrice {
   totalCostPrefix: string;
 }
 
+/**
+ * Component that displays the individual ingredient costs
+ * and total cost.
+ * @implements IOrderTextProps
+ */
 const OrderText: FunctionComponent<IOrderTextProps> = ({
   ingredients,
   totalCost,
@@ -37,7 +48,7 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
   ));
   return (
     <div className={styles.OrderText}>
-      <h3 style={{ fontWeight: 'bold' }}>{title}</h3>
+      {title ? <h3 style={{ fontWeight: 'bold' }}>{title}</h3> : null}
       <div>
         <ul>{summary}</ul>
       </div>

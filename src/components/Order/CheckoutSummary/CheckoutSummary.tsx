@@ -1,15 +1,22 @@
-import styles from '*.module.css';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, MouseEventHandler } from 'react';
 import BurgerDisplay from '../../Burger/BurgerDisplay/BurgerDisplay';
 import Button from '../../Button/Button';
 import OrderText, { IOrderIngredientsPrice } from '../../OrderText/OrderText';
+import styles from './CheckoutSummary.module.css';
 
 // tslint:disable-next-line:no-empty-interface
-interface ICheckoutSummaryProps extends IOrderIngredientsPrice {}
+interface ICheckoutSummaryProps extends IOrderIngredientsPrice {
+  checkoutCancel: MouseEventHandler;
+  checkoutContinue: MouseEventHandler;
+  purchasable: boolean;
+}
 
 const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   ingredients,
-  totalCost
+  totalCost,
+  checkoutCancel,
+  checkoutContinue,
+  purchasable
 }) => {
   return (
     <div className={styles.CheckoutSummary}>
@@ -20,10 +27,14 @@ const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
         totalCostPrefix="The total cost of your order is"
       />
       <div>
-        <Button type="Danger" onClick={() => ''}>
+        <Button btnType="Danger" onClick={checkoutCancel}>
           CANCEL
         </Button>
-        <Button type="Success" onClick={() => ''}>
+        <Button
+          disabled={!purchasable}
+          btnType="Success"
+          onClick={checkoutContinue}
+        >
           CONTINUE
         </Button>
       </div>

@@ -1,20 +1,21 @@
 import React, { Component, lazy, Suspense } from 'react';
+import { Route } from 'react-router';
 import Loader from '../../components/UI/Loader/Loader';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import { suspenseNode } from '../../HOCs/suspensed';
 // import Checkout from '../Checkout/Checkout';
 
 const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout')
+  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout/Checkout')
 );
 
-const SNCheckout = suspenseNode(Checkout, {});
+// const SNCheckout = suspenseNode(Checkout, {});
 
 const Layout = lazy(() =>
-  import(/* webpackChunkName: "Layout" */ '../Layout/Layout')
+  import(/* webpackChunkName: "Layout", webpackPrefetch: true */ '../Layout/Layout')
 );
 const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder", webpackPreload: true */ '../BurgerBuilder/BurgerBuilder')
+  import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder/BurgerBuilder')
 );
 
 class App extends Component {
@@ -24,9 +25,10 @@ class App extends Component {
         <Layout>
           <ErrorBoundary>
             <React.Suspense fallback={<Loader />}>
-              <BurgerBuilder />
+              <Route path="/" exact={true} component={BurgerBuilder} />
+              <Route path="/checkout" exact={false} component={Checkout} />
             </React.Suspense>
-            {SNCheckout}
+            {/* {SNCheckout} */}
           </ErrorBoundary>
         </Layout>
       </React.Suspense>

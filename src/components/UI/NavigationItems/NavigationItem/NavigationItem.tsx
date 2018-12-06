@@ -1,38 +1,39 @@
 import React, { FunctionComponent } from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './NavigationItem.module.css';
 
 /** @export
  * @interface INavigationItem
  */
-export interface INavigationItem {
-  /** Indicative of the current page/route
+export interface INavigationItemProps {
+  /** Set if the url must be exact or not
    * @type {boolean}
-   * @memberof INavigationItem
+   * @memberof INavigationItemProps
    */
-  active: boolean;
+  exact?: boolean;
   /** Link the nav item should point to
    * @type {string}
-   * @memberof INavigationItem
+   * @memberof INavigationItemProps
    */
   link: string;
   /** Nav Name to display
    * @type {string}
-   * @memberof INavigationItem
+   * @memberof INavigationItemProps
    */
   linkName: string;
 }
 /** Single nav item
- * @implements {INavigationItem}
+ * @implements INavigationItemProps
  */
-const NavigationItem: FunctionComponent<INavigationItem> = ( {
-  active,
+const NavigationItem: FunctionComponent<INavigationItemProps> = ({
+  exact,
   link,
-  linkName,
-} ) => (
+  linkName
+}) => (
   <li className={styles.NavigationItem}>
-    <a href={link} className={active ? styles.active : ''}>
+    <NavLink to={link} exact={exact} activeClassName={styles.active}>
       <span>{linkName}</span>
-    </a>
+    </NavLink>
   </li>
 );
 

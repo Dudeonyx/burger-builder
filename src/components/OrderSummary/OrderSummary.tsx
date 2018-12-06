@@ -8,7 +8,12 @@ export interface IOrderSummary extends IOrderIngredientsPrice {
   purchaseContinue: MouseEventHandler;
 }
 
-const OrderSummary: FunctionComponent<IOrderSummary> = ({price, ingredients, purchaseCancel, purchaseContinue}) => {
+const OrderSummary: FunctionComponent<IOrderSummary> = ({
+  totalCost,
+  ingredients,
+  purchaseCancel,
+  purchaseContinue
+}) => {
   const summary = Object.entries(ingredients).map(([igKey, igVal]) => (
     <li style={{ textTransform: 'capitalize' }} key={igKey}>
       {`${igKey}: ${igVal}`}
@@ -17,13 +22,17 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({price, ingredients, pur
   // console.log( '[OrderSummary]' );
   return (
     <>
-      <OrderText {...{ingredients, price}} title="Order Summary" totalCostPrefix="Total Cost:" />
+      <OrderText
+        {...{ ingredients, totalCost }}
+        title="Order Summary"
+        totalCostPrefix="Total Cost:"
+      />
       <p>Proceed to Checkout?</p>
       <div>
-        <Button onClick={purchaseCancel} type="Danger">
+        <Button onClick={purchaseCancel} btnType="Danger">
           CANCEL
         </Button>
-        <Button onClick={purchaseContinue} type="Success">
+        <Button onClick={purchaseContinue} btnType="Success">
           ORDER
         </Button>
       </div>

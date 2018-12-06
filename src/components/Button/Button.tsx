@@ -1,10 +1,14 @@
-import React, { MouseEventHandler } from 'react';
+import React, {
+  MouseEventHandler,
+  ButtonHTMLAttributes,
+  ReactNode
+} from 'react';
 import styles from './Button.module.css';
 
 /** @export
  * @interface IButtonProps
  */
-export interface IButtonProps {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * @type {string}
    * @memberof IButtonProps
@@ -15,13 +19,15 @@ export interface IButtonProps {
    * @default ''
    * @memberof IButtonProps
    */
-  type: 'Danger' | 'Success' | '';
+  btnType?: 'Danger' | 'Success' | '';
+
+  type?: 'submit' | 'reset' | 'button';
 
   /**@type {MouseEventHandler}
    * @memberof IButtonProps
    */
   onClick: MouseEventHandler;
-  children: string;
+  children: ReactNode;
 }
 /**
  *  Custom button that forwards ref
@@ -29,10 +35,10 @@ export interface IButtonProps {
  * @export
  */
 const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
-  ({ children, className, type = '', ...rest }, ref) => {
+  ({ children, className, btnType = '', ...rest }, ref) => {
     return (
       <button
-        className={[className, styles.Button, styles[type]].join(' ')}
+        className={[className, styles.Button, styles[btnType]].join(' ')}
         {...rest}
         ref={ref}
       >

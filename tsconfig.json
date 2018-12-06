@@ -4,6 +4,7 @@
     "allowJs": true,
     "lib": [
       "dom",
+      "dom.iterable",
       "es2015.promise",
       "es6",
       "esnext"

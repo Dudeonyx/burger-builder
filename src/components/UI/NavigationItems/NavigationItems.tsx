@@ -2,23 +2,17 @@ import React, { FunctionComponent } from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import styles from './NavigationItems.module.css';
 
+const navItems = [
+  { url: '/', name: 'BurgerBuilder', exact: true },
+  { url: '/checkout', name: 'Checkout', exact: false }
+  // { url: '/', name: 'About Us' },
+];
 // export interface INavigationItems {}
 const NavigationItems: FunctionComponent<{}> = () => {
-  const navItems = [
-    { url: '/', name: 'BurgerBuilder' },
-    { url: '/', name: 'Checkout' },
-    { url: '/', name: 'About Us' },
-  ];
-  const current = 'BurgerBuilder';
-  const navElements = navItems.map(({ url, name }) => (
-    <NavigationItem
-      key={name}
-      link={url}
-      linkName={name}
-      active={name === current ? true : false}
-    />
+  const navElements = navItems.map(({ url, name, exact }) => (
+    <NavigationItem key={name} link={url} linkName={name} exact={exact} />
   ));
   return <ul className={styles.NavigationItems}>{navElements}</ul>;
 };
 
-export default React.memo(NavigationItems);
+export default NavigationItems;

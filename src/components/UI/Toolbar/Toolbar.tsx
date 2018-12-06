@@ -2,7 +2,7 @@ import React, {
   FunctionComponent,
   lazy,
   MouseEventHandler,
-  Suspense,
+  Suspense
 } from 'react';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from './DrawerToggle/DrawerToggle';
@@ -11,15 +11,15 @@ import styles from './Toolbar.module.css';
 
 const Logo = lazy(() => import(/* webpackChunkName: "Logo" */ '../Logo/Logo'));
 
-export interface IToolbar {
+export interface IToolbarProps {
   drawerToggler: MouseEventHandler;
 }
-const Toolbar: FunctionComponent<IToolbar> = ({ drawerToggler }) => {
+const Toolbar: FunctionComponent<IToolbarProps> = ({ drawerToggler }) => {
   return (
     <header className={styles.Toolbar}>
       <DrawerToggle clicked={drawerToggler} />
       <Suspense fallback={<p>Logo...</p>}>
-        <Logo link="##" HQ={true} />
+        <Logo link="/" HQ={true} />
       </Suspense>
       <nav className={styles.DesktopOnly}>
         <NavigationItems />

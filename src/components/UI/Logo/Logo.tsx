@@ -1,4 +1,5 @@
 import React, { FunctionComponent, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { Img } from 'the-platform/Img';
 import logolow from '../../../assets/images/26.1 burger-logo.png';
 import logo from './../../../assets/images/26.1 burger-logo.png.png';
@@ -28,25 +29,24 @@ export interface ILogoProps {
 const Logo: FunctionComponent<ILogoProps> = ({
   link,
   height = '',
-  HQ = false,
+  HQ = false
 }) =>
   HQ ? (
     <Suspense
-      // tslint:disable-next-line:jsx-no-multiline-js
       fallback={
-        <a href={link} className={styles.Logo} style={{ height }}>
+        <Link to={link} className={styles.Logo} style={{ height }}>
           <img src={logolow} alt="A Burger Logo" />
-        </a>
+        </Link>
       }
     >
-      <a href={link} className={styles.Logo} style={{ height }}>
+      <Link to={link} className={styles.Logo} style={{ height }}>
         <Img src={logo} alt="A Burger Logo" />
-      </a>
+      </Link>
     </Suspense>
   ) : (
-    <a href={link} className={styles.Logo} style={{ height }}>
+    <Link to={link} className={styles.Logo} style={{ height }}>
       <img src={logolow} alt="A Burger Logo" />
-    </a>
+    </Link>
   );
 
 export default Logo;
