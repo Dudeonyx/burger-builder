@@ -1,9 +1,9 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
 import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import Button from '../Button/Button';
-import OrderText, { IOrderTextProps } from '../OrderText/OrderText';
+import OrderText, { IOrderIngredientsPrice } from '../OrderText/OrderText';
 
-export interface IOrderSummary extends IOrderTextProps {
+export interface IOrderSummary extends IOrderIngredientsPrice {
   purchaseCancel: MouseEventHandler;
   purchaseContinue: MouseEventHandler;
 }
@@ -17,7 +17,7 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({price, ingredients, pur
   // console.log( '[OrderSummary]' );
   return (
     <>
-      <OrderText {...{ingredients, price}}/>
+      <OrderText {...{ingredients, price}} title="Order Summary" totalCostPrefix="Total Cost:" />
       <p>Proceed to Checkout?</p>
       <div>
         <Button onClick={purchaseCancel} type="Danger">

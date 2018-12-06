@@ -21,6 +21,7 @@ export interface IButtonProps {
    * @memberof IButtonProps
    */
   onClick: MouseEventHandler;
+  children: string;
 }
 /**
  *  Custom button that forwards ref

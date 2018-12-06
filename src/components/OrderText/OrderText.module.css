@@ -1,0 +1,15 @@
+.OrderText {
+  text-align: center;
+}
+.OrderText div {
+  display: flex;
+  flex-flow: column;
+  align-items: center; 
+  /* max-width: 10em;
+  margin: 0 auto; */
+}
+
+.OrderText ul {
+  text-align: left;
+  /* min-width: 10em; */
+}

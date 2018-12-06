@@ -7,17 +7,17 @@ import withErrorHandler from '../../HOCs/withErrorHandler';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPreload: true */
-  '../../components/Burger/BurgerDisplay/BurgerDisplay'),
+  '../../components/Burger/BurgerDisplay/BurgerDisplay')
 );
 const BuildControls = lazy(() =>
   import(/* webpackChunkName: "BuildControls", webpackPreload: true */
-  '../../components/Burger/BuildControls/BuildControls'),
+  '../../components/Burger/BuildControls/BuildControls')
 );
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal'),
+  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal')
 );
 const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary'),
+  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary')
 );
 
 const INGREDIENT_PRICES = {
@@ -25,7 +25,7 @@ const INGREDIENT_PRICES = {
   // tslint:disable-next-line:object-literal-sort-keys
   cheese: 0.6,
   bacon: 0.8,
-  meat: 1.4,
+  meat: 1.4
 };
 export interface Iingredients {
   salad: number;
@@ -40,7 +40,7 @@ export interface IBurgerBuilderState {
   purchasing: boolean;
   loading: boolean;
   orders: string[];
-  error: Error | null;
+  error: Error | null | false;
 }
 
 class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
@@ -52,7 +52,7 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     purchasing: false,
     loading: false,
     orders: [],
-    error: null,
+    error: null
   };
   /*  tslint:enable:object-literal-sort-keys */
   /**
@@ -62,8 +62,8 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     this.fetchIngredients();
   }
   public updatePurchasable = (ingredients: Iingredients): boolean => {
-    return Object.values(ingredients).some((igVal) => igVal !== 0);
-  }
+    return Object.values(ingredients).some(igVal => igVal !== 0);
+  };
 
   public ingredientIncreaseHandler = (type: keyof Iingredients): void => {
     if (!this.state.ingredients) {
@@ -75,9 +75,9 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     this.setState({
       ingredients: newIngredients,
       purchasable: this.updatePurchasable(newIngredients),
-      totalPrice: newTotalPrice,
+      totalPrice: newTotalPrice
     });
-  }
+  };
   public ingredientDecreaseHandler = (type: keyof Iingredients) => {
     if (!this.state.ingredients) {
       return;
@@ -91,16 +91,16 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     this.setState({
       ingredients: newIngredients,
       purchasable: this.updatePurchasable(newIngredients),
-      totalPrice: newTotalPrice,
+      totalPrice: newTotalPrice
     });
-  }
+  };
 
   public purchaseStartHandler = () => {
     this.setState({ purchasing: true });
-  }
+  };
   public purchaseCancelHandler = () => {
     this.setState({ purchasing: false });
-  }
+  };
   public purchaseContinueHandler = async () => {
     try {
       this.setState({ loading: true });
@@ -116,7 +116,7 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     } finally {
       this.setState({ purchasing: false, loading: false });
     }
-  }
+  };
 
   public render() {
     let burger = this.state.error ? (
@@ -126,7 +126,13 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
           style={{ color: 'red', cursor: 'pointer' }}
           onClick={this.fetchIngredients}
         >
-          retry
+          retry?
+        </span>{' '}
+        <span
+          style={{ color: 'blue', cursor: 'pointer' }}
+          onClick={this.offline}
+        >
+          work offline for now?
         </span>
       </p>
     ) : (
@@ -188,16 +194,16 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
           street: 'Adjenughure Street',
           city: 'Effural',
           state: 'Selta',
-          country: 'Nier',
+          country: 'Nier'
         },
         phone: '123-255-8416',
         areaCode: '+56',
-        email: 'test@testing.on',
+        email: 'test@testing.on'
       },
       deliveryMethod: 'cheapest',
       ingredients: this.state.ingredients,
       price: this.state.totalPrice.toFixed(2),
-      date: Date(),
+      date: Date()
     };
     /*  tslint:enable:object-literal-sort-keys */
   }
@@ -206,17 +212,30 @@ class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
     this.setState({ error: null });
     try {
       const response: AxiosResponse<Iingredients> = await axios.get(
-        '/ingredients.json',
+        '/ingredients.json'
       );
       this.setState({
         ingredients: response.data,
-        purchasable: this.updatePurchasable(response.data),
+        purchasable: this.updatePurchasable(response.data)
       });
     } catch (error) {
       // tslint:disable-next-line:no-console
-      this.setState({ error });
+      this.setState({
+        error
+      });
     }
-  }
+  };
+  private offline = () => {
+    this.setState({
+      error: false,
+      ingredients: {
+        bacon: 0,
+        cheese: 0,
+        meat: 0,
+        salad: 0
+      }
+    });
+  };
 }
 
 export default withErrorHandler(BurgerBuilder, axios);

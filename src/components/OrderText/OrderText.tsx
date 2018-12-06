@@ -1,26 +1,50 @@
 import React, { FunctionComponent } from 'react';
 import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
+import styles from './OrderText.module.css';
 
-export interface IOrderTextProps {
+export interface IOrderIngredientsPrice {
   ingredients: Iingredients;
-  price: number;
+  totalCost: number;
+}
+export interface IOrderTextProps extends IOrderIngredientsPrice {
+  /**
+   *
+   *
+   * @type {string}
+   * @memberof IOrderTextProps
+   */
+  title?: string;
+  /** The text to display before the totalcost
+   * @type {string}
+   * @memberof IOrderTextProps
+   */
+  totalCostPrefix: string;
 }
 
 const OrderText: FunctionComponent<IOrderTextProps> = ({
   ingredients,
-  price
+  totalCost,
+  totalCostPrefix,
+  title
 }) => {
   const summary = Object.entries(ingredients).map(([igKey, igVal]) => (
     <li style={{ textTransform: 'capitalize' }} key={igKey}>
-      {`${igKey}: ${igVal}`}
+      <span style={{ display: 'inline-block', minWidth: '3.7em' }}>
+        {igKey}:
+      </span>
+      {` ${igVal}`}
     </li>
   ));
   return (
-    <>
-      <h3 style={{ fontWeight: 'bold' }}>Order Summary</h3>
-      <ul style={{}}>{summary}</ul>
-      <p style={{ fontWeight: 'bold' }}>Total Cost: ${price.toFixed(2)}</p>
-    </>
+    <div className={styles.OrderText}>
+      <h3 style={{ fontWeight: 'bold' }}>{title}</h3>
+      <div>
+        <ul>{summary}</ul>
+      </div>
+      <p style={{ fontWeight: 'bold' }}>
+        {totalCostPrefix} ${totalCost.toFixed(2)}
+      </p>
+    </div>
   );
 };
 
