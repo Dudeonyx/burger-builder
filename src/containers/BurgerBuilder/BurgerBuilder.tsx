@@ -27,7 +27,13 @@ const INGREDIENT_PRICES = {
   bacon: 0.8,
   meat: 1.4,
 };
-interface IBurgerBuilderState {
+export interface Iingredients {
+  salad: number;
+  bacon: number;
+  cheese: number;
+  meat: number;
+}
+export interface IBurgerBuilderState {
   ingredients: Iingredients | null;
   totalPrice: number;
   purchasable: boolean;
@@ -36,12 +42,7 @@ interface IBurgerBuilderState {
   orders: string[];
   error: Error | null;
 }
-interface Iingredients {
-  salad: number;
-  bacon: number;
-  cheese: number;
-  meat: number;
-}
+
 class BurgerBuilder extends Component<{}, IBurgerBuilderState> {
   /*  tslint:disable:object-literal-sort-keys */
   public state: IBurgerBuilderState = {

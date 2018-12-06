@@ -1,28 +1,24 @@
 import React, { FunctionComponent } from 'react';
-import styles from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
+import styles from './NavigationItems.module.css';
 
-export interface INavigationItems {}
-const NavigationItems: FunctionComponent<INavigationItems> = () => {
+// export interface INavigationItems {}
+const NavigationItems: FunctionComponent<{}> = () => {
   const navItems = [
     { url: '/', name: 'BurgerBuilder' },
     { url: '/', name: 'Checkout' },
     { url: '/', name: 'About Us' },
   ];
   const current = 'BurgerBuilder';
-  return (
-    <ul className={styles.NavigationItems}>
-      {navItems.map( ( { url, name } ) => (
-        // tslint:disable-next-line:jsx-no-multiline-js
-        <NavigationItem
-          key={name}
-          link={url}
-          linkName={name}
-          active={name === current ? true : false}
-        />
-      ) )}
-    </ul>
-  );
+  const navElements = navItems.map(({ url, name }) => (
+    <NavigationItem
+      key={name}
+      link={url}
+      linkName={name}
+      active={name === current ? true : false}
+    />
+  ));
+  return <ul className={styles.NavigationItems}>{navElements}</ul>;
 };
 
-export default NavigationItems;
+export default React.memo(NavigationItems);

@@ -1,12 +1,20 @@
-import React, { Component, lazy } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
+import { suspenseNode } from '../../../../adding-http-react/src/HOCs/suspensed';
 import Loader from '../../components/UI/Loader/Loader';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
+// import Checkout from '../Checkout/Checkout';
+
+const Checkout = lazy(() =>
+  import(/* webpackChunkName: Checkout */ '../Checkout/Checkout')
+);
+
+const SNCheckout = suspenseNode(Checkout, {});
 
 const Layout = lazy(() =>
-  import(/* webpackChunkName: "Layout" */ '../Layout/Layout'),
+  import(/* webpackChunkName: "Layout" */ '../Layout/Layout')
 );
 const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
+  import(/* webpackChunkName: "BurgerBuilder", webpackPreload: true */ '../BurgerBuilder/BurgerBuilder')
 );
 
 class App extends Component {
@@ -18,6 +26,7 @@ class App extends Component {
             <React.Suspense fallback={<Loader />}>
               <BurgerBuilder />
             </React.Suspense>
+            {SNCheckout}
           </ErrorBoundary>
         </Layout>
       </React.Suspense>

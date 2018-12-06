@@ -1,15 +1,9 @@
-import React, {
-  Component,
-  lazy,
-  Suspense,
-  ComponentPropsWithoutRef,
-  ReactElement,
-} from 'react';
-import styles from './Layout.module.css';
+import React, { lazy, PureComponent, Suspense } from 'react';
 import Toolbar from '../../components/UI/Toolbar/Toolbar';
+import styles from './Layout.module.css';
 
-const SideDrawer = lazy( () =>
-  import( /* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer/SideDrawer' ),
+const SideDrawer = lazy(() =>
+  import(/* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer/SideDrawer'),
 );
 
 /** @interface ILayoutState */
@@ -27,12 +21,12 @@ interface ILayoutState {
  * @class Layout
  * @extends {Component<{ children: JSX.Element }, ILayoutState>}
  */
-class Layout extends Component<{ children: JSX.Element }, ILayoutState> {
+class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
   /**
    * @implements {ILayoutState}
    * @memberof Layout
    */
-  readonly state = {
+  public readonly state = {
     showSideDrawer: false,
   };
 
@@ -41,17 +35,17 @@ class Layout extends Component<{ children: JSX.Element }, ILayoutState> {
    *
    * @memberof Layout
    */
-  public hideSideDrawerHandler = () => this.setState( { showSideDrawer: false } );
+  public hideSideDrawerHandler = () => this.setState({ showSideDrawer: false });
   /**
    * Handler that toggles the visibility
    * of the side drawer
    *
    * @memberof Layout
    */
-  toggleSideDrawerHandler = () =>
-    this.setState( prevState => ( { showSideDrawer: !prevState.showSideDrawer } ) )
+  public toggleSideDrawerHandler = () =>
+    this.setState((prevState) => ({ showSideDrawer: !prevState.showSideDrawer }))
 
-  render() {
+  public render() {
     return (
       <>
         <Toolbar drawerToggler={this.toggleSideDrawerHandler} />
