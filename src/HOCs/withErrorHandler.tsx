@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import React, { Component, ComponentType, lazy } from 'react';
 
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal'),
+  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal')
 );
 
 export interface IWithErrorHandlerState {
@@ -16,11 +16,11 @@ export interface IWithErrorHandlerState {
  */
 function withErrorHandler<P extends object>(
   WrappedComponent: ComponentType<P>,
-  axios: AxiosInstance,
+  axios: AxiosInstance
 ) {
   return class WithErrorHandler extends Component<P> {
     public state: IWithErrorHandlerState = {
-      error: null,
+      error: null
     };
 
     private req: number | null = null;
@@ -29,35 +29,35 @@ function withErrorHandler<P extends object>(
 
     public componentWillMount() {
       this.req = axios.interceptors.request.use(
-        (req) => {
+        req => {
           this.setState({ error: null });
           return req;
         },
-        (error) => {
+        error => {
           throw error;
-        },
+        }
       );
       this.res = axios.interceptors.response.use(
-        (req) => req,
-        (error) => {
+        req => req,
+        error => {
           this.setState({ error });
           throw error;
-        },
+        }
       );
     }
 
     public componentWillUnmount() {
-      if (this.req) {
+      if (this.req !== null) {
         axios.interceptors.request.eject(this.req);
       }
-      if (this.res) {
+      if (this.res !== null) {
         axios.interceptors.response.eject(this.res);
       }
     }
 
     public errorConfirmed = () => {
       this.setState({ error: null });
-    }
+    };
 
     public render() {
       return (
