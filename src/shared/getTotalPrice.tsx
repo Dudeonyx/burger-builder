@@ -1,4 +1,4 @@
-import { Iingredients } from '../containers/BurgerBuilder/BurgerBuilder';
+import { Iingredients } from '../containers/BurgerBuilder';
 
 export const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -8,11 +8,11 @@ export const INGREDIENT_PRICES = {
   meat: 1.4
 };
 export function getTotalPrice(ingredients: Iingredients) {
-  return (
+  return +(
     (Object.entries(ingredients) as Array<[keyof Iingredients, number]>)
       .map(([igKey, igVal]) => {
         return INGREDIENT_PRICES[igKey] * igVal;
       })
       .reduce((acc, val) => acc + val, 0) + 4
-  );
+  ).toFixed(2);
 }

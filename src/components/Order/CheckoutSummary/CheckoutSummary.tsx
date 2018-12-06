@@ -1,7 +1,7 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
-import BurgerDisplay from '../../Burger/BurgerDisplay/BurgerDisplay';
+import BurgerDisplay from '../../Burger/BurgerDisplay/';
 import Button from '../../Button/Button';
-import OrderText, { IOrderIngredientsPrice } from '../../OrderText/OrderText';
+import OrderText, { IOrderIngredientsPrice } from '../../OrderText/';
 import styles from './CheckoutSummary.module.css';
 
 // tslint:disable-next-line:no-empty-interface

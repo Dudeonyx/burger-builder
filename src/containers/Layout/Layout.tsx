@@ -1,9 +1,9 @@
 import React, { lazy, PureComponent, Suspense } from 'react';
-import Toolbar from '../../components/UI/Toolbar/Toolbar';
+import Toolbar from '../../components/UI/Toolbar';
 import styles from './Layout.module.css';
 
 const SideDrawer = lazy(() =>
-  import(/* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer/SideDrawer'),
+  import(/* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer'),
 );
 
 /** @interface ILayoutState */

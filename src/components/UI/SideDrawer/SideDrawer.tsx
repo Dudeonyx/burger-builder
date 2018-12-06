@@ -4,8 +4,8 @@ import React, {
   MouseEventHandler,
   Suspense,
 } from 'react';
-import Backdrop from '../Backdrop/Backdrop';
-import NavigationItems from '../NavigationItems/NavigationItems';
+import Backdrop from '../Backdrop/';
+import NavigationItems from '../NavigationItems/';
 import styles from './SideDrawer.module.css';
 
 const Logo = lazy( () => import( '../Logo/Logo' ) );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Retry from '../components/Retry/Retry';
+import Retry from '../components/Retry';
 
 export interface IErrorBoundaryState {
   error: Error | null;

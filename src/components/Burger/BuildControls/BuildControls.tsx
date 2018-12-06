@@ -1,6 +1,6 @@
 import React, { FunctionComponent, memo, MouseEventHandler } from 'react';
-import { Iingredients } from '../../../containers/BurgerBuilder/BurgerBuilder';
-import BuildControl from './BuildControl/BuildControl';
+import { Iingredients } from '../../../containers/BurgerBuilder';
+import BuildControl from './BuildControl';
 import styles from './BuildControls.module.css';
 
 export type IingredientsKeys = keyof Iingredients;

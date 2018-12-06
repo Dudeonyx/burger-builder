@@ -1,27 +1,27 @@
-import { updatePurchasable } from '../../shared/updatePurchasable';
+import { updatePurchasable } from '../../shared';
 import React, { Component, lazy } from 'react';
 
 import { AxiosResponse } from 'axios';
 import { RouteComponentProps } from 'react-router';
 import axios from '../../axios-orders';
-import Retry from '../../components/Retry/Retry';
-import Loader from '../../components/UI/Loader/Loader';
+import Retry from '../../components/Retry';
+import Loader from '../../components/UI/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import { getTotalPrice } from '../../shared/getTotalPrice';
+import { getTotalPrice } from '../../shared';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
-  '../../components/Burger/BurgerDisplay/BurgerDisplay')
+  '../../components/Burger/BurgerDisplay')
 );
 const BuildControls = lazy(() =>
   import(/* webpackChunkName: "BuildControls", webpackPrefetch: true */
-  '../../components/Burger/BuildControls/BuildControls')
+  '../../components/Burger/BuildControls')
 );
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal')
+  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal')
 );
 const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary')
+  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary')
 );
 
 /**
@@ -155,21 +155,7 @@ class BurgerBuilder extends Component<
   public purchaseCancelHandler = () => {
     this.setState({ purchasing: false });
   };
-  public purchaseContinueHandler = async () => {
-    // try {
-    //   this.setState({ loading: true });
-    //   const order = this.generateOrder();
-    //   const response = await axios.post('/orders.json', order);
-    //   // tslint:disable-next-line:no-console
-    //   console.log(response);
-    //   const orders = this.state.orders.concat(response.data.name);
-    //   this.setState({ orders });
-    // } catch (error) {
-    //   // tslint:disable-next-line:no-console
-    //   console.log(error);
-    // } finally {
-    //   this.setState({ purchasing: false, loading: false });
-    // }
+  public purchaseContinueHandler = () => {
     if (!this.state.ingredients) {
       return;
     }

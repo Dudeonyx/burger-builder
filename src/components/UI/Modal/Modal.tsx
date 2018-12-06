@@ -1,10 +1,10 @@
 import React, {
   MouseEventHandler,
   FunctionComponent,
-  CSSProperties,
+  CSSProperties
 } from 'react';
 import styles from './Modal.module.css';
-import Backdrop from '../Backdrop/Backdrop';
+import Backdrop from '../Backdrop/';
 
 /** @interface */
 export interface IModal {
@@ -18,24 +18,24 @@ export interface IModal {
   hider: MouseEventHandler;
 }
 /** A reuseable Modal */
-export const Modal: FunctionComponent<IModal> = ( {
+export const Modal: FunctionComponent<IModal> = ({
   children,
   show = false,
-  hider,
-} ) => {
+  hider
+}) => {
   // console.log( '[Modal]' );
   const inlineCss: CSSProperties = show
     ? {
         /* tslint:disable:ter-indent */
-        opacity: 1,
         maxWidth: '100%',
-        visibility: 'unset',
+        opacity: 1,
+        visibility: 'unset'
       }
     : {
-        transform: 'translate(-50%, -200%)',
-        opacity: 0,
         maxWidth: '0%',
-        visibility: 'hidden',
+        opacity: 0,
+        transform: 'translate(-50%, -200%)',
+        visibility: 'hidden'
       };
   /* tslint:enable:ter-indent */
 
@@ -49,4 +49,4 @@ export const Modal: FunctionComponent<IModal> = ( {
   );
 };
 
-export default React.memo( Modal );
+export default React.memo(Modal);

@@ -4,8 +4,8 @@ import React, {
   MouseEventHandler,
   Suspense
 } from 'react';
-import NavigationItems from '../NavigationItems/NavigationItems';
-import DrawerToggle from './DrawerToggle/DrawerToggle';
+import NavigationItems from '../NavigationItems/';
+import DrawerToggle from './DrawerToggle/';
 import styles from './Toolbar.module.css';
 // import Logo from '../Logo/Logo';
 

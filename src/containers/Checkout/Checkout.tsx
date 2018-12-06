@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { RouteComponentProps, Route } from 'react-router';
-import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
-import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import { getTotalPrice } from '../../shared/getTotalPrice';
-import { Iingredients } from '../BurgerBuilder/BurgerBuilder';
+import { IingredientsKeys } from '../../components/Burger/BuildControls';
+import CheckoutSummary from '../../components/Order/CheckoutSummary';
+import { getTotalPrice } from '../../shared/';
+import { Iingredients } from '../BurgerBuilder';
 import styles from './Checkout.module.css';
-import ContactData from './ContactData/ContactData';
-import { updatePurchasable } from '../../shared/updatePurchasable';
+import ContactData from './ContactData';
+import { updatePurchasable } from '../../shared';
 
 /**
  * @export
@@ -66,8 +66,12 @@ class Checkout extends Component<RouteComponentProps, ICheckoutState> {
         <Route
           path={this.props.match.path + '/contact-data'}
           render={p =>
-            this.state.ingredients ? (
-              <ContactData {...p} ingredients={this.state.ingredients} />
+            this.state.ingredients && this.state.totalPrice ? (
+              <ContactData
+                {...p}
+                ingredients={this.state.ingredients}
+                totalPrice={this.state.totalPrice}
+              />
             ) : null
           }
         />

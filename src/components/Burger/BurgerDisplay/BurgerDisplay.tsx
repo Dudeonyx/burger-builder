@@ -1,6 +1,6 @@
 import React, { ComponentType, FunctionComponent, ReactElement } from 'react';
-import { Iingredients } from '../../../containers/BurgerBuilder/BurgerBuilder';
-import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
+import { Iingredients } from '../../../containers/BurgerBuilder/';
+import BurgerIngredient from '../BurgerIngredient/';
 import styles from './BurgerDisplay.module.css';
 
 export const jsxArrayFromObject = <

@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { Modal } from './Modal';
+import { Modal } from './';
 import { action } from '@storybook/addon-actions';
 
 storiesOf( 'Modal', module )
