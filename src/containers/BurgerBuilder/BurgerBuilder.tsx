@@ -249,39 +249,17 @@ class BurgerBuilder extends Component<
     );
   }
 
-  private generateOrder() {
-    /*  tslint:disable:object-literal-sort-keys */
-    return {
-      customer: {
-        name: 'OnyekaChukwu',
-        address: {
-          street: 'Adjenughure Street',
-          city: 'Effural',
-          state: 'Selta',
-          country: 'Nier'
-        },
-        phone: '123-255-8416',
-        areaCode: '+56',
-        email: 'test@testing.on'
-      },
-      deliveryMethod: 'cheapest',
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice.toFixed(2),
-      date: Date()
-    };
-    /*  tslint:enable:object-literal-sort-keys */
-  }
-
   private fetchIngredients = async () => {
     this.setState({ error: null });
     try {
       const response: AxiosResponse<Iingredients> = await axios.get(
         '/ingredients.json'
       );
-      const newTotalPrice = getTotalPrice(response.data);
+      const { data: newIngredients } = response;
+      const newTotalPrice = getTotalPrice(newIngredients);
       this.setState({
-        ingredients: response.data,
-        purchasable: updatePurchasable(response.data),
+        ingredients: newIngredients,
+        purchasable: updatePurchasable(newIngredients),
         totalPrice: newTotalPrice
       });
     } catch (error) {
