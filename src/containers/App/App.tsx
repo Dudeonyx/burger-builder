@@ -1,5 +1,5 @@
 import React, { Component, lazy, Suspense } from 'react';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 import Loader from '../../components/UI/Loader';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 // import Checkout from '../Checkout/Checkout';
@@ -17,6 +17,10 @@ const BurgerBuilder = lazy(() =>
   import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder')
 );
 
+const Orders = lazy(() =>
+  import(/* webpackChunkName: "Orders", webpackPrefetch: true */ '../Orders')
+);
+
 class App extends Component {
   public render() {
     return (
@@ -26,6 +30,7 @@ class App extends Component {
             <React.Suspense fallback={<Loader />}>
               <Route path="/" exact={true} component={BurgerBuilder} />
               <Route path="/checkout" exact={false} component={Checkout} />
+              <Route path="/all-orders" exact={true} component={Orders} />
             </React.Suspense>
             {/* {SNCheckout} */}
           </ErrorBoundary>

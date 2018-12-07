@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RouteComponentProps, Route } from 'react-router';
+import { RouteComponentProps, Route } from 'react-router-dom';
 import { IingredientsKeys } from '../../components/Burger/BuildControls';
 import CheckoutSummary from '../../components/Order/CheckoutSummary';
 import { getTotalPrice } from '../../shared/';
@@ -31,7 +31,7 @@ export interface ICheckoutState {
    * @type {number}
    * @memberof ICheckoutState
    */
-  totalPrice: number | null;
+  totalPrice: string | null;
   purchasable: boolean;
 }
 

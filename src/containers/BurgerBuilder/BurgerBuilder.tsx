@@ -2,7 +2,7 @@ import { updatePurchasable } from '../../shared';
 import React, { Component, lazy } from 'react';
 
 import { AxiosResponse } from 'axios';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import axios from '../../axios-orders';
 import Retry from '../../components/Retry';
 import Loader from '../../components/UI/Loader';
@@ -61,10 +61,10 @@ export interface IBurgerBuilderState {
    */
   ingredients: Iingredients | null;
   /**
-   * @type {number}
+   * @type {string}
    * @memberof IBurgerBuilderState
    */
-  totalPrice: number;
+  totalPrice: string;
   /**
    * @type {boolean}
    * @memberof IBurgerBuilderState
@@ -104,7 +104,7 @@ class BurgerBuilder extends Component<
   /*  tslint:disable:object-literal-sort-keys */
   public state: IBurgerBuilderState = {
     ingredients: null,
-    totalPrice: 4,
+    totalPrice: '4',
     purchasable: false,
     purchasing: false,
     loading: false,
@@ -264,7 +264,7 @@ class BurgerBuilder extends Component<
         meat: 0,
         salad: 0
       },
-      totalPrice: 4
+      totalPrice: '4'
     });
   };
 }

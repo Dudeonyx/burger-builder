@@ -1,7 +1,7 @@
 import React, { MouseEvent, Component } from 'react';
 import { Iingredients } from '../../BurgerBuilder';
 import Button from '../../../components/Button';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import styles from './ContactData.module.css';
 import { Modal } from '../../../components/UI/Modal';
 import axios from '../../../axios-orders';
@@ -10,7 +10,7 @@ import Loader from '../../../components/UI/Loader';
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataProps extends RouteComponentProps {
   ingredients: Iingredients;
-  totalPrice: number;
+  totalPrice: string;
 }
 
 // tslint:disable-next-line:no-empty-interface
@@ -67,7 +67,13 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
 
         <div>
           <label htmlFor="name_id">Name:</label>
-          <input id="name_id" type="text" name="name" placeholder="Name" />
+          <input
+            id="name_id"
+            type="text"
+            name="name"
+            placeholder="Name"
+            required={true}
+          />
         </div>
         <fieldset>
           <legend>Address</legend>
@@ -183,30 +189,40 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     e.preventDefault();
     this.props.history.goBack();
   };
-  private submit = async (e: MouseEvent<Element>) => {
-    try {
-      e.preventDefault();
-      this.setState({ loading: true });
-      // tslint:disable:object-literal-sort-keys
-      const { loading, ...order } = {
-        ...this.state,
-        ingredients: this.props.ingredients,
-        price: this.props.totalPrice,
-        date: Date()
-      };
-      const response = await axios.post('/orders.json', order);
-      // tslint:disable-next-line:no-console
-      console.log(response);
-      //   const orders = this.state.orders.concat(response.data.name);
-      //   this.setState({ orders });
-      this.setState(
-        () => ({ loading: false }),
-        () => this.props.history.push('/')
-      );
-    } catch (error) {
-      // tslint:disable-next-line:no-console
-      console.log(error);
-      this.setState({ loading: false });
+  private submit = async (e: MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
+      try {
+        e.preventDefault();
+        this.setState({ loading: true });
+        const {
+          name: { value: name },
+          delivery_method: { value: deliveryMethod }
+        } = e.currentTarget.form as any;
+        // tslint:disable-next-line:no-console
+        console.log(name, deliveryMethod);
+        const customer = { ...this.state.customer, name };
+        const { loading, ...order } = {
+          ...this.state,
+          customer,
+          deliveryMethod,
+          ingredients: this.props.ingredients,
+          price: this.props.totalPrice,
+          date: Date()
+        };
+        const response = await axios.post('/orders.json', order);
+        // tslint:disable-next-line:no-console
+        console.log(response);
+        //   const orders = this.state.orders.concat(response.data.name);
+        //   this.setState({ orders });
+        this.setState(
+          () => ({ loading: false }),
+          () => this.props.history.push('/all-orders')
+        );
+      } catch (error) {
+        // tslint:disable-next-line:no-console
+        console.log(error);
+        this.setState({ loading: false });
+      }
     }
   };
 }

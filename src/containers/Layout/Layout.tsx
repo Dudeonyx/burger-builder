@@ -1,9 +1,9 @@
 import React, { lazy, PureComponent, Suspense } from 'react';
-import Toolbar from '../../components/UI/Toolbar';
+import Toolbar from './Toolbar';
 import styles from './Layout.module.css';
 
 const SideDrawer = lazy(() =>
-  import(/* webpackChunkName: "SideDrawer" */ '../../components/UI/SideDrawer'),
+  import(/* webpackChunkName: "SideDrawer" */ './SideDrawer')
 );
 
 /** @interface ILayoutState */
@@ -27,7 +27,7 @@ class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
    * @memberof Layout
    */
   public readonly state = {
-    showSideDrawer: false,
+    showSideDrawer: false
   };
 
   /**
@@ -43,7 +43,7 @@ class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
    * @memberof Layout
    */
   public toggleSideDrawerHandler = () =>
-    this.setState((prevState) => ({ showSideDrawer: !prevState.showSideDrawer }))
+    this.setState(prevState => ({ showSideDrawer: !prevState.showSideDrawer }));
 
   public render() {
     return (

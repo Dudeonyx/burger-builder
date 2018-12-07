@@ -9,7 +9,9 @@ import DrawerToggle from './DrawerToggle/';
 import styles from './Toolbar.module.css';
 // import Logo from '../Logo/Logo';
 
-const Logo = lazy(() => import(/* webpackChunkName: "Logo" */ '../Logo/Logo'));
+const Logo = lazy(() =>
+  import(/* webpackChunkName: "Logo" */ '../../../components/UI/Logo')
+);
 
 export interface IToolbarProps {
   drawerToggler: MouseEventHandler;

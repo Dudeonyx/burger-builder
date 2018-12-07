@@ -6,21 +6,26 @@ import styles from './BuildControls.module.css';
 export type IingredientsKeys = keyof Iingredients;
 export interface IbuildControlsProps {
   ingredients: Iingredients;
-  price: number;
+  price: string;
   increase: (e: IingredientsKeys) => void;
   decrease: (e: IingredientsKeys) => void;
   purchaseStart: MouseEventHandler;
   purchasable: boolean;
 }
- const gfg: IingredientsKeys = 'salad';
+const gfg: IingredientsKeys = 'salad';
 const ddfg = {
   [gfg]: 'fgfg'
-}
+};
 
 export type TdisabledCheck = { [x in IingredientsKeys]: boolean };
 
 export type Tcontrols = Array<{ label: string; type: IingredientsKeys }>;
-
+const controls: Tcontrols = [
+  { label: 'Salad', type: 'salad' },
+  { label: 'Bacon', type: 'bacon' },
+  { label: 'Cheese', type: 'cheese' },
+  { label: 'Meat', type: 'meat' }
+];
 const buildControls: FunctionComponent<IbuildControlsProps> = ({
   decrease,
   increase,
@@ -29,13 +34,6 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
   purchasable,
   purchaseStart
 }) => {
-  const controls: Tcontrols = [
-    { label: 'Salad', type: 'salad' },
-    { label: 'Bacon', type: 'bacon' },
-    { label: 'Cheese', type: 'cheese' },
-    { label: 'Meat', type: 'meat' }
-  ];
-
   const disabledCheck: TdisabledCheck = {
     bacon: false,
     cheese: false,
@@ -51,7 +49,7 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
   return (
     <div className={styles.BuildControls}>
       <p>
-        Current Price: <strong>${price.toFixed(2)}</strong>
+        Current Price: <strong>${price}</strong>
       </p>
       {controls.map(ctrl => (
         <BuildControl

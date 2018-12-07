@@ -12,7 +12,7 @@ export interface IOrderIngredientsPrice {
    * @type {number}
    * @memberof IOrderIngredientsPrice
    */
-  totalCost: number;
+  totalCost: string;
 }
 export interface IOrderTextProps extends IOrderIngredientsPrice {
   /** A heading to display
@@ -24,7 +24,7 @@ export interface IOrderTextProps extends IOrderIngredientsPrice {
    * @type {string}
    * @memberof IOrderTextProps
    */
-  totalCostPrefix: string;
+  totalCostPrefix?: string;
 }
 
 /**
@@ -52,9 +52,11 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
       <div>
         <ul>{summary}</ul>
       </div>
-      <p style={{ fontWeight: 'bold' }}>
-        {totalCostPrefix} ${totalCost.toFixed(2)}
-      </p>
+      {totalCostPrefix ? (
+        <p style={{ fontWeight: 'bold' }}>
+          {totalCostPrefix} ${totalCost}
+        </p>
+      ) : null}
     </div>
   );
 };
