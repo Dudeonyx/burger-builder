@@ -1,5 +1,6 @@
 import { updatePurchasable } from '../../shared';
 import React, { Component, lazy } from 'react';
+import produce from 'immer';
 
 import { AxiosResponse } from 'axios';
 import { RouteComponentProps } from 'react-router-dom';
@@ -120,33 +121,28 @@ class BurgerBuilder extends Component<
   }
 
   public ingredientIncreaseHandler = (type: keyof Iingredients): void => {
-    if (!this.state.ingredients) {
-      return;
-    }
-    const newIngredients = { ...this.state.ingredients };
-    newIngredients[type] += 1;
-    const newTotalPrice = getTotalPrice(newIngredients);
-    this.setState({
-      ingredients: newIngredients,
-      purchasable: updatePurchasable(newIngredients),
-      totalPrice: newTotalPrice
-    });
+    this.setState(
+      produce(draft => {
+        if (!draft.ingredients) {
+          return;
+        }
+        draft.ingredients[type] += 1;
+        draft.totalPrice = getTotalPrice(draft.ingredients);
+        draft.purchasable = updatePurchasable(draft.ingredients);
+      })
+    );
   };
   public ingredientDecreaseHandler = (type: keyof Iingredients) => {
-    if (!this.state.ingredients) {
-      return;
-    }
-    if (this.state.ingredients[type] <= 0) {
-      return;
-    }
-    const newIngredients = { ...this.state.ingredients };
-    newIngredients[type] -= 1;
-    const newTotalPrice = getTotalPrice(newIngredients);
-    this.setState({
-      ingredients: newIngredients,
-      purchasable: updatePurchasable(newIngredients),
-      totalPrice: newTotalPrice
-    });
+    this.setState(
+      produce(draft => {
+        if (!draft.ingredients || draft.ingredients[type] <= 0) {
+          return;
+        }
+        draft.ingredients[type] -= 1;
+        draft.totalPrice = getTotalPrice(draft.ingredients);
+        draft.purchasable = updatePurchasable(draft.ingredients);
+      })
+    );
   };
 
   public purchaseStartHandler = () => {
