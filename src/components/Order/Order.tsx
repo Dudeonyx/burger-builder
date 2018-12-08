@@ -5,15 +5,17 @@ import { INGREDIENT_PRICES } from '../../shared';
 import styled from 'styled-components';
 
 const StyledOrder = styled.div`
-  text-align: center;
-  padding: 10px;
-  box-sizing: border-box;
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.658);
-  margin: 15px;
-  border-radius: 10px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  & {
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.658);
+    margin: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
 
   span {
     text-transform: capitalize;
