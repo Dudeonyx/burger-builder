@@ -7,11 +7,15 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bulma": "^0.7.2",
+    "immer": "^1.8.0",
+    "primeicons": "^1.0.0",
+    "primereact": "^2.0.1",
     "react": "^16.6.3",
     "react-classer": "^0.1.0",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "styled-components": "^4.1.2",
     "the-platform": "^0.9.3"
   },
   "scripts": {
@@ -57,14 +61,17 @@
     "@types/storybook__addon-info": "^3.4.2",
     "@types/storybook__addon-links": "^3.3.3",
     "@types/storybook__react": "^4.0.0",
+    "@types/styled-components": "^4.1.2",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "gh-pages": "^2.0.1",
     "prettier-tslint": "^0.4.0",
+    "radium": "^0.25.0",
     "react-docgen-typescript-loader": "^3.0.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "ts-jest": "^23.10.5",
-    "typescript": "^3.2.1"
+    "typescript": "^3.2.1",
+    "typescript-styled-plugin": "^0.13.0"
   }
 }
