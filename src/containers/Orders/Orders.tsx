@@ -1,12 +1,11 @@
 import React, { FunctionComponent, Component } from 'react';
-import styles from './Orders.module.css';
 import { RouteComponentProps } from 'react-router-dom';
 import { Iingredients } from '../BurgerBuilder';
-import { IingredientsKeys } from '../../components/Burger/BuildControls';
 import Order from '../../components/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
+import styled from 'styled-components';
 // tslint:disable-next-line:no-empty-interface
 export interface IOrdersProps extends RouteComponentProps {}
 
@@ -41,6 +40,39 @@ export interface IOrdersState {
   loading: boolean;
   formattedOrders: IformattedOrder[];
 }
+
+const StyledOrders = styled.div`
+  & {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+  }
+  .OrderBox {
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.658);
+    margin: 15px;
+    border-radius: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    min-height: 65vh;
+  }
+  .OrderWrapper {
+    flex: 0.3 0.2 100%;
+  }
+
+  @media (min-width: 650px) {
+    .OrderBox {
+      max-width: 600px;
+    }
+  }
+`;
 class Orders extends Component<IOrdersProps, IOrdersState> {
   constructor(props: IOrdersProps) {
     super(props);
@@ -91,15 +123,17 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
       <Loader />
     ) : this.state.formattedOrders.length > 0 ? (
       this.state.formattedOrders.map(customer => (
-        <Order {...customer} key={customer.id} className={styles.Order} />
+        <div className="OrderWrapper" key={customer.id}>
+          <Order {...customer} />
+        </div>
       ))
     ) : null;
 
     return (
-      <div className={styles.Orders}>
+      <StyledOrders>
         <h3>Here Are Your Orders</h3>
-        <div className={styles.OrderBox}>{allOrders}</div>
-      </div>
+        <div className="OrderBox">{allOrders}</div>
+      </StyledOrders>
     );
   }
 }
