@@ -1,9 +1,15 @@
-import React, { FunctionComponent, MouseEventHandler } from 'react';
-import BurgerDisplay from '../../Burger/BurgerDisplay/';
+import React, {
+  FunctionComponent,
+  MouseEventHandler,
+  lazy,
+  Suspense
+} from 'react';
 import Button from '../../Button/Button';
 import OrderText, { IOrderIngredientsPrice } from '../../OrderText/';
 import styles from './CheckoutSummary.module.css';
+import Loader from '../../UI/Loader';
 
+const BurgerDisplay = lazy(() => import('../../Burger/BurgerDisplay/'));
 // tslint:disable-next-line:no-empty-interface
 interface ICheckoutSummaryProps extends IOrderIngredientsPrice {
   checkoutCancel: MouseEventHandler;
@@ -21,7 +27,9 @@ const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   return (
     <div className={styles.CheckoutSummary}>
       <h3>We Hope You'll Enjoy This</h3>
-      <BurgerDisplay {...{ ingredients }} />
+      <Suspense fallback={<Loader />}>
+        <BurgerDisplay {...{ ingredients }} />
+      </Suspense>
       <OrderText
         {...{ ingredients, totalCost }}
         totalCostPrefix="The total cost of your order is"

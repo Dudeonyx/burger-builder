@@ -10,15 +10,6 @@ import { updatePurchasable } from '../../shared';
 
 /**
  * @export
- * @interface ICheckoutProps
- * @extends {RouteComponentProps}
- */
-// tslint:disable-next-line:no-empty-interface
-export interface ICheckoutProps {}
-
-// tslint:disable-next-line:no-empty-interface
-/**
- * @export
  * @interface ICheckoutState
  */
 export interface ICheckoutState {

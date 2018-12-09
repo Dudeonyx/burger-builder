@@ -1,6 +1,5 @@
 import { updatePurchasable } from '../../shared';
 import React, { Component, lazy } from 'react';
-import produce from 'immer';
 
 import { AxiosResponse } from 'axios';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,6 +8,7 @@ import Retry from '../../components/Retry';
 import Loader from '../../components/UI/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import { getTotalPrice } from '../../shared';
+import produce from 'immer';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -121,28 +121,32 @@ class BurgerBuilder extends Component<
   }
 
   public ingredientIncreaseHandler = (type: keyof Iingredients): void => {
-    this.setState(
-      produce(draft => {
-        if (!draft.ingredients) {
-          return;
-        }
-        draft.ingredients[type] += 1;
-        draft.totalPrice = getTotalPrice(draft.ingredients);
-        draft.purchasable = updatePurchasable(draft.ingredients);
-      })
-    );
+    if (!this.state.ingredients) {
+      return;
+    }
+    const nextState = produce(this.state, draft => {
+      // if (!draft.ingredients || draft.ingredients[type] <= 0) {
+      //   return draft;
+      // }
+      draft.ingredients![type] += 1;
+      draft.totalPrice = getTotalPrice(draft.ingredients!);
+      draft.purchasable = updatePurchasable(draft.ingredients!);
+    });
+    this.setState(nextState);
   };
   public ingredientDecreaseHandler = (type: keyof Iingredients) => {
-    this.setState(
-      produce(draft => {
-        if (!draft.ingredients || draft.ingredients[type] <= 0) {
-          return;
-        }
-        draft.ingredients[type] -= 1;
-        draft.totalPrice = getTotalPrice(draft.ingredients);
-        draft.purchasable = updatePurchasable(draft.ingredients);
-      })
-    );
+    if (!this.state.ingredients) {
+      return;
+    }
+    const nextState = produce(this.state, draft => {
+      // if (!draft.ingredients || draft.ingredients[type] <= 0) {
+      //   return draft;
+      // }
+      draft.ingredients![type] -= 1;
+      draft.totalPrice = getTotalPrice(draft.ingredients!);
+      draft.purchasable = updatePurchasable(draft.ingredients!);
+    });
+    this.setState(nextState);
   };
 
   public purchaseStartHandler = () => {

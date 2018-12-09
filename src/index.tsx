@@ -6,7 +6,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 
 const app = (
-  <BrowserRouter>
+  <BrowserRouter basename="/burger-builder">
     <App />
   </BrowserRouter>
 );

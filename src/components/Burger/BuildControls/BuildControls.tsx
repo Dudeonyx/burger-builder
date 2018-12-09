@@ -1,5 +1,5 @@
 import React, { FunctionComponent, memo, MouseEventHandler } from 'react';
-import { Iingredients } from '../../../containers/BurgerBuilder';
+import { Iingredients } from '../../../containers/BurgerBuilder/BurgerBuilder';
 import BuildControl from './BuildControl';
 import styles from './BuildControls.module.css';
 
