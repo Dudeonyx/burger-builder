@@ -1,28 +1,28 @@
-import { updatePurchasable } from '../../shared';
+import { updatePurchasable } from '../../shared/updatePurchasable';
 import React, { Component, lazy } from 'react';
 
 import { AxiosResponse } from 'axios';
 import { RouteComponentProps } from 'react-router-dom';
 import axios from '../../axios-orders';
-import Retry from '../../components/Retry';
-import Loader from '../../components/UI/Loader';
+import Retry from '../../components/Retry/Retry';
+import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import { getTotalPrice } from '../../shared';
+import { getTotalPrice } from '../../shared/getTotalPrice';
 import produce from 'immer';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
-  '../../components/Burger/BurgerDisplay')
+  '../../components/Burger/BurgerDisplay/BurgerDisplay')
 );
 const BuildControls = lazy(() =>
   import(/* webpackChunkName: "BuildControls", webpackPrefetch: true */
-  '../../components/Burger/BuildControls')
+  '../../components/Burger/BuildControls/BuildControls')
 );
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal')
+  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal')
 );
 const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary')
+  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary')
 );
 
 /**

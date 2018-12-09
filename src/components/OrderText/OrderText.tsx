@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder/';
+import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import styles from './OrderText.module.css';
 
 export interface IOrderIngredientsPrice {

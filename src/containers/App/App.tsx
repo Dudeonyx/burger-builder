@@ -1,21 +1,23 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Loader from '../../components/UI/Loader';
+import Loader from '../../components/UI/Loader/Loader';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
-import Layout from '../Layout';
+import Layout from '../Layout/Layout';
 // import Checkout from '../Checkout/Checkout';
 
 const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout')
+  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout/Checkout')
 );
 
 // const SNCheckout = suspenseNode(Checkout, {});
 
 const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder')
+  import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder/BurgerBuilder')
 );
 
-const Orders = lazy(() => import(/* webpackChunkName: "Orders" */ '../Orders'));
+const Orders = lazy(() =>
+  import(/* webpackChunkName: "Orders" */ '../Orders/Orders')
+);
 
 class App extends Component {
   public render() {

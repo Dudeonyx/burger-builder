@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { RouteComponentProps, Route } from 'react-router-dom';
-import { IingredientsKeys } from '../../components/Burger/BuildControls';
-import CheckoutSummary from '../../components/Order/CheckoutSummary';
-import { getTotalPrice } from '../../shared/';
-import { Iingredients } from '../BurgerBuilder';
+import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
+import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import { getTotalPrice } from '../../shared/getTotalPrice';
+import { Iingredients } from '../BurgerBuilder/BurgerBuilder';
 import styles from './Checkout.module.css';
-import ContactData from './ContactData';
-import { updatePurchasable } from '../../shared';
+import ContactData from './ContactData/ContactData';
+import { updatePurchasable } from '../../shared/updatePurchasable';
 
 /**
  * @export

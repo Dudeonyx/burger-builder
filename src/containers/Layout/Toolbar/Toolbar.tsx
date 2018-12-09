@@ -4,13 +4,13 @@ import React, {
   MouseEventHandler,
   Suspense
 } from 'react';
-import NavigationItems from '../NavigationItems/';
-import DrawerToggle from './DrawerToggle/';
+import NavigationItems from '../NavigationItems/NavigationItems';
+import DrawerToggle from './DrawerToggle/DrawerToggle';
 import styles from './Toolbar.module.css';
 // import Logo from '../Logo/Logo';
 
 const Logo = lazy(() =>
-  import(/* webpackChunkName: "Logo" */ '../../../components/UI/Logo')
+  import(/* webpackChunkName: "Logo" */ '../../../components/UI/Logo/Logo')
 );
 
 export interface IToolbarProps {

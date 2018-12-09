@@ -1,9 +1,9 @@
 import React, { FunctionComponent, Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Iingredients } from '../BurgerBuilder';
-import Order from '../../components/Order';
+import { Iingredients } from '../BurgerBuilder/BurgerBuilder';
+import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
-import Loader from '../../components/UI/Loader';
+import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import styled from 'styled-components';
 // tslint:disable-next-line:no-empty-interface

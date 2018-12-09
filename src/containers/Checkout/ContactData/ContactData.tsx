@@ -1,11 +1,11 @@
 import React, { MouseEvent, Component } from 'react';
-import { Iingredients } from '../../BurgerBuilder';
-import Button from '../../../components/Button';
+import { Iingredients } from '../../BurgerBuilder/BurgerBuilder';
+import Button from '../../../components/Button/Button';
 import { RouteComponentProps } from 'react-router-dom';
 import styles from './ContactData.module.css';
-import { Modal } from '../../../components/UI/Modal';
+import { Modal } from '../../../components/UI/Modal/Modal';
 import axios from '../../../axios-orders';
-import Loader from '../../../components/UI/Loader';
+import Loader from '../../../components/UI/Loader/Loader';
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataProps extends RouteComponentProps {

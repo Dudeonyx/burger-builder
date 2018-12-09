@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder';
-import { IingredientsKeys } from '../Burger/BuildControls';
-import { INGREDIENT_PRICES } from '../../shared';
+import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
+import { IingredientsKeys } from '../Burger/BuildControls/BuildControls';
+import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
 import styled from 'styled-components';
 
 const StyledOrder = styled.div`

@@ -1,4 +1,4 @@
-import { Iingredients } from '../containers/BurgerBuilder';
+import { Iingredients } from '../containers/BurgerBuilder/BurgerBuilder';
 
 export const INGREDIENT_PRICES = {
   salad: 0.5,

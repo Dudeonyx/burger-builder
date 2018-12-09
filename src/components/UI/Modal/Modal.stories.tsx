@@ -1,12 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { Modal } from './';
+import { Modal } from './Modal';
 import { action } from '@storybook/addon-actions';
 
-storiesOf( 'Modal', module )
-  .add( 'Visible', () => (
-    <Modal show={true} hider={action( 'hide' )}>
+storiesOf('Modal', module)
+  .add('Visible', () => (
+    <Modal show={true} hider={action('hide')}>
       <div>
         <p>Hullo</p>
         <p>Hullo</p>
@@ -14,9 +14,9 @@ storiesOf( 'Modal', module )
         <p>Hullo</p>
       </div>
     </Modal>
-  ) )
-  .add( 'Double nest', () => (
-    <Modal show={true} hider={action( 'hide' )}>
+  ))
+  .add('Double nest', () => (
+    <Modal show={true} hider={action('hide')}>
       <div>
         <p>
           <span>Hullo</span>
@@ -32,9 +32,9 @@ storiesOf( 'Modal', module )
         </p>
       </div>
     </Modal>
-  ) )
-  .add( 'Hidden', () => (
-    <Modal show={false} hider={action( 'hide' )}>
+  ))
+  .add('Hidden', () => (
+    <Modal show={false} hider={action('hide')}>
       <div>
         <p>Hullo</p>
         <p>Hullo</p>
@@ -42,4 +42,4 @@ storiesOf( 'Modal', module )
         <p>Hullo</p>
       </div>
     </Modal>
-  ) );
+  ));

@@ -5,8 +5,8 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
-import Loader from '../components/UI/Loader';
-import Logo from '../components/UI/Logo';
+import Loader from '../components/UI/Loader/Loader';
+import Logo from '../components/UI/Logo/Logo';
 
 storiesOf( 'Welcome', module ).add( 'to Storybook', () => (
   <Welcome showApp={linkTo( 'Button' )} />

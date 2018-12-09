@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { LoadingCircle } from './';
+import { LoadingCircle } from './LoadingCircle';
 
 const styles = {
   '--size': '80px',

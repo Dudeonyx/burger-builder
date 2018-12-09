@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import React, { Component, ComponentType, lazy } from 'react';
 
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal')
+  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal')
 );
 
 export interface IWithErrorHandlerState {

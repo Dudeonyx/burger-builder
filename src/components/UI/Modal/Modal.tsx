@@ -4,7 +4,7 @@ import React, {
   CSSProperties
 } from 'react';
 import styles from './Modal.module.css';
-import Backdrop from '../Backdrop/';
+import Backdrop from '../Backdrop/Backdrop';
 
 /** @interface */
 export interface IModal {

@@ -1,5 +1,5 @@
 {
-  "extends": "../linter-cfgs/tslint.json",
+  "extends": ["d:/github/linter-cfgs/tslint.json"],
   "rules": {
     "ordered-imports": false,
     "member-ordering":false,
