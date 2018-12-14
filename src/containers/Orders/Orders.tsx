@@ -5,7 +5,7 @@ import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 // tslint:disable-next-line:no-empty-interface
 export interface IOrdersProps extends RouteComponentProps {}
 

@@ -3,7 +3,7 @@ import React, {
   MouseEventHandler,
   ChangeEventHandler,
 } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 // import PropTypes from 'prop-types';
 // import { Test } from './Input.styles';
 export interface IInputProps {

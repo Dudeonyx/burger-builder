@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import { IingredientsKeys } from '../Burger/BuildControls/BuildControls';
 import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const StyledOrder = styled.div`
   & {

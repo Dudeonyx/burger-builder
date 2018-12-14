@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import styles from './Modal.module.css';
 import Backdrop from '../Backdrop/Backdrop';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 /** @interface */
 export interface IModalProps {

@@ -8,7 +8,7 @@ import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
 import produce from 'immer';
 import { IDbOrder } from '../../Orders/Orders';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataProps extends RouteComponentProps {
