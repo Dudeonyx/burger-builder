@@ -1,11 +1,14 @@
-import React, { MouseEvent, Component } from 'react';
+import React, { MouseEvent, Component, ChangeEvent } from 'react';
 import { Iingredients } from '../../BurgerBuilder/BurgerBuilder';
 import Button from '../../../components/Button/Button';
 import { RouteComponentProps } from 'react-router-dom';
-import styles from './ContactData.module.css';
 import { Modal } from '../../../components/UI/Modal/Modal';
 import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
+import Input from './Input/Input';
+import produce from 'immer';
+import { IDbOrder } from '../../Orders/Orders';
+import styled from 'styled-components';
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataProps extends RouteComponentProps {
@@ -13,152 +16,213 @@ export interface IContactDataProps extends RouteComponentProps {
   totalPrice: string;
 }
 
+export interface IInputConfig {
+  value: string;
+  type: 'text' | 'email' | 'street-address' | 'country-name' | 'tel' | 'radio';
+  placeholder?: string;
+  id: string;
+  name: string;
+  label: string;
+  dataSet: 'basicInfo' | 'address' | 'deliveryMethod';
+  checked?: boolean;
+  defaultChecked?: boolean;
+  required?: boolean;
+}
+
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataState {
   customer: {
-    name: string;
-    address: {
-      street: string;
-      city: string;
-      state: string;
-      country: string;
+    basicInfo: {
+      name: IInputConfig;
+      phone: IInputConfig;
+      email: IInputConfig;
     };
-    phone: string;
-    email: string;
+    address: {
+      street: IInputConfig;
+      city: IInputConfig;
+      state: IInputConfig;
+      country: IInputConfig;
+    };
+    deliveryMethod: {
+      deliveryMethod: { value: string };
+      options: IInputConfig[];
+    };
   };
-  deliveryMethod: string;
   loading: boolean;
 }
+const StyledContactData = styled.div`
+  margin: 10px auto;
+  text-align: center;
+  /* max-width: 80%; */
 
+  form div {
+    margin: 4px 0;
+  }
+
+  form {
+    /* padding: 10px; */
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.842);
+  }
+
+  @media (min-width: 550px) {
+    max-width: 540px;
+  }
+`;
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   constructor(props: IContactDataProps) {
     super(props);
 
     this.state = {
-      // tslint:disable:object-literal-sort-keys
       customer: {
-        name: 'OnyekaChukwu',
-        address: {
-          street: 'Adjenughure Street',
-          city: 'Effural',
-          state: 'Selta',
-          country: 'Nier'
+        basicInfo: {
+          name: {
+            value: '',
+            type: 'text',
+            placeholder: 'Your Name',
+            id: 'name_id',
+            name: 'name',
+            label: 'Name:',
+            dataSet: 'basicInfo',
+            required: true,
+          },
+          phone: {
+            value: '',
+            type: 'tel',
+            placeholder: 'Your Phone no.',
+            id: 'phone_id',
+            name: 'phone',
+            label: 'Phone no.:',
+            dataSet: 'basicInfo',
+            required: true,
+          },
+          email: {
+            value: '',
+            type: 'email',
+            placeholder: 'Your Email',
+            id: 'email_id',
+            name: 'email',
+            label: 'Email:',
+            dataSet: 'basicInfo',
+            required: true,
+          },
         },
-        phone: '123-255-8416',
-        email: 'test@testing.on'
+        address: {
+          street: {
+            value: '',
+            type: 'street-address',
+            placeholder: 'Your Street',
+            id: 'street_id',
+            name: 'street',
+            label: 'Street:',
+            dataSet: 'address',
+            required: true,
+          },
+          city: {
+            value: '',
+            type: 'text',
+            placeholder: 'Your City',
+            id: 'city_id',
+            name: 'city',
+            label: 'City:',
+            dataSet: 'address',
+            required: true,
+          },
+          state: {
+            value: '',
+            type: 'text',
+            placeholder: 'Your State/Province',
+            id: 'state_id',
+            name: 'state',
+            label: 'State/\nProvince:',
+            dataSet: 'address',
+            required: true,
+          },
+          country: {
+            value: '',
+            type: 'country-name',
+            placeholder: 'Your Country',
+            id: 'country_id',
+            name: 'country',
+            label: 'Country:',
+            dataSet: 'address',
+            required: true,
+          },
+        },
+
+        deliveryMethod: {
+          deliveryMethod: { value: '' },
+          options: [
+            {
+              value: 'cheapest',
+              type: 'radio',
+              id: 'cheapest_id',
+              name: 'deliveryMethod',
+              label: 'Cheapest',
+              dataSet: 'deliveryMethod',
+            },
+            {
+              value: 'cheap',
+              type: 'radio',
+              id: 'cheap_id',
+              name: 'deliveryMethod',
+              label: 'Cheap',
+              dataSet: 'deliveryMethod',
+            },
+            {
+              value: 'normal',
+              type: 'radio',
+              id: 'normal_id',
+              name: 'deliveryMethod',
+              label: 'Normal',
+              defaultChecked: true,
+              dataSet: 'deliveryMethod',
+            },
+            {
+              value: 'expensive',
+              type: 'radio',
+              id: 'expensive_id',
+              name: 'deliveryMethod',
+              label: 'Expensive',
+              dataSet: 'deliveryMethod',
+            },
+            {
+              value: 'very_expensive',
+              type: 'radio',
+              id: 'very_expensive_id',
+              name: 'deliveryMethod',
+              label: 'Very Expensive',
+              dataSet: 'deliveryMethod',
+            },
+          ],
+        },
       },
-      deliveryMethod: 'cheapest',
-      loading: false
-      // tslint:enable:object-literal-sort-keys
+      loading: false,
     };
   }
-  public componentDidMount = () => {
-    //   const form = document.getElementById('#orderform');
-    // if (!form) { return; }
-    // form.addEventListener('submit', this.submit);
-  };
 
   public render() {
+    const { address, deliveryMethod, basicInfo } = this.state.customer;
     const form = this.state.loading ? (
       <Loader />
     ) : (
       <form action="" id="order_form">
         <h3>Enter Your Contact Details to Complete Your Order.</h3>
-
-        <div>
-          <label htmlFor="name_id">Name:</label>
-          <input
-            id="name_id"
-            type="text"
-            name="name"
-            placeholder="Name"
-            required={true}
-          />
-        </div>
+        {Object.values(basicInfo).map(obj => (
+          <Input {...obj} onChange={this.formHandler} key={obj.id} />
+        ))}
         <fieldset>
           <legend>Address</legend>
-          <div>
-            <label htmlFor="street_id">Street: </label>
-            <input
-              id="street_id"
-              type="street-address"
-              name="street"
-              placeholder="Street"
-            />
-          </div>
-          <div>
-            <label htmlFor="city_id">City: </label>
-            <input id="city_id" type="text" name="city" placeholder="City" />
-          </div>
-          <div>
-            <label htmlFor="state_id">State: </label>
-            <input id="state_id" type="text" name="state" placeholder="State" />
-          </div>
-          <div>
-            <label htmlFor="country_id">Country: </label>
-            <input
-              id="country_id"
-              type="country-name"
-              name="country"
-              placeholder="Country"
-            />
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Contact</legend>
-          <div>
-            <label htmlFor="phone_id">Phone No.: </label>
-            <input id="phone_id" type="tel" name="phone" placeholder="Phone" />
-          </div>
-          <div>
-            <label htmlFor="email_id">Email: </label>
-            <input
-              id="email_id"
-              type="email"
-              name="email"
-              placeholder="Email Address"
-            />
-          </div>
+          {Object.values(address).map(obj => (
+            <Input {...obj} onChange={this.formHandler} key={obj.id} />
+          ))}
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
-          <div>
-            <input
-              id="cheapest_id"
-              type="radio"
-              name="delivery_method"
-              value="cheapest"
-            />
-            <label htmlFor="cheapest_id">Cheapest</label>
-          </div>
-          <div>
-            <input
-              id="cheap_id"
-              type="radio"
-              name="delivery_method"
-              value="cheap"
-            />
-            <label htmlFor="cheap_id">Cheap</label>
-          </div>
-          <div>
-            <input
-              id="expensive_id"
-              type="radio"
-              name="delivery_method"
-              value="expensive"
-              defaultChecked={true}
-            />
-            <label htmlFor="expensive_id">Expensive</label>
-          </div>
-          <div>
-            <input
-              id="very-expensive_id"
-              type="radio"
-              name="delivery_method"
-              value="very expensive"
-            />
-            <label htmlFor="very-expensive_id">Very Expensive</label>
-          </div>
+          {deliveryMethod.options.map(obj => (
+            <Input {...obj} onChange={this.formHandler} key={obj.id} />
+          ))}
         </fieldset>
 
         <div>
@@ -178,13 +242,32 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </form>
     );
     return (
-      <div className={styles.ContactData}>
-        <Modal show={true} hider={this.cancel}>
+      <StyledContactData>
+        <Modal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
           {form}
         </Modal>
-      </div>
+      </StyledContactData>
     );
   }
+
+  private formHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value = '' } = e.currentTarget;
+    const { name } = e.currentTarget;
+    const { set = '' } = e.currentTarget.dataset;
+    this.setState(
+      produce(draft => {
+        if (
+          !(draft.customer as any)[set] ||
+          !(name in (draft.customer as any)[set])
+        ) {
+          // tslint:disable-next-line:no-console
+          console.error(`${name} not found in ${set}`);
+          return;
+        }
+        (draft.customer as any)[set][name].value = value;
+      }),
+    );
+  };
   private cancel = (e: MouseEvent<Element>) => {
     e.preventDefault();
     this.props.history.goBack();
@@ -194,21 +277,27 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       try {
         e.preventDefault();
         this.setState({ loading: true });
-        const {
-          name: { value: name },
-          delivery_method: { value: deliveryMethod }
-        } = e.currentTarget.form as any;
-        // tslint:disable-next-line:no-console
-        console.log(name, deliveryMethod);
-        const customer = { ...this.state.customer, name };
-        const { loading, ...order } = {
-          ...this.state,
-          customer,
-          deliveryMethod,
+
+        const { deliveryMethod, basicInfo, address } = this.state.customer;
+
+        const order: IDbOrder = {
+          basicInfo: {
+            name: basicInfo.name.value,
+            phone: basicInfo.phone.value,
+            email: basicInfo.email.value,
+          },
+          address: {
+            street: address.street.value,
+            city: address.city.value,
+            state: address.state.value,
+            country: address.country.value,
+          },
+          deliveryMethod: deliveryMethod.deliveryMethod.value,
           ingredients: this.props.ingredients,
           price: this.props.totalPrice,
-          date: Date()
+          date: Date(),
         };
+
         const response = await axios.post('/orders.json', order);
         // tslint:disable-next-line:no-console
         console.log(response);
@@ -216,7 +305,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         //   this.setState({ orders });
         this.setState(
           () => ({ loading: false }),
-          () => this.props.history.push('/all-orders')
+          () => this.props.history.push('/all-orders'),
         );
       } catch (error) {
         // tslint:disable-next-line:no-console

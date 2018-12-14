@@ -23,13 +23,17 @@ export interface INavigationItemProps {
   linkName: string;
 }
 /** Single nav item
- * @implements INavigationItemProps
+ *  @param {INavigationItemProps} {
+ *   exact,
+ *   link,
+ *   linkName
+ * }
  */
 const NavigationItem: FunctionComponent<INavigationItemProps> = ({
   exact,
   link,
   linkName
-}) => (
+}: INavigationItemProps) => (
   <li className={styles.NavigationItem}>
     <NavLink to={link} exact={exact} activeClassName={styles.active}>
       <span>{linkName}</span>

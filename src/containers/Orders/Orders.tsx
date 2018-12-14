@@ -10,16 +10,16 @@ import styled from 'styled-components';
 export interface IOrdersProps extends RouteComponentProps {}
 
 export interface IDbOrder {
-  customer: {
+  basicInfo: {
     name: string;
-    address: {
-      street: string;
-      city: string;
-      state: string;
-      country: string;
-    };
     phone: string;
     email: string;
+  };
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
   };
   deliveryMethod: string;
   ingredients: Iingredients;
@@ -79,7 +79,7 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
     this.state = {
       orders: null,
       loading: false,
-      formattedOrders: []
+      formattedOrders: [],
     };
   }
 
@@ -103,11 +103,11 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
           ([
             id,
             {
-              customer: { name },
+              basicInfo: { name },
               ingredients,
-              price: totalPrice
-            }
-          ]) => ({ id, name, ingredients, totalPrice })
+              price: totalPrice,
+            },
+          ]) => ({ id, name, ingredients, totalPrice }),
         );
 
       this.setState({ orders: data, formattedOrders, loading: false });

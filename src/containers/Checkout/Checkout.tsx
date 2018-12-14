@@ -33,21 +33,21 @@ class Checkout extends Component<RouteComponentProps, ICheckoutState> {
     this.state = {
       ingredients: null,
       purchasable: false,
-      totalPrice: null
+      totalPrice: null,
     };
   }
   public componentDidMount = () => {
     const query = new URLSearchParams(this.props.location.search);
     const newIngredients = {} as Iingredients;
     query.forEach(
-      (igVal, igKey) => (newIngredients[igKey as IingredientsKeys] = +igVal)
+      (igVal, igKey) => (newIngredients[igKey as IingredientsKeys] = +igVal),
     );
     const newTotalPrice = getTotalPrice(newIngredients);
     const purchasable = updatePurchasable(newIngredients);
     this.setState({
       ingredients: newIngredients,
       purchasable,
-      totalPrice: newTotalPrice
+      totalPrice: newTotalPrice,
     });
   };
 

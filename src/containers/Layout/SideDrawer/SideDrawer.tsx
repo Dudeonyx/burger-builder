@@ -2,13 +2,12 @@ import React, {
   FunctionComponent,
   lazy,
   MouseEventHandler,
-  Suspense
+  Suspense,
 } from 'react';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import styled from 'styled-components';
-
-const Logo = lazy(() => import('../../../components/UI/Logo/Logo'));
+import Logo from '../../../components/UI/Logo/Logo';
 
 export interface ISideDrawerProps {
   open: boolean;
@@ -16,7 +15,7 @@ export interface ISideDrawerProps {
 }
 
 const StyledSideDrawer = styled.div`
-  &.SideDrawer {
+  & {
     position: fixed;
     top: 0;
     left: 0;
@@ -32,7 +31,7 @@ const StyledSideDrawer = styled.div`
   }
 
   @media (min-width: 500px) {
-    &.SideDrawer {
+    & {
       display: none;
     }
   }
@@ -42,10 +41,8 @@ const SideDrawer: FunctionComponent<ISideDrawerProps> = ({ open, hider }) => {
   return (
     <>
       <Backdrop show={open} hider={hider} />
-      <StyledSideDrawer open={open} className="SideDrawer" onClick={hider}>
-        <Suspense fallback={<p>Logo...</p>}>
-          <Logo height="11%" link="##" HQ={true} />
-        </Suspense>
+      <StyledSideDrawer open={open} onClick={hider}>
+        <Logo height="11%" link="##" HQ={true} />
         <nav>
           <NavigationItems />
         </nav>

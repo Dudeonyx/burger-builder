@@ -2,7 +2,23 @@
   "extends": ["d:/github/linter-cfgs/tslint.json"],
   "rules": {
     "ordered-imports": false,
-    "member-ordering":false,
-    "object-literal-sort-keys":false
+    "member-ordering": false,
+    "object-literal-sort-keys": false,
+    "trailing-comma": {
+      "options": [
+        {
+          "multiline": "always",
+          "esSpecCompliant": true,
+          "singleline": {
+            "arrays": "always",
+            "objects": "ignore",
+            "functions": "ignore",
+            "imports": "never",
+            "typeLiterals": "never",
+            "exports": "never"
+          }
+        }
+      ]
+    }
   }
 }

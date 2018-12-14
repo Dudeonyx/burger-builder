@@ -9,7 +9,8 @@ import React, {
   ReactNode,
   RefAttributes,
   RefForwardingComponent,
-  Suspense
+  Suspense,
+  ReactElement
 } from 'react';
 import Loader from '../components/UI/Loader/Loader';
 
@@ -66,5 +67,19 @@ export const suspenseNode = <P extends {}>(
     </Suspense>
   );
 };
+export const suspenseNode2 = <P extends {}>(
+  LazyComponent: ExoticComponent<P>,
+  Fallback: ReactNode = <Loader />
+): ((props: P) => ReactElement<P>) => props => (
+  <Suspense fallback={Fallback}>
+    <LazyComponent {...props} />
+  </Suspense>
+);
 
-export default { suspensed, suspenseNode, suspensed2, suspensed3 };
+export default {
+  suspensed,
+  suspenseNode,
+  suspensed2,
+  suspenseNode2,
+  suspensed3
+};
