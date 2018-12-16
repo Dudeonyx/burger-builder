@@ -8,21 +8,22 @@ import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import { getTotalPrice } from '../../shared/getTotalPrice';
-import produce from 'immer';
+// import produce from 'immer';
+const immer = import(/* webpackChunkName: "immer", webpackPrefetch: true */ 'immer');
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
-  '../../components/Burger/BurgerDisplay/BurgerDisplay')
+  '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
 const BuildControls = lazy(() =>
   import(/* webpackChunkName: "BuildControls", webpackPrefetch: true */
-  '../../components/Burger/BuildControls/BuildControls')
+  '../../components/Burger/BuildControls/BuildControls'),
 );
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal')
+  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal'),
 );
 const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary')
+  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary'),
 );
 
 /**
@@ -110,7 +111,7 @@ class BurgerBuilder extends Component<
     purchasing: false,
     loading: false,
     orders: [],
-    error: null
+    error: null,
   };
   /*  tslint:enable:object-literal-sort-keys */
   /**
@@ -120,10 +121,11 @@ class BurgerBuilder extends Component<
     this.fetchIngredients();
   }
 
-  public ingredientIncreaseHandler = (type: keyof Iingredients): void => {
+  public ingredientIncreaseHandler = async (type: keyof Iingredients) => {
     if (!this.state.ingredients) {
       return;
     }
+    const produce = (await immer).default;
     const nextState = produce(this.state, draft => {
       // if (!draft.ingredients || draft.ingredients[type] <= 0) {
       //   return draft;
@@ -134,10 +136,11 @@ class BurgerBuilder extends Component<
     });
     this.setState(nextState);
   };
-  public ingredientDecreaseHandler = (type: keyof Iingredients) => {
+  public ingredientDecreaseHandler = async (type: keyof Iingredients) => {
     if (!this.state.ingredients) {
       return;
     }
+    const produce = (await immer).default;
     const nextState = produce(this.state, draft => {
       // if (!draft.ingredients || draft.ingredients[type] <= 0) {
       //   return draft;
@@ -162,12 +165,12 @@ class BurgerBuilder extends Component<
     const newQueryString = (Object.entries(this.state.ingredients) as Array<
       [keyof Iingredients, number]
     >)
-      .map(([igKey, igVal]) => `${encodeURIComponent(igKey)}=${igVal}`)
+      .map(([igKey, igVal,]) => `${encodeURIComponent(igKey)}=${igVal}`)
       .join('&');
 
     this.props.history.push({
       pathname: '/checkout',
-      search: '?' + newQueryString
+      search: '?' + newQueryString,
     });
   };
 
@@ -239,19 +242,19 @@ class BurgerBuilder extends Component<
     this.setState({ error: null });
     try {
       const response: AxiosResponse<Iingredients> = await axios.get(
-        '/ingredients.json'
+        '/ingredients.json',
       );
       const { data: newIngredients } = response;
       const newTotalPrice = getTotalPrice(newIngredients);
       this.setState({
         ingredients: newIngredients,
         purchasable: updatePurchasable(newIngredients),
-        totalPrice: newTotalPrice
+        totalPrice: newTotalPrice,
       });
     } catch (error) {
       // tslint:disable-next-line:no-console
       this.setState({
-        error
+        error,
       });
     }
   };
@@ -262,9 +265,9 @@ class BurgerBuilder extends Component<
         bacon: 0,
         cheese: 0,
         meat: 0,
-        salad: 0
+        salad: 0,
       },
-      totalPrice: '4'
+      totalPrice: '4',
     });
   };
 }

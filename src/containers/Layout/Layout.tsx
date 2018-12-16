@@ -3,7 +3,7 @@ import Toolbar from './Toolbar/Toolbar';
 import styles from './Layout.module.css';
 
 const SideDrawer = lazy(() =>
-  import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer')
+  import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
 );
 
 /** @interface ILayoutState */
@@ -27,7 +27,7 @@ class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
    * @memberof Layout
    */
   public readonly state = {
-    showSideDrawer: false
+    showSideDrawer: false,
   };
 
   /**

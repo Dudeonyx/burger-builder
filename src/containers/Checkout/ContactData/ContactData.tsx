@@ -1,14 +1,22 @@
-import React, { MouseEvent, Component, ChangeEvent } from 'react';
+import React, { MouseEvent, Component, ChangeEvent, lazy } from 'react';
 import { Iingredients } from '../../BurgerBuilder/BurgerBuilder';
 import Button from '../../../components/Button/Button';
 import { RouteComponentProps } from 'react-router-dom';
-import { Modal } from '../../../components/UI/Modal/Modal';
 import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
-import produce from 'immer';
 import { IDbOrder } from '../../Orders/Orders';
 import styled from 'styled-components/macro';
+// import produce from 'immer';
+import { suspenseNode2 } from '../../../HOCs/suspensed';
+// import Modal from '../../../components/UI/Modal/Modal';
+
+const immer = import(/* webpackChunkName: "immer", webpackPrefetch: true */ 'immer');
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "Modal", webpackPrefetch: true */ '../../../components/UI/Modal/Modal'),
+);
+
+const SModal = suspenseNode2(Modal);
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataProps extends RouteComponentProps {
@@ -243,17 +251,18 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     );
     return (
       <StyledContactData>
-        <Modal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
+        <SModal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
           {form}
-        </Modal>
+        </SModal>
       </StyledContactData>
     );
   }
 
-  private formHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  private formHandler = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value = '' } = e.currentTarget;
     const { name } = e.currentTarget;
     const { set = '' } = e.currentTarget.dataset;
+    const produce = (await immer).default;
     this.setState(
       produce(draft => {
         if (

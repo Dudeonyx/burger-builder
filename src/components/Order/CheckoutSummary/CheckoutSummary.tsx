@@ -2,7 +2,7 @@ import React, {
   FunctionComponent,
   MouseEventHandler,
   lazy,
-  Suspense
+  Suspense,
 } from 'react';
 import Button from '../../Button/Button';
 import OrderText, { IOrderIngredientsPrice } from '../../OrderText/OrderText';
@@ -10,9 +10,8 @@ import styles from './CheckoutSummary.module.css';
 import Loader from '../../UI/Loader/Loader';
 
 const BurgerDisplay = lazy(() =>
-  import('../../Burger/BurgerDisplay/BurgerDisplay')
+  import('../../Burger/BurgerDisplay/BurgerDisplay'),
 );
-// tslint:disable-next-line:no-empty-interface
 interface ICheckoutSummaryProps extends IOrderIngredientsPrice {
   checkoutCancel: MouseEventHandler;
   checkoutContinue: MouseEventHandler;
@@ -24,7 +23,7 @@ const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   totalCost,
   checkoutCancel,
   checkoutContinue,
-  purchasable
+  purchasable,
 }) => {
   return (
     <div className={styles.CheckoutSummary}>

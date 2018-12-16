@@ -55,11 +55,11 @@ const Order: FunctionComponent<IOrdersProps> = ({
   totalPrice,
   name,
   id,
-  className
+  className,
 }) => {
   const breakdown = (Object.entries(ingredients) as Array<
     [IingredientsKeys, number]
-  >).map(([igKey, igVal]) => (
+  >).map(([igKey, igVal,]) => (
     <span key={id + igKey + igVal}>
       {igKey} - {igVal}
       <br />

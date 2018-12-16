@@ -10,7 +10,7 @@ import React, {
   RefAttributes,
   RefForwardingComponent,
   Suspense,
-  ReactElement
+  ReactElement,
 } from 'react';
 import Loader from '../components/UI/Loader/Loader';
 
@@ -27,7 +27,7 @@ export const suspensed: Suspensed = LazyComponent => {
 };
 
 type Suspensed2 = <T extends ComponentType<any>>(
-  d: Promise<{ default: T }>
+  d: Promise<{ default: T }>,
 ) => ComponentType<ComponentPropsWithoutRef<T>>;
 
 export const suspensed2: Suspensed2 = dynamicImport => {
@@ -43,7 +43,7 @@ export const suspensed2: Suspensed2 = dynamicImport => {
 };
 
 export type Suspensed3 = <T extends ComponentType<any>>(
-  d: Promise<{ default: T }>
+  d: Promise<{ default: T }>,
 ) => ForwardRefExoticComponent<ComponentPropsWithoutRef<T> & RefAttributes<T>>;
 export const suspensed3: Suspensed3 = dynamicImport => {
   const LazyComponent = lazy(() => dynamicImport) as ExoticComponent<any>;
@@ -59,7 +59,7 @@ export const suspensed3: Suspensed3 = dynamicImport => {
 export const suspenseNode = <P extends {}>(
   LazyComponent: ExoticComponent<P>,
   props: P,
-  Fallback?: ComponentType
+  Fallback?: ComponentType,
 ): ReactNode => {
   return (
     <Suspense fallback={Fallback ? <Fallback /> : <Loader />}>
@@ -69,17 +69,20 @@ export const suspenseNode = <P extends {}>(
 };
 export const suspenseNode2 = <P extends {}>(
   LazyComponent: ExoticComponent<P>,
-  Fallback: ReactNode = <Loader />
-): ((props: P) => ReactElement<P>) => props => (
-  <Suspense fallback={Fallback}>
-    <LazyComponent {...props} />
-  </Suspense>
-);
+  Fallback: ReactNode = <Loader />,
+): ((props: P) => ReactElement<P>) =>
+  function Suspender(props) {
+    return (
+      <Suspense fallback={Fallback}>
+        <LazyComponent {...props} />
+      </Suspense>
+    );
+  };
 
 export default {
   suspensed,
   suspenseNode,
   suspensed2,
   suspenseNode2,
-  suspensed3
+  suspensed3,
 };
