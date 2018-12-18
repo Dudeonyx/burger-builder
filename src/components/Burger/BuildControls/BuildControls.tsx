@@ -12,10 +12,6 @@ export interface IbuildControlsProps {
   purchaseStart: MouseEventHandler;
   purchasable: boolean;
 }
-const gfg: IingredientsKeys = 'salad';
-const ddfg = {
-  [gfg]: 'fgfg'
-};
 
 export type TdisabledCheck = { [x in IingredientsKeys]: boolean };
 
@@ -24,7 +20,7 @@ const controls: Tcontrols = [
   { label: 'Salad', type: 'salad' },
   { label: 'Bacon', type: 'bacon' },
   { label: 'Cheese', type: 'cheese' },
-  { label: 'Meat', type: 'meat' }
+  { label: 'Meat', type: 'meat' },
 ];
 const buildControls: FunctionComponent<IbuildControlsProps> = ({
   decrease,
@@ -32,18 +28,18 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
   ingredients,
   price,
   purchasable,
-  purchaseStart
+  purchaseStart,
 }) => {
   const disabledCheck: TdisabledCheck = {
     bacon: false,
     cheese: false,
     meat: false,
-    salad: false
+    salad: false,
   };
   (Object.entries(ingredients) as Array<[IingredientsKeys, number]>).forEach(
-    ([key, value]) => {
+    ([key, value,]) => {
       disabledCheck[key] = value <= 0;
-    }
+    },
   );
 
   return (

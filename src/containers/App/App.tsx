@@ -14,18 +14,16 @@ import '../../HOCs/withErrorHandler';
 import '../../components/Button/Button';
 import 'regenerator-runtime/';
 
-import(/* webpackChunkName: "immer2", webpackPrefetch: true */ 'immer');
-
 const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder/BurgerBuilder'),
+  import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
 
 const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout/Checkout'),
+  import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'),
 );
 
 const Orders = lazy(() =>
-  import(/* webpackChunkName: "Orders", webpackPrefetch: true */ '../Orders/Orders'),
+  import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
 );
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);

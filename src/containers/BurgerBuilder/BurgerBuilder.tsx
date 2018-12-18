@@ -8,15 +8,28 @@ import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import { getTotalPrice } from '../../shared/getTotalPrice';
+import {
+  connect,
+  MapStateToPropsFactory,
+  MapStateToProps,
+  MapDispatchToPropsFunction,
+} from 'react-redux';
+import {
+  IingredientReducerState,
+  IingredientReducerAction,
+} from '../../store/reducers/ingredientReducer';
+import { ingredientActions } from '../../store/actions';
+import { Dispatch, Action } from 'redux';
+import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
 // import produce from 'immer';
-const immer = import(/* webpackChunkName: "immer", webpackPrefetch: true */ 'immer');
+const immer = import(/* webpackChunkName: "immer" */ 'immer');
 
 const BurgerDisplay = lazy(() =>
-  import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
+  import(/* webpackChunkName: "BurgerDisplay" */
   '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
 const BuildControls = lazy(() =>
-  import(/* webpackChunkName: "BuildControls", webpackPrefetch: true */
+  import(/* webpackChunkName: "BuildControls" */
   '../../components/Burger/BuildControls/BuildControls'),
 );
 const Modal = lazy(() =>
@@ -97,10 +110,10 @@ export interface IBurgerBuilderState {
 /**
  * A burger display and controls container
  * @class BurgerBuilder
- * @extends {Component<{}, IBurgerBuilderState>}
+ * @extends {(Component<RouteComponentProps & IingredientReducerState, IBurgerBuilderState>)}
  */
 class BurgerBuilder extends Component<
-  RouteComponentProps,
+  RouteComponentProps & IingredientReducerState,
   IBurgerBuilderState
 > {
   /*  tslint:disable:object-literal-sort-keys */
@@ -272,4 +285,43 @@ class BurgerBuilder extends Component<
   };
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+const mapStateToProps: MapStateToProps<
+  IingredientReducerState,
+  RouteComponentProps,
+  IingredientReducerState
+> = state => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+});
+
+export interface ImapDispatch {
+  ingredientIncreaseHandler: (
+    igkey: IingredientsKeys,
+  ) => IingredientReducerAction;
+  ingredientDecreaseHandler: (
+    igkey: IingredientsKeys,
+  ) => IingredientReducerAction;
+  ingredientStoreHandler: (
+    ingredients: Iingredients,
+  ) => IingredientReducerAction;
+}
+/**
+ *
+ *
+ * @param {Dispatch<IingredientReducerAction>} dispatch
+ */
+const mapDispatchToProps: MapDispatchToPropsFunction<
+  ImapDispatch,
+  RouteComponentProps
+> = (dispatch: Dispatch<IingredientReducerAction>) => ({
+  ingredientIncreaseHandler: igkey =>
+    dispatch({ type: ingredientActions.INCREASE, payload: { igkey } }),
+  ingredientDecreaseHandler: igkey =>
+    dispatch({ type: ingredientActions.DECREASE, payload: { igkey } }),
+  ingredientStoreHandler: ingredients =>
+    dispatch({ type: ingredientActions.STORE, payload: { ingredients } }),
+});
+
+type P = ReturnType<typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps)(withErrorHandler(BurgerBuilder, axios));

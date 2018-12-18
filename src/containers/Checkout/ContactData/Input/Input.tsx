@@ -25,6 +25,7 @@ export interface IInputProps {
   checked?: boolean;
   dataSet: 'basicInfo' | 'address' | 'deliveryMethod';
   options?: Array<{ value: string; label: string }>;
+  required?: boolean;
 }
 
 const StyledInput = styled.div`
@@ -86,7 +87,8 @@ const Input: FunctionComponent<IInputProps> = ({
   defaultChecked,
   checked,
   dataSet,
-},) => {
+  required,
+}) => {
   let input;
   switch (type) {
     case 'text':
@@ -106,6 +108,7 @@ const Input: FunctionComponent<IInputProps> = ({
               onChange={onChange}
               value={value}
               data-set={dataSet}
+              required={required}
             />
           </label>
         </StyledInput>

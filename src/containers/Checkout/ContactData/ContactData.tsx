@@ -11,9 +11,9 @@ import styled from 'styled-components/macro';
 import { suspenseNode2 } from '../../../HOCs/suspensed';
 // import Modal from '../../../components/UI/Modal/Modal';
 
-const immer = import(/* webpackChunkName: "immer", webpackPrefetch: true */ 'immer');
+const immer = import(/* webpackChunkName: "immer" */ 'immer');
 const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal", webpackPrefetch: true */ '../../../components/UI/Modal/Modal'),
+  import(/* webpackChunkName: "Modal", webpackPreload: true */ '../../../components/UI/Modal/Modal'),
 );
 
 const SModal = suspenseNode2(Modal);

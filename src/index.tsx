@@ -5,11 +5,18 @@ import App from './containers/App/App';
 import './index.css';
 import './normalize.css';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { ingredientReducer } from './store/reducers/ingredientReducer';
+
+const store = createStore(ingredientReducer);
 
 const app = (
-  <BrowserRouter basename="/burger-builder">
-    <App />
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter basename="/burger-builder">
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));
