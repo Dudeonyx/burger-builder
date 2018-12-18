@@ -1,8 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { Component, lazy } from 'react';
-const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal')
-);
+import Modal from '../components/UI/Modal/Modal';
+
 export interface IAxiosErrorBoundaryProps {
   axios: AxiosInstance;
 }
@@ -19,7 +18,7 @@ class AxiosErrorBoundary extends Component<
     super(props);
 
     this.state = {
-      error: null
+      error: null,
     };
   }
   public componentDidMount = () => {
@@ -30,7 +29,7 @@ class AxiosErrorBoundary extends Component<
       },
       error => {
         throw error;
-      }
+      },
     );
 
     this.props.axios.interceptors.response.use(
@@ -38,7 +37,7 @@ class AxiosErrorBoundary extends Component<
       error => {
         this.setState({ error });
         throw error;
-      }
+      },
     );
   };
 

@@ -1,9 +1,6 @@
 import { AxiosInstance } from 'axios';
-import React, { Component, ComponentType, lazy } from 'react';
-
-const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../components/UI/Modal/Modal')
-);
+import React, { Component, ComponentType } from 'react';
+import Modal from '../components/UI/Modal/Modal';
 
 export interface IWithErrorHandlerState {
   error: Error | null;
@@ -16,11 +13,11 @@ export interface IWithErrorHandlerState {
  */
 function withErrorHandler<P extends {}>(
   WrappedComponent: ComponentType<P>,
-  axios: AxiosInstance
+  axios: AxiosInstance,
 ) {
   return class WithErrorHandler extends Component<P> {
     public state: IWithErrorHandlerState = {
-      error: null
+      error: null,
     };
 
     private req: number | null = null;
@@ -35,14 +32,14 @@ function withErrorHandler<P extends {}>(
         },
         error => {
           throw error;
-        }
+        },
       );
       this.res = axios.interceptors.response.use(
         req => req,
         error => {
           this.setState({ error });
           throw error;
-        }
+        },
       );
     }
 

@@ -1,64 +1,19 @@
-import React, { MouseEvent, Component, ChangeEvent, lazy } from 'react';
-import { Iingredients } from '../../BurgerBuilder/BurgerBuilder';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import { MouseEvent, Component, ChangeEvent, lazy, Suspense } from 'react';
 import Button from '../../../components/Button/Button';
-import { RouteComponentProps } from 'react-router-dom';
 import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
 import { IDbOrder } from '../../Orders/Orders';
-import styled from 'styled-components/macro';
-// import produce from 'immer';
-import { suspenseNode2 } from '../../../HOCs/suspensed';
-// import Modal from '../../../components/UI/Modal/Modal';
-
-const immer = import(/* webpackChunkName: "immer" */ 'immer');
-const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal", webpackPreload: true */ '../../../components/UI/Modal/Modal'),
-);
-
-const SModal = suspenseNode2(Modal);
-
-// tslint:disable-next-line:no-empty-interface
-export interface IContactDataProps extends RouteComponentProps {
-  ingredients: Iingredients;
-  totalPrice: string;
-}
-
-export interface IInputConfig {
-  value: string;
-  type: 'text' | 'email' | 'street-address' | 'country-name' | 'tel' | 'radio';
-  placeholder?: string;
-  id: string;
-  name: string;
-  label: string;
-  dataSet: 'basicInfo' | 'address' | 'deliveryMethod';
-  checked?: boolean;
-  defaultChecked?: boolean;
-  required?: boolean;
-}
-
-// tslint:disable-next-line:no-empty-interface
-export interface IContactDataState {
-  customer: {
-    basicInfo: {
-      name: IInputConfig;
-      phone: IInputConfig;
-      email: IInputConfig;
-    };
-    address: {
-      street: IInputConfig;
-      city: IInputConfig;
-      state: IInputConfig;
-      country: IInputConfig;
-    };
-    deliveryMethod: {
-      deliveryMethod: { value: string };
-      options: IInputConfig[];
-    };
-  };
-  loading: boolean;
-}
-const StyledContactData = styled.div`
+// import styled from 'styled-components/macro';
+import produce from 'immer';
+// import styled from '@emotion/styled/macro';
+import css from '@emotion/css/macro';
+import Modal from '../../../components/UI/Modal/Modal';
+import { IContactDataProps, IContactDataState } from './types/index.d';
+const sgkjskfjgkfj = jsx;
+const StyledContactData = css`
   margin: 10px auto;
   text-align: center;
   /* max-width: 80%; */
@@ -250,11 +205,11 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </form>
     );
     return (
-      <StyledContactData>
-        <SModal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
+      <div css={StyledContactData}>
+        <Modal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
           {form}
-        </SModal>
-      </StyledContactData>
+        </Modal>
+      </div>
     );
   }
 
@@ -262,7 +217,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     const { value = '' } = e.currentTarget;
     const { name } = e.currentTarget;
     const { set = '' } = e.currentTarget.dataset;
-    const produce = (await immer).default;
+    // const produce = (await immer).default;
     this.setState(
       produce(draft => {
         if (

@@ -72,7 +72,7 @@ const StyledModal = styled.div`
  *   minWidth,
  * }
  */
-export const Modal: FunctionComponent<IModalProps> = ({
+const Modal: FunctionComponent<IModalProps> = ({
   children,
   show = false,
   hider,

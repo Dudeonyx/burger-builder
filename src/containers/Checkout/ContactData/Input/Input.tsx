@@ -1,34 +1,12 @@
-import React, {
-  FunctionComponent,
-  MouseEventHandler,
-  ChangeEventHandler,
-} from 'react';
-import styled from 'styled-components/macro';
-// import PropTypes from 'prop-types';
-// import { Test } from './Input.styles';
-export interface IInputProps {
-  type:
-    | 'text'
-    | 'email'
-    | 'street-address'
-    | 'country-name'
-    | 'tel'
-    | 'radio'
-    | 'select';
-  id: string;
-  name: string;
-  placeholder?: string;
-  onChange: ChangeEventHandler;
-  value: string;
-  label: string;
-  defaultChecked?: boolean;
-  checked?: boolean;
-  dataSet: 'basicInfo' | 'address' | 'deliveryMethod';
-  options?: Array<{ value: string; label: string }>;
-  required?: boolean;
-}
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import css from '@emotion/css/macro';
+import { FunctionComponent } from 'react';
+import { IInputProps } from './types';
 
-const StyledInput = styled.div`
+// tslint:disable-next-line:no-unused-expression
+jsx;
+const StyledInput = css`
   * {
     box-sizing: border-box;
   }
@@ -89,7 +67,7 @@ const Input: FunctionComponent<IInputProps> = ({
   dataSet,
   required,
 }) => {
-  let input;
+  let input = null;
   switch (type) {
     case 'text':
     case 'email':
@@ -97,7 +75,7 @@ const Input: FunctionComponent<IInputProps> = ({
     case 'country-name':
     case 'tel':
       input = (
-        <StyledInput>
+        <div css={StyledInput}>
           <label htmlFor={id}>
             <span>{label} </span>
             <input
@@ -111,12 +89,12 @@ const Input: FunctionComponent<IInputProps> = ({
               required={required}
             />
           </label>
-        </StyledInput>
+        </div>
       );
       break;
     case 'radio':
       input = (
-        <StyledInput>
+        <div css={StyledInput}>
           <label htmlFor={id} className="radio">
             <input
               id={id}
@@ -129,7 +107,7 @@ const Input: FunctionComponent<IInputProps> = ({
             />{' '}
             <span>{label}</span>
           </label>
-        </StyledInput>
+        </div>
       );
       break;
     case 'select':
@@ -152,7 +130,7 @@ const Input: FunctionComponent<IInputProps> = ({
       break;
   }
 
-  return <>{input}</>;
+  return input;
 };
 
 // Input.propTypes = {

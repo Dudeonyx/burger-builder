@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
+import { Iingredients } from '../../containers/BurgerBuilder/types';
 import styles from './OrderText.module.css';
 
 export interface IOrderIngredientsPrice {
@@ -36,9 +36,9 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
   ingredients,
   totalCost,
   totalCostPrefix,
-  title
+  title,
 }) => {
-  const summary = Object.entries(ingredients).map(([igKey, igVal]) => (
+  const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
     <li style={{ textTransform: 'capitalize' }} key={igKey}>
       <span style={{ display: 'inline-block', minWidth: '3.7em' }}>
         {igKey}:

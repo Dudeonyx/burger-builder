@@ -2,105 +2,49 @@ import { updatePurchasable } from '../../shared/updatePurchasable';
 import React, { Component, lazy } from 'react';
 
 import { AxiosResponse } from 'axios';
-import { RouteComponentProps } from 'react-router-dom';
 import axios from '../../axios-orders';
 import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 
 import {
-  IingredientReducerState,
-  IingredientReducerAction,
-} from '../../store/reducers/ingredientReducer';
-import {
-  ingredientActions,
-  connectIngredients,
-  IconnectIngredientsProps,
+  ingredientIncreaseHandler,
+  ingredientDecreaseHandler,
+  ingredientStoreHandler,
+  mapIngredientsStateToProps,
 } from '../../store/actions';
-import { Dispatch, Action } from 'redux';
-import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import produce from 'immer';
+import { connect } from 'react-redux';
+import Modal from '../../components/UI/Modal/Modal';
+import {
+  IBurgerBuilderProps,
+  IBurgerBuilderState,
+  Iingredients,
+} from './types';
 // const immer = import(/* webpackChunkName: "immer" */ 'immer');
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay" */
   '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
-const BuildControls = lazy(() =>
-  import(/* webpackChunkName: "BuildControls" */
-  '../../components/Burger/BuildControls/BuildControls'),
-);
-const Modal = lazy(() =>
-  import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal'),
-);
+// const BuildControls = lazy(() =>
+//   import(/* webpackChunkName: "BuildControls" */
+//   '../../components/Burger/BuildControls/BuildControls'),
+// );
+// const Modal = lazy(() =>
+//   import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal'),
+// );
 const OrderSummary = lazy(() =>
   import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary'),
 );
-
-/**
- * @export
- * @interface Iingredients
- */
-export interface Iingredients {
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  salad: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  bacon: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  cheese: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  meat: number;
-}
-/**
- * @export
- * @interface IBurgerBuilderState
- */
-export interface IBurgerBuilderState {
-  /**
-   * @type {boolean}
-   * @memberof IBurgerBuilderState
-   */
-  purchasable: boolean;
-  /**
-   * @type {boolean}
-   * @memberof IBurgerBuilderState
-   */
-  purchasing: boolean;
-  /**
-   * @type {boolean}
-   * @memberof IBurgerBuilderState
-   */
-  loading: boolean;
-  /**
-   * @type {string[]}
-   * @memberof IBurgerBuilderState
-   */
-  orders: string[];
-  /**
-   * @type {(Error | null | false)}
-   * @memberof IBurgerBuilderState
-   */
-  error: Error | null | false;
-}
 
 /**
  * @class BurgerBuilder
  * @extends {Component<IconnectIngredientsProps<RouteComponentProps>, IBurgerBuilderState>}
  */
 class BurgerBuilder extends Component<
-  IconnectIngredientsProps<RouteComponentProps>,
+  IBurgerBuilderProps,
   IBurgerBuilderState
 > {
   /*  tslint:disable:object-literal-sort-keys */
@@ -120,7 +64,7 @@ class BurgerBuilder extends Component<
   }
 
   public componentDidUpdate(
-    prevProps: IconnectIngredientsProps<RouteComponentProps>,
+    prevProps: IBurgerBuilderProps,
     prevState: IBurgerBuilderState,
   ) {
     if (!this.props.ingredients) {
@@ -211,16 +155,14 @@ class BurgerBuilder extends Component<
           <React.Suspense fallback={<Loader />}>
             <BurgerDisplay ingredients={this.props.ingredients} />
           </React.Suspense>
-          <React.Suspense fallback={<Loader />}>
-            <BuildControls
-              ingredients={this.props.ingredients}
-              price={this.props.totalPrice!}
-              increase={this.ingredientIncreaseHandler}
-              decrease={this.ingredientDecreaseHandler}
-              purchasable={this.state.purchasable}
-              purchaseStart={this.purchaseStartHandler}
-            />
-          </React.Suspense>
+          <BuildControls
+            ingredients={this.props.ingredients}
+            price={this.props.totalPrice!}
+            increase={this.ingredientIncreaseHandler}
+            decrease={this.ingredientDecreaseHandler}
+            purchasable={this.state.purchasable}
+            purchaseStart={this.purchaseStartHandler}
+          />
         </>
       );
 
@@ -240,12 +182,12 @@ class BurgerBuilder extends Component<
     //   orderSummary = <Loader />;
     // }
     return (
-      <React.Suspense fallback={<Loader />}>
+      <>
         <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
           {orderSummary}
         </Modal>
         {burger}
-      </React.Suspense>
+      </>
     );
   }
 
@@ -278,4 +220,13 @@ class BurgerBuilder extends Component<
   };
 }
 
-export default connectIngredients(withErrorHandler(BurgerBuilder, axios));
+const mapDispatch = () => ({
+  ingredientIncreaseHandler,
+  ingredientDecreaseHandler,
+  ingredientStoreHandler,
+});
+
+export default connect(
+  mapIngredientsStateToProps,
+  mapDispatch,
+)(withErrorHandler(BurgerBuilder, axios));

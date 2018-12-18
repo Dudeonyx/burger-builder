@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
+import { Iingredients } from '../../containers/BurgerBuilder/types';
 import { IingredientsKeys } from '../Burger/BuildControls/BuildControls';
 import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
 import styled from 'styled-components/macro';

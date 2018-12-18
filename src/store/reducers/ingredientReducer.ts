@@ -1,21 +1,8 @@
-import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import produce from 'immer';
 import { getTotalPrice } from '../../shared/getTotalPrice';
 import { ingredientActions } from '../actions';
+import { IingredientReducerState, IingredientReducerAction } from './types';
 
-export interface IingredientReducerState {
-  ingredients: Iingredients | null;
-  totalPrice: string;
-}
-export type IingredientReducerAction =
-  | {
-      type: 'STORE';
-      payload: { ingredients: Iingredients };
-    }
-  | {
-      type: 'INCREASE' | 'DECREASE';
-      payload: { igkey: keyof Iingredients };
-    };
 const initialState: IingredientReducerState = {
   ingredients: null,
   totalPrice: '4.00',

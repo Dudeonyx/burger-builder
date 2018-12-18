@@ -2,40 +2,50 @@ import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildCon
 import {
   IingredientReducerAction,
   IingredientReducerState,
-} from '../reducers/ingredientReducer';
-import { Iingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
+} from '../reducers/types';
+import { Iingredients } from '../../containers/BurgerBuilder/types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { store } from '../store';
+import { ImapDispatchIngredients } from './types';
 
 export interface IingActions {
   INCREASE: 'INCREASE';
   DECREASE: 'DECREASE';
   STORE: 'STORE';
 }
+
 export const ingredientActions: IingActions = {
   INCREASE: 'INCREASE',
   DECREASE: 'DECREASE',
   STORE: 'STORE',
 };
 
-export const mapStateToProps = (state: IingredientReducerState) => ({
+export const mapIngredientsStateToProps = (state: IingredientReducerState) => ({
   ingredients: state.ingredients,
   totalPrice: state.totalPrice,
 });
 
-export interface ImapDispatchIngredients {
-  ingredientIncreaseHandler: (
-    igkey: IingredientsKeys,
-  ) => IingredientReducerAction;
-  ingredientDecreaseHandler: (
-    igkey: IingredientsKeys,
-  ) => IingredientReducerAction;
-  ingredientStoreHandler: (
-    ingredients: Iingredients,
-  ) => IingredientReducerAction;
-}
+export const ingredientIncreaseHandler = (igkey: IingredientsKeys) => {
+  return store.dispatch({
+    type: ingredientActions.INCREASE,
+    payload: { igkey },
+  });
+};
+export const ingredientDecreaseHandler = (igkey: IingredientsKeys) => {
+  return store.dispatch({
+    type: ingredientActions.DECREASE,
+    payload: { igkey },
+  });
+};
+export const ingredientStoreHandler = (ingredients: Iingredients) => {
+  return store.dispatch({
+    type: ingredientActions.STORE,
+    payload: { ingredients },
+  });
+};
 
-export const mapDispatchToProps = (
+export const mapIngredientsDispatchToProps = (
   dispatch: Dispatch<IingredientReducerAction>,
 ): ImapDispatchIngredients => ({
   ingredientIncreaseHandler: igkey =>
@@ -46,11 +56,7 @@ export const mapDispatchToProps = (
     dispatch({ type: ingredientActions.STORE, payload: { ingredients } }),
 });
 
-export type IconnectIngredientsProps<T> = ImapDispatchIngredients &
-  IingredientReducerState &
-  T;
-
 export const connectIngredients = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  mapIngredientsStateToProps,
+  mapIngredientsDispatchToProps,
 );

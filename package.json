@@ -4,6 +4,9 @@
   "private": true,
   "homepage": "https://dudeonyx.github.io/burger-builder",
   "dependencies": {
+    "@craco/craco": "^3.2.3",
+    "@emotion/core": "^10.0.5",
+    "@emotion/styled": "^10.0.5",
     "@material-ui/core": "^3.7.0",
     "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
@@ -76,6 +79,7 @@
     "radium": "^0.25.1",
     "react-docgen-typescript-loader": "^3.0.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
+    "stylelint-config-recommended": "^2.1.0",
     "ts-jest": "^23.10.5",
     "typescript": "^3.2.1",
     "typescript-styled-plugin": "^0.13.0",

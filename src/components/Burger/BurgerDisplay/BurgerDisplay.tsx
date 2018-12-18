@@ -1,5 +1,5 @@
 import React, { ComponentType, FunctionComponent, ReactElement } from 'react';
-import { Iingredients } from '../../../containers/BurgerBuilder/BurgerBuilder';
+import { Iingredients } from '../../../containers/BurgerBuilder/types';
 import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
 import styles from './BurgerDisplay.module.css';
 
@@ -8,18 +8,18 @@ export const jsxArrayFromObject = <
   O extends { [x in R]?: number }
 >(
   GivenComponent: ComponentType<{ type: R }>,
-  inputObject: O
+  inputObject: O,
 ): Array<ReactElement<{ type: R }>> => {
   const useable = (Object.entries(inputObject) as Array<[R, number]>)
-    .map(([igKey, igVal]) => {
-      return [...Array(igVal)].map((_, i) => {
+    .map(([igKey, igVal,]) => {
+      return [...Array(igVal),].map((_, i) => {
         // const myprops: P = {} as P;
         //  myprops[propName] = igKey as unknown as P[keyof P];
         // // };
         return <GivenComponent {...{ type: igKey }} key={igKey + (i + 1)} />;
       });
     })
-    .reduce((arr, subArr) => [...arr, ...subArr], []);
+    .reduce((arr, subArr) => [...arr, ...subArr,], []);
 
   return useable;
 };

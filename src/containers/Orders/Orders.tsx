@@ -1,6 +1,6 @@
 import React, { FunctionComponent, Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Iingredients } from '../BurgerBuilder/BurgerBuilder';
+import { Iingredients } from '../BurgerBuilder/types';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';

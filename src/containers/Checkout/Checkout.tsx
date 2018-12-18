@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
-import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import { getTotalPrice } from '../../shared/getTotalPrice';
-import { Iingredients } from '../BurgerBuilder/BurgerBuilder';
-import styles from './Checkout.module.css';
 import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
-import {
-  connectIngredients,
-  IconnectIngredientsProps,
-} from '../../store/actions';
+import { mapIngredientsStateToProps } from '../../store/actions';
+import { IconnectIngredientsProps } from '../../store/actions/types';
+import { connect } from 'react-redux';
 
 /**
  * @export
@@ -20,11 +15,9 @@ export interface ICheckoutState {
   purchasable: boolean;
 }
 
-class Checkout extends Component<
-  IconnectIngredientsProps<RouteComponentProps>,
-  ICheckoutState
-> {
-  constructor(props: IconnectIngredientsProps<RouteComponentProps>) {
+export type ICheckoutProps = IconnectIngredientsProps<RouteComponentProps, {}>;
+class Checkout extends Component<ICheckoutProps, ICheckoutState> {
+  constructor(props: ICheckoutProps) {
     super(props);
 
     this.state = {
@@ -51,7 +44,7 @@ class Checkout extends Component<
 
   public render() {
     return (
-      <div className={styles.Checkout}>
+      <div>
         <Route
           path={this.props.match.path + '/contact-data'}
           render={p =>
@@ -88,4 +81,4 @@ class Checkout extends Component<
     this.props.history.push(this.props.match.path + '/contact-data');
   };
 }
-export default connectIngredients(Checkout);
+export default connect(mapIngredientsStateToProps)(Checkout);
