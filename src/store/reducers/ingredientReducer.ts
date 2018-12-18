@@ -5,15 +5,20 @@ import { ingredientActions } from '../actions';
 
 export interface IingredientReducerState {
   ingredients: Iingredients | null;
-  totalPrice: string | null;
+  totalPrice: string;
 }
-export interface IingredientReducerAction {
-  type: string;
-  payload: { igkey?: keyof Iingredients; ingredients?: Iingredients };
-}
+export type IingredientReducerAction =
+  | {
+      type: 'STORE';
+      payload: { ingredients: Iingredients };
+    }
+  | {
+      type: 'INCREASE' | 'DECREASE';
+      payload: { igkey: keyof Iingredients };
+    };
 const initialState: IingredientReducerState = {
   ingredients: null,
-  totalPrice: null,
+  totalPrice: '4.00',
 };
 export const ingredientReducer = (
   state = initialState,

@@ -7,22 +7,20 @@ import axios from '../../axios-orders';
 import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import { getTotalPrice } from '../../shared/getTotalPrice';
-import {
-  connect,
-  MapStateToPropsFactory,
-  MapStateToProps,
-  MapDispatchToPropsFunction,
-} from 'react-redux';
+
 import {
   IingredientReducerState,
   IingredientReducerAction,
 } from '../../store/reducers/ingredientReducer';
-import { ingredientActions } from '../../store/actions';
+import {
+  ingredientActions,
+  connectIngredients,
+  IconnectIngredientsProps,
+} from '../../store/actions';
 import { Dispatch, Action } from 'redux';
 import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
-// import produce from 'immer';
-const immer = import(/* webpackChunkName: "immer" */ 'immer');
+import produce from 'immer';
+// const immer = import(/* webpackChunkName: "immer" */ 'immer');
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay" */
@@ -71,16 +69,6 @@ export interface Iingredients {
  */
 export interface IBurgerBuilderState {
   /**
-   * @type {(Iingredients | null)}
-   * @memberof IBurgerBuilderState
-   */
-  ingredients: Iingredients | null;
-  /**
-   * @type {string}
-   * @memberof IBurgerBuilderState
-   */
-  totalPrice: string;
-  /**
    * @type {boolean}
    * @memberof IBurgerBuilderState
    */
@@ -108,18 +96,15 @@ export interface IBurgerBuilderState {
 }
 
 /**
- * A burger display and controls container
  * @class BurgerBuilder
- * @extends {(Component<RouteComponentProps & IingredientReducerState, IBurgerBuilderState>)}
+ * @extends {Component<IconnectIngredientsProps<RouteComponentProps>, IBurgerBuilderState>}
  */
 class BurgerBuilder extends Component<
-  RouteComponentProps & IingredientReducerState,
+  IconnectIngredientsProps<RouteComponentProps>,
   IBurgerBuilderState
 > {
   /*  tslint:disable:object-literal-sort-keys */
   public state: IBurgerBuilderState = {
-    ingredients: null,
-    totalPrice: '4',
     purchasable: false,
     purchasing: false,
     loading: false,
@@ -134,33 +119,46 @@ class BurgerBuilder extends Component<
     this.fetchIngredients();
   }
 
-  public ingredientIncreaseHandler = async (type: keyof Iingredients) => {
-    if (!this.state.ingredients) {
+  public componentDidUpdate(
+    prevProps: IconnectIngredientsProps<RouteComponentProps>,
+    prevState: IBurgerBuilderState,
+  ) {
+    if (!this.props.ingredients) {
       return;
     }
-    const produce = (await immer).default;
     const nextState = produce(this.state, draft => {
       // if (!draft.ingredients || draft.ingredients[type] <= 0) {
       //   return draft;
       // }
-      draft.ingredients![type] += 1;
-      draft.totalPrice = getTotalPrice(draft.ingredients!);
-      draft.purchasable = updatePurchasable(draft.ingredients!);
+      draft.purchasable = updatePurchasable(this.props.ingredients!);
+    });
+    if (nextState.purchasable !== prevState.purchasable) {
+      this.setState(nextState);
+    }
+  }
+
+  public ingredientIncreaseHandler = async (type: keyof Iingredients) => {
+    if (!this.props.ingredients) {
+      return;
+    }
+    await this.props.ingredientIncreaseHandler(type);
+    // const produce = (await immer).default;
+    const nextState = produce(this.state, draft => {
+      draft.purchasable = updatePurchasable(this.props.ingredients!);
     });
     this.setState(nextState);
   };
   public ingredientDecreaseHandler = async (type: keyof Iingredients) => {
-    if (!this.state.ingredients) {
+    if (!this.props.ingredients) {
       return;
     }
-    const produce = (await immer).default;
+    await this.props.ingredientDecreaseHandler(type);
+    // const produce = (await immer).default;
     const nextState = produce(this.state, draft => {
       // if (!draft.ingredients || draft.ingredients[type] <= 0) {
       //   return draft;
       // }
-      draft.ingredients![type] -= 1;
-      draft.totalPrice = getTotalPrice(draft.ingredients!);
-      draft.purchasable = updatePurchasable(draft.ingredients!);
+      draft.purchasable = updatePurchasable(this.props.ingredients!);
     });
     this.setState(nextState);
   };
@@ -172,18 +170,18 @@ class BurgerBuilder extends Component<
     this.setState({ purchasing: false });
   };
   public purchaseContinueHandler = () => {
-    if (!this.state.ingredients) {
+    if (!this.props.ingredients) {
       return;
     }
-    const newQueryString = (Object.entries(this.state.ingredients) as Array<
-      [keyof Iingredients, number]
-    >)
-      .map(([igKey, igVal,]) => `${encodeURIComponent(igKey)}=${igVal}`)
-      .join('&');
+    // const newQueryString = (Object.entries(this.props.ingredients) as Array<
+    //   [keyof Iingredients, number]
+    // >)
+    //   .map(([igKey, igVal,]) => `${encodeURIComponent(igKey)}=${igVal}`)
+    //   .join('&');
 
     this.props.history.push({
       pathname: '/checkout',
-      search: '?' + newQueryString,
+      // search: '?' + newQueryString,
     });
   };
 
@@ -207,16 +205,16 @@ class BurgerBuilder extends Component<
 
     let orderSummary = null;
 
-    if (this.state.ingredients) {
+    if (this.props.ingredients) {
       burger = (
         <>
           <React.Suspense fallback={<Loader />}>
-            <BurgerDisplay ingredients={this.state.ingredients} />
+            <BurgerDisplay ingredients={this.props.ingredients} />
           </React.Suspense>
           <React.Suspense fallback={<Loader />}>
             <BuildControls
-              ingredients={this.state.ingredients}
-              price={this.state.totalPrice}
+              ingredients={this.props.ingredients}
+              price={this.props.totalPrice!}
               increase={this.ingredientIncreaseHandler}
               decrease={this.ingredientDecreaseHandler}
               purchasable={this.state.purchasable}
@@ -229,8 +227,8 @@ class BurgerBuilder extends Component<
       orderSummary = (
         <React.Suspense fallback={<Loader />}>
           <OrderSummary
-            ingredients={this.state.ingredients}
-            totalCost={this.state.totalPrice}
+            ingredients={this.props.ingredients}
+            totalCost={this.props.totalPrice}
             purchaseCancel={this.purchaseCancelHandler}
             purchaseContinue={this.purchaseContinueHandler}
           />
@@ -238,9 +236,9 @@ class BurgerBuilder extends Component<
       );
     }
 
-    if (this.state.loading) {
-      orderSummary = <Loader />;
-    }
+    // if (this.state.loading) {
+    //   orderSummary = <Loader />;
+    // }
     return (
       <React.Suspense fallback={<Loader />}>
         <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>
@@ -258,12 +256,7 @@ class BurgerBuilder extends Component<
         '/ingredients.json',
       );
       const { data: newIngredients } = response;
-      const newTotalPrice = getTotalPrice(newIngredients);
-      this.setState({
-        ingredients: newIngredients,
-        purchasable: updatePurchasable(newIngredients),
-        totalPrice: newTotalPrice,
-      });
+      this.props.ingredientStoreHandler(newIngredients);
     } catch (error) {
       // tslint:disable-next-line:no-console
       this.setState({
@@ -272,56 +265,17 @@ class BurgerBuilder extends Component<
     }
   };
   private offline = () => {
-    this.setState({
-      error: false,
-      ingredients: {
-        bacon: 0,
-        cheese: 0,
-        meat: 0,
-        salad: 0,
-      },
-      totalPrice: '4',
-    });
+    this.setState(
+      () => ({ error: false }),
+      () =>
+        this.props.ingredientStoreHandler({
+          bacon: 0,
+          cheese: 0,
+          meat: 0,
+          salad: 0,
+        }),
+    );
   };
 }
 
-const mapStateToProps: MapStateToProps<
-  IingredientReducerState,
-  RouteComponentProps,
-  IingredientReducerState
-> = state => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
-});
-
-export interface ImapDispatch {
-  ingredientIncreaseHandler: (
-    igkey: IingredientsKeys,
-  ) => IingredientReducerAction;
-  ingredientDecreaseHandler: (
-    igkey: IingredientsKeys,
-  ) => IingredientReducerAction;
-  ingredientStoreHandler: (
-    ingredients: Iingredients,
-  ) => IingredientReducerAction;
-}
-/**
- *
- *
- * @param {Dispatch<IingredientReducerAction>} dispatch
- */
-const mapDispatchToProps: MapDispatchToPropsFunction<
-  ImapDispatch,
-  RouteComponentProps
-> = (dispatch: Dispatch<IingredientReducerAction>) => ({
-  ingredientIncreaseHandler: igkey =>
-    dispatch({ type: ingredientActions.INCREASE, payload: { igkey } }),
-  ingredientDecreaseHandler: igkey =>
-    dispatch({ type: ingredientActions.DECREASE, payload: { igkey } }),
-  ingredientStoreHandler: ingredients =>
-    dispatch({ type: ingredientActions.STORE, payload: { ingredients } }),
-});
-
-type P = ReturnType<typeof mapDispatchToProps>;
-
-export default connect(mapStateToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connectIngredients(withErrorHandler(BurgerBuilder, axios));

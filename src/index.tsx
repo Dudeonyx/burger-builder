@@ -6,10 +6,15 @@ import './index.css';
 import './normalize.css';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, compose } from 'redux';
 import { ingredientReducer } from './store/reducers/ingredientReducer';
 
-const store = createStore(ingredientReducer);
+const store = createStore(
+  ingredientReducer,
+  undefined,
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 const app = (
   <Provider store={store}>
