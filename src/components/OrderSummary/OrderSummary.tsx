@@ -11,9 +11,9 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({
   totalCost,
   ingredients,
   purchaseCancel,
-  purchaseContinue
+  purchaseContinue,
 }) => {
-  const summary = Object.entries(ingredients).map(([igKey, igVal]) => (
+  const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
     <li style={{ textTransform: 'capitalize' }} key={igKey}>
       {`${igKey}: ${igVal}`}
     </li>

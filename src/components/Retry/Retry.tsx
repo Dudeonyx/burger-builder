@@ -3,7 +3,7 @@ import React, { MouseEventHandler, ReactNode, SFC } from 'react';
 const retryStyle = {
   borderBottom: '1px solid lightblue',
   color: 'lightblue',
-  cursor: 'pointer'
+  cursor: 'pointer',
 };
 
 export interface IRetryProps {
@@ -17,7 +17,7 @@ const Retry: SFC<IRetryProps> = ({
   retryHandler,
   additionalInfo,
   mainMessage,
-  additionalMessage
+  additionalMessage,
 }) => {
   return (
     <div style={{ textAlign: 'center' }}>

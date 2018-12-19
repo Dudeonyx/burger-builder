@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder/types';
 import styles from './OrderText.module.css';
+import { Iingredients } from '../../types/ingredients';
 
 export interface IOrderIngredientsPrice {
   /**

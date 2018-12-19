@@ -29,7 +29,7 @@ export interface ILogoProps {
 const Logo: FunctionComponent<ILogoProps> = ({
   link,
   height = '',
-  HQ = false
+  HQ = false,
 }) =>
   HQ ? (
     <Suspense

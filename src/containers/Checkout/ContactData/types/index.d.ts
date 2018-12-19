@@ -1,5 +1,5 @@
-import { Iingredients } from '../../../BurgerBuilder/types';
 import { RouteComponentProps } from 'react-router-dom';
+import { Iingredients } from '../../../../types/ingredients';
 
 export interface IContactDataProps extends RouteComponentProps {
   ingredients: Iingredients;

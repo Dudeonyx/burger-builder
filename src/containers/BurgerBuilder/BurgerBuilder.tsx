@@ -17,11 +17,8 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import produce from 'immer';
 import { connect } from 'react-redux';
 import Modal from '../../components/UI/Modal/Modal';
-import {
-  IBurgerBuilderProps,
-  IBurgerBuilderState,
-  Iingredients,
-} from './types';
+import { IBurgerBuilderProps, IBurgerBuilderState } from './types';
+import { Iingredients } from '../../types/ingredients';
 // const immer = import(/* webpackChunkName: "immer" */ 'immer');
 
 const BurgerDisplay = lazy(() =>

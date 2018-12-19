@@ -13,6 +13,7 @@ import '../../axios-orders';
 import '../../HOCs/withErrorHandler';
 import '../../components/Button/Button';
 import 'regenerator-runtime/';
+import '../../components/UI/Modal/Modal';
 
 const BurgerBuilder = lazy(() =>
   import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),

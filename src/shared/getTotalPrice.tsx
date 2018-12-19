@@ -1,4 +1,4 @@
-import { Iingredients } from '../containers/BurgerBuilder/types';
+import { Iingredients, IingredientsKeys } from '../types/ingredients';
 
 export const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -9,7 +9,7 @@ export const INGREDIENT_PRICES = {
 };
 export function getTotalPrice(ingredients: Iingredients) {
   return (
-    (Object.entries(ingredients) as Array<[keyof Iingredients, number]>)
+    (Object.entries(ingredients) as Array<[IingredientsKeys, number]>)
       .map(([igKey, igVal,]) => {
         return INGREDIENT_PRICES[igKey] * igVal;
       })

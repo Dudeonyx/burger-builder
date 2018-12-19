@@ -11,7 +11,7 @@ const BuildControl: FunctionComponent<IBuildControlProps> = ({
   added,
   disabled,
   label,
-  removed
+  removed,
 }) => {
   return (
     <div className={styles.BuildControl}>

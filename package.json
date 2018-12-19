@@ -35,7 +35,8 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "predeploy": "yarn build --stats",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint": "tslint src/**/*.ts?(x)"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -81,6 +82,8 @@
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "stylelint-config-recommended": "^2.1.0",
     "ts-jest": "^23.10.5",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.2.1",
     "typescript-styled-plugin": "^0.13.0",
     "webpack-bundle-analyzer": "^3.0.3"

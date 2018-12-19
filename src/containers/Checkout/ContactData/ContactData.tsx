@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import css from '@emotion/css/macro';
 import { MouseEvent, Component, ChangeEvent, lazy, Suspense } from 'react';
 import Button from '../../../components/Button/Button';
 import axios from '../../../axios-orders';
@@ -9,9 +10,8 @@ import { IDbOrder } from '../../Orders/Orders';
 // import styled from 'styled-components/macro';
 import produce from 'immer';
 // import styled from '@emotion/styled/macro';
-import css from '@emotion/css/macro';
 import Modal from '../../../components/UI/Modal/Modal';
-import { IContactDataProps, IContactDataState } from './types/index.d';
+import { IContactDataProps, IContactDataState } from './types';
 const sgkjskfjgkfj = jsx;
 const StyledContactData = css`
   margin: 10px auto;

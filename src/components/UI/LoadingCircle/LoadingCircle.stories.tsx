@@ -7,7 +7,7 @@ const styles = {
   alignItems: 'center',
   display: 'flex',
   height: 'calc(var(--size, 80px) * 1.2)',
-  justifyContent: 'center'
+  justifyContent: 'center',
 };
 storiesOf('LoadingCircle', module)
   .add('LoadingCircle', () => <LoadingCircle style={styles} />)

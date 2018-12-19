@@ -1,13 +1,12 @@
-import { IingredientsKeys } from '../../components/Burger/BuildControls/BuildControls';
 import {
   IingredientReducerAction,
   IingredientReducerState,
 } from '../reducers/types';
-import { Iingredients } from '../../containers/BurgerBuilder/types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { store } from '../store';
 import { ImapDispatchIngredients } from './types';
+import { IingredientsKeys, Iingredients } from '../../types/ingredients';
 
 export interface IingActions {
   INCREASE: 'INCREASE';

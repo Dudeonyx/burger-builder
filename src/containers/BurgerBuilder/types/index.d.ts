@@ -1,31 +1,6 @@
 import { RouteComponentProps } from 'react-router-dom';
 import { IconnectIngredientsProps } from '../../../store/actions/types';
-/**
- * @export
- * @interface Iingredients
- */
-export interface Iingredients {
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  salad: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  bacon: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  cheese: number;
-  /**
-   * @type {number}
-   * @memberof Iingredients
-   */
-  meat: number;
-}
+
 /**
  * @export
  * @interface IBurgerBuilderState

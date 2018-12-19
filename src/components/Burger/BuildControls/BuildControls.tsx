@@ -1,22 +1,10 @@
-import React, { FunctionComponent, memo, MouseEventHandler } from 'react';
-import { Iingredients } from '../../../containers/BurgerBuilder/types';
+import React, { FunctionComponent, memo } from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import styles from './BuildControls.module.css';
+import { IingredientsKeys } from '../../../types/ingredients';
+import { IbuildControlsProps, TdisabledCheck, Tcontrols } from './types/index';
 
-export type IingredientsKeys = keyof Iingredients;
-export interface IbuildControlsProps {
-  ingredients: Iingredients;
-  price: string;
-  increase: (e: IingredientsKeys) => void;
-  decrease: (e: IingredientsKeys) => void;
-  purchaseStart: MouseEventHandler;
-  purchasable: boolean;
-}
-
-export type TdisabledCheck = { [x in IingredientsKeys]: boolean };
-
-export type Tcontrols = Array<{ label: string; type: IingredientsKeys }>;
-const controls: Tcontrols = [
+export const controls: Tcontrols = [
   { label: 'Salad', type: 'salad' },
   { label: 'Bacon', type: 'bacon' },
   { label: 'Cheese', type: 'cheese' },

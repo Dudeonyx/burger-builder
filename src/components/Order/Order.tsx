@@ -1,10 +1,13 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import css from '@emotion/css/macro';
 import React, { FunctionComponent } from 'react';
-import { Iingredients } from '../../containers/BurgerBuilder/types';
-import { IingredientsKeys } from '../Burger/BuildControls/BuildControls';
 import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
-import styled from 'styled-components/macro';
-
-const StyledOrder = styled.div`
+import { Iingredients, IingredientsKeys } from '../../types/ingredients';
+// import styled from 'styled-components/macro';
+// tslint:disable-next-line:no-unused-expression
+jsx;
+const StyledOrder = css`
   & {
     text-align: center;
     padding: 10px;
@@ -71,12 +74,12 @@ const Order: FunctionComponent<IOrdersProps> = ({
     </span>
   ));
   return (
-    <StyledOrder>
+    <div css={StyledOrder}>
       <h4>{`Name: ${name}`}</h4>
       {breakdown}
       <p>Base Cost: ${INGREDIENT_PRICES.base.toFixed(2)}</p>
       <h5>Total Cost: ${totalPrice}</h5>
-    </StyledOrder>
+    </div>
   );
 };
 

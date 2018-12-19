@@ -1,11 +1,11 @@
 import React, { FunctionComponent, Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Iingredients } from '../BurgerBuilder/types';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import styled from 'styled-components/macro';
+import { Iingredients } from '../../types/ingredients';
 // tslint:disable-next-line:no-empty-interface
 export interface IOrdersProps extends RouteComponentProps {}
 

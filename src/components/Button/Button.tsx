@@ -1,7 +1,7 @@
 import React, {
   MouseEventHandler,
   ButtonHTMLAttributes,
-  ReactNode
+  ReactNode,
 } from 'react';
 import styles from './Button.module.css';
 
@@ -38,14 +38,14 @@ const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
   ({ children, className, btnType = '', ...rest }, ref) => {
     return (
       <button
-        className={[className, styles.Button, styles[btnType]].join(' ')}
+        className={[className, styles.Button, styles[btnType],].join(' ')}
         {...rest}
         ref={ref}
       >
         {children}
       </button>
     );
-  }
+  },
 );
 
 export default Button;

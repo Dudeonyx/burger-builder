@@ -32,7 +32,7 @@ export interface INavigationItemProps {
 const NavigationItem: FunctionComponent<INavigationItemProps> = ({
   exact,
   link,
-  linkName
+  linkName,
 }: INavigationItemProps) => (
   <li className={styles.NavigationItem}>
     <NavLink to={link} exact={exact} activeClassName={styles.active}>

@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
-import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 import { mapIngredientsStateToProps } from '../../store/actions';
-import { IconnectIngredientsProps } from '../../store/actions/types';
 import { connect } from 'react-redux';
+import { ICheckoutProps, ICheckoutState } from './types';
 
-/**
- * @export
- * @interface ICheckoutState
- */
-export interface ICheckoutState {
-  purchasable: boolean;
-}
-
-export type ICheckoutProps = IconnectIngredientsProps<RouteComponentProps, {}>;
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   constructor(props: ICheckoutProps) {
     super(props);
