@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 import { mapIngredientsStateToProps } from '../../store/reducers/ingredientReducer/actions';

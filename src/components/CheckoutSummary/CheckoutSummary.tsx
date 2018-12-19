@@ -1,24 +1,22 @@
-import React, {
-  FunctionComponent,
-  MouseEventHandler,
-  lazy,
-  Suspense,
-} from 'react';
-import Button from '../../Button/Button';
-import OrderText from '../../OrderText/OrderText';
-import { IOrderIngredientsPrice } from '../../OrderText/types';
-import styles from './CheckoutSummary.module.css';
-import Loader from '../../UI/Loader/Loader';
+import React, { FunctionComponent, lazy, Suspense } from 'react';
+import Loader from '../UI/Loader/Loader';
+import styled from '@emotion/styled/macro';
+import { ICheckoutSummaryProps } from './types';
+import OrderText from '../OrderText/OrderText';
+import Button from '../Button/Button';
 
 const BurgerDisplay = lazy(() =>
-  import('../../Burger/BurgerDisplay/BurgerDisplay'),
+  import(/* webpackChunkName: "BurgerDisplay" */ '../Burger/BurgerDisplay/BurgerDisplay'),
 );
-interface ICheckoutSummaryProps extends IOrderIngredientsPrice {
-  checkoutCancel: MouseEventHandler;
-  checkoutContinue: MouseEventHandler;
-  purchasable: boolean;
-}
+const StyledCheckoutSummary = styled.div`
+  max-width: 80%;
+  text-align: center;
+  margin: auto;
 
+  @media (min-width: 550px) {
+    max-width: 500px;
+  }
+`;
 const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   ingredients,
   totalCost,
@@ -27,7 +25,7 @@ const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   purchasable,
 }) => {
   return (
-    <div className={styles.CheckoutSummary}>
+    <StyledCheckoutSummary>
       <h3>We Hope You'll Enjoy This</h3>
       <Suspense fallback={<Loader />}>
         <BurgerDisplay {...{ ingredients }} />
@@ -48,7 +46,7 @@ const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
           CONTINUE
         </Button>
       </div>
-    </div>
+    </StyledCheckoutSummary>
   );
 };
 
