@@ -36,7 +36,9 @@
     "build-storybook": "build-storybook -s public",
     "predeploy": "yarn build --stats",
     "deploy": "gh-pages -d build",
-    "lint": "tslint src/**/*.ts?(x)"
+    "lint": "tslint --force \"src/**/*.ts?(x)\"",
+    "lint_fix": "tslint --fix --force \"src/**/*.ts?(x)\"",
+    "typecheck": "tsc"
   },
   "eslintConfig": {
     "extends": "react-app",

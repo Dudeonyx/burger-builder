@@ -19,24 +19,5 @@ export interface IInputConfig {
 }
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataState {
-  customer: {
-    basicInfo: {
-      name: IInputConfig;
-      phone: IInputConfig;
-      email: IInputConfig;
-    };
-    address: {
-      street: IInputConfig;
-      city: IInputConfig;
-      state: IInputConfig;
-      country: IInputConfig;
-    };
-    deliveryMethod: {
-      deliveryMethod: {
-        value: string;
-      };
-      options: IInputConfig[];
-    };
-  };
   loading: boolean;
 }

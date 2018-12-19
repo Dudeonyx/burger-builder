@@ -1,11 +1,14 @@
 import produce from 'immer';
-import { getTotalPrice } from '../../shared/getTotalPrice';
-import { ingredientActions } from '../actions';
+import {
+  getTotalPrice,
+  INGREDIENT_PRICES,
+} from '../../../shared/getTotalPrice';
+import { ingredientActionTypes } from './actions';
 import { IingredientReducerState, IingredientReducerAction } from './types';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
-  totalPrice: '4.00',
+  totalPrice: INGREDIENT_PRICES.base.toFixed(2),
 };
 export const ingredientReducer = (
   state = initialState,
@@ -13,14 +16,14 @@ export const ingredientReducer = (
 ) => {
   return produce(state, draft => {
     switch (action.type) {
-      case ingredientActions.INCREASE:
+      case ingredientActionTypes.INCREASE_INGREDIENTS:
         if (!draft.ingredients || !action.payload.igkey) {
           break;
         }
         draft.ingredients[action.payload.igkey] += 1;
-        draft.totalPrice = getTotalPrice(draft.ingredients!);
+        draft.totalPrice = getTotalPrice(draft.ingredients);
         break;
-      case ingredientActions.DECREASE:
+      case ingredientActionTypes.DECREASE_INGREDIENTS:
         if (
           !draft.ingredients ||
           !action.payload.igkey ||
@@ -29,10 +32,10 @@ export const ingredientReducer = (
           break;
         }
         draft.ingredients[action.payload.igkey] -= 1;
-        draft.totalPrice = getTotalPrice(draft.ingredients!);
+        draft.totalPrice = getTotalPrice(draft.ingredients);
         break;
-      case ingredientActions.STORE:
-        if (!action.payload.ingredients) {
+      case ingredientActionTypes.STORE_INGREDIENTS:
+        if (action.payload.ingredients === undefined) {
           break;
         }
         draft.ingredients = action.payload.ingredients;

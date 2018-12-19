@@ -12,26 +12,18 @@ import {
   ingredientDecreaseHandler,
   ingredientStoreHandler,
   mapIngredientsStateToProps,
-} from '../../store/actions';
+} from '../../store/reducers/ingredientReducer/actions';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import produce from 'immer';
 import { connect } from 'react-redux';
 import Modal from '../../components/UI/Modal/Modal';
 import { IBurgerBuilderProps, IBurgerBuilderState } from './types';
 import { Iingredients } from '../../types/ingredients';
-// const immer = import(/* webpackChunkName: "immer" */ 'immer');
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay" */
   '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
-// const BuildControls = lazy(() =>
-//   import(/* webpackChunkName: "BuildControls" */
-//   '../../components/Burger/BuildControls/BuildControls'),
-// );
-// const Modal = lazy(() =>
-//   import(/* webpackChunkName: "Modal" */ '../../components/UI/Modal/Modal'),
-// );
+
 const OrderSummary = lazy(() =>
   import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary'),
 );
@@ -44,65 +36,17 @@ class BurgerBuilder extends Component<
   IBurgerBuilderProps,
   IBurgerBuilderState
 > {
-  /*  tslint:disable:object-literal-sort-keys */
   public state: IBurgerBuilderState = {
-    purchasable: false,
     purchasing: false,
     loading: false,
     orders: [],
     error: null,
   };
-  /*  tslint:enable:object-literal-sort-keys */
-  /**
-   * componentDidMount
-   */
+
   public componentDidMount() {
+    this.props.ingredientStoreHandler(null);
     this.fetchIngredients();
   }
-
-  public componentDidUpdate(
-    prevProps: IBurgerBuilderProps,
-    prevState: IBurgerBuilderState,
-  ) {
-    if (!this.props.ingredients) {
-      return;
-    }
-    const nextState = produce(this.state, draft => {
-      // if (!draft.ingredients || draft.ingredients[type] <= 0) {
-      //   return draft;
-      // }
-      draft.purchasable = updatePurchasable(this.props.ingredients!);
-    });
-    if (nextState.purchasable !== prevState.purchasable) {
-      this.setState(nextState);
-    }
-  }
-
-  public ingredientIncreaseHandler = async (type: keyof Iingredients) => {
-    if (!this.props.ingredients) {
-      return;
-    }
-    await this.props.ingredientIncreaseHandler(type);
-    // const produce = (await immer).default;
-    const nextState = produce(this.state, draft => {
-      draft.purchasable = updatePurchasable(this.props.ingredients!);
-    });
-    this.setState(nextState);
-  };
-  public ingredientDecreaseHandler = async (type: keyof Iingredients) => {
-    if (!this.props.ingredients) {
-      return;
-    }
-    await this.props.ingredientDecreaseHandler(type);
-    // const produce = (await immer).default;
-    const nextState = produce(this.state, draft => {
-      // if (!draft.ingredients || draft.ingredients[type] <= 0) {
-      //   return draft;
-      // }
-      draft.purchasable = updatePurchasable(this.props.ingredients!);
-    });
-    this.setState(nextState);
-  };
 
   public purchaseStartHandler = () => {
     this.setState({ purchasing: true });
@@ -114,12 +58,6 @@ class BurgerBuilder extends Component<
     if (!this.props.ingredients) {
       return;
     }
-    // const newQueryString = (Object.entries(this.props.ingredients) as Array<
-    //   [keyof Iingredients, number]
-    // >)
-    //   .map(([igKey, igVal,]) => `${encodeURIComponent(igKey)}=${igVal}`)
-    //   .join('&');
-
     this.props.history.push({
       pathname: '/checkout',
       // search: '?' + newQueryString,
@@ -154,10 +92,10 @@ class BurgerBuilder extends Component<
           </React.Suspense>
           <BuildControls
             ingredients={this.props.ingredients}
-            price={this.props.totalPrice!}
-            increase={this.ingredientIncreaseHandler}
-            decrease={this.ingredientDecreaseHandler}
-            purchasable={this.state.purchasable}
+            price={this.props.totalPrice}
+            increase={this.props.ingredientIncreaseHandler}
+            decrease={this.props.ingredientDecreaseHandler}
+            purchasable={updatePurchasable(this.props.ingredients)}
             purchaseStart={this.purchaseStartHandler}
           />
         </>

@@ -6,6 +6,8 @@ import { suspenseNode2 } from '../../HOCs/suspensed';
 // import CssBaseline from '@material-ui/core/CssBaseline';
 // import Checkout from '../Checkout/Checkout';
 // import 'immer';
+import '@emotion/core';
+import '@emotion/css/macro';
 import '../../components/UI/Loader/Loader';
 import '../../shared/getTotalPrice';
 import '../../shared/updatePurchasable';
@@ -20,11 +22,11 @@ const BurgerBuilder = lazy(() =>
 );
 
 const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'),
+  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout/Checkout'),
 );
 
 const Orders = lazy(() =>
-  import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
+  import(/* webpackChunkName: "Orders", webpackPrefetch: true */ '../Orders/Orders'),
 );
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);

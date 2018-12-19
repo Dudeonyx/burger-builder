@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
-import { mapIngredientsStateToProps } from '../../store/actions';
+import { mapIngredientsStateToProps } from '../../store/reducers/ingredientReducer/actions';
 import { connect } from 'react-redux';
 import { ICheckoutProps, ICheckoutState } from './types';
 

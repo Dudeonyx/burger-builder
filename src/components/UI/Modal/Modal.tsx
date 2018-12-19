@@ -1,9 +1,5 @@
-
 import styled from '@emotion/styled/macro';
-import React, {
-  FunctionComponent,
-  CSSProperties,
-} from 'react';
+import React, { FunctionComponent } from 'react';
 import Backdrop from '../Backdrop/Backdrop';
 import { IStyledModal, IModalProps } from './types';
 
@@ -23,7 +19,7 @@ const StyledModal = styled.div`
   left: 50%;
   box-sizing: border-box;
   transition: all 0.3s ease-in-out;
-  max-width: ${(props: IStyledModal ) => (props.show ? '100%' : '0%')};
+  max-width: ${(props: IStyledModal) => (props.show ? '100%' : '0%')};
   transform: ${({ show }) =>
     show ? 'translate(-50%, -50%)' : 'translate(-50%, -150vh)'};
   opacity: ${({ show }) => (show ? 1 : 0)};

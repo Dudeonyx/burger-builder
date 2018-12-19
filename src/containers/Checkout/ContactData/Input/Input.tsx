@@ -4,8 +4,7 @@ import css from '@emotion/css/macro';
 import { FunctionComponent } from 'react';
 import { IInputProps } from './types';
 
-// tslint:disable-next-line:no-unused-expression
-jsx;
+const dfdfdf = jsx;
 const StyledInput = css`
   * {
     box-sizing: border-box;
@@ -110,35 +109,11 @@ const Input: FunctionComponent<IInputProps> = ({
         </div>
       );
       break;
-    case 'select':
-      // input = (
-      //   <div>
-      //     <input
-      //       id={id}
-      //       type={type}
-      //       name={name}
-      //       onChange={onChange}
-      //       value={value}
-      //       defaultChecked={defaultChecked}
-      //       data-set={dataSet}
-      //     />
-      //     <label htmlFor={id}>{label} </label>
-      //   </div>
-      // );
-      break;
     default:
       break;
   }
 
   return input;
 };
-
-// Input.propTypes = {
-//   // bla: PropTypes.string,
-// };
-
-// Input.defaultProps = {
-//   // bla: 'test',
-// };
 
 export default Input;

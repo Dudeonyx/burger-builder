@@ -1,19 +1,20 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import css from '@emotion/css/macro';
-import { MouseEvent, Component, ChangeEvent, lazy, Suspense } from 'react';
+import styled from '@emotion/styled/macro';
+import React, { MouseEvent, Component, ChangeEvent } from 'react';
 import Button from '../../../components/Button/Button';
 import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
 import { IDbOrder } from '../../Orders/Orders';
 // import styled from 'styled-components/macro';
-import produce from 'immer';
 // import styled from '@emotion/styled/macro';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataProps, IContactDataState } from './types';
-const sgkjskfjgkfj = jsx;
-const StyledContactData = css`
+import {
+  connectContactDataProps,
+  connectContactData,
+} from '../../../store/reducers/contactDataReducer/actions';
+// tslint:disable-next-line:no-unused-expression
+const StyledContactData = styled.div`
   margin: 10px auto;
   text-align: center;
   /* max-width: 80%; */
@@ -33,158 +34,38 @@ const StyledContactData = css`
     max-width: 540px;
   }
 `;
-class ContactData extends Component<IContactDataProps, IContactDataState> {
-  constructor(props: IContactDataProps) {
+class ContactData extends Component<
+  IContactDataProps & connectContactDataProps,
+  IContactDataState
+> {
+  constructor(props: IContactDataProps & connectContactDataProps) {
     super(props);
 
     this.state = {
-      customer: {
-        basicInfo: {
-          name: {
-            value: '',
-            type: 'text',
-            placeholder: 'Your Name',
-            id: 'name_id',
-            name: 'name',
-            label: 'Name:',
-            dataSet: 'basicInfo',
-            required: true,
-          },
-          phone: {
-            value: '',
-            type: 'tel',
-            placeholder: 'Your Phone no.',
-            id: 'phone_id',
-            name: 'phone',
-            label: 'Phone no.:',
-            dataSet: 'basicInfo',
-            required: true,
-          },
-          email: {
-            value: '',
-            type: 'email',
-            placeholder: 'Your Email',
-            id: 'email_id',
-            name: 'email',
-            label: 'Email:',
-            dataSet: 'basicInfo',
-            required: true,
-          },
-        },
-        address: {
-          street: {
-            value: '',
-            type: 'street-address',
-            placeholder: 'Your Street',
-            id: 'street_id',
-            name: 'street',
-            label: 'Street:',
-            dataSet: 'address',
-            required: true,
-          },
-          city: {
-            value: '',
-            type: 'text',
-            placeholder: 'Your City',
-            id: 'city_id',
-            name: 'city',
-            label: 'City:',
-            dataSet: 'address',
-            required: true,
-          },
-          state: {
-            value: '',
-            type: 'text',
-            placeholder: 'Your State/Province',
-            id: 'state_id',
-            name: 'state',
-            label: 'State/\nProvince:',
-            dataSet: 'address',
-            required: true,
-          },
-          country: {
-            value: '',
-            type: 'country-name',
-            placeholder: 'Your Country',
-            id: 'country_id',
-            name: 'country',
-            label: 'Country:',
-            dataSet: 'address',
-            required: true,
-          },
-        },
-
-        deliveryMethod: {
-          deliveryMethod: { value: '' },
-          options: [
-            {
-              value: 'cheapest',
-              type: 'radio',
-              id: 'cheapest_id',
-              name: 'deliveryMethod',
-              label: 'Cheapest',
-              dataSet: 'deliveryMethod',
-            },
-            {
-              value: 'cheap',
-              type: 'radio',
-              id: 'cheap_id',
-              name: 'deliveryMethod',
-              label: 'Cheap',
-              dataSet: 'deliveryMethod',
-            },
-            {
-              value: 'normal',
-              type: 'radio',
-              id: 'normal_id',
-              name: 'deliveryMethod',
-              label: 'Normal',
-              defaultChecked: true,
-              dataSet: 'deliveryMethod',
-            },
-            {
-              value: 'expensive',
-              type: 'radio',
-              id: 'expensive_id',
-              name: 'deliveryMethod',
-              label: 'Expensive',
-              dataSet: 'deliveryMethod',
-            },
-            {
-              value: 'very_expensive',
-              type: 'radio',
-              id: 'very_expensive_id',
-              name: 'deliveryMethod',
-              label: 'Very Expensive',
-              dataSet: 'deliveryMethod',
-            },
-          ],
-        },
-      },
       loading: false,
     };
   }
 
   public render() {
-    const { address, deliveryMethod, basicInfo } = this.state.customer;
+    const { address, deliveryMethod, basicInfo } = this.props.customer;
     const form = this.state.loading ? (
       <Loader />
     ) : (
-      <form action="" id="order_form">
+      <form id="order_form">
         <h3>Enter Your Contact Details to Complete Your Order.</h3>
         {Object.values(basicInfo).map(obj => (
-          <Input {...obj} onChange={this.formHandler} key={obj.id} />
+          <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
         ))}
         <fieldset>
           <legend>Address</legend>
           {Object.values(address).map(obj => (
-            <Input {...obj} onChange={this.formHandler} key={obj.id} />
+            <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
           ))}
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
-          {deliveryMethod.options.map(obj => (
-            <Input {...obj} onChange={this.formHandler} key={obj.id} />
+          {deliveryMethod.deliveryMethod.options.map(obj => (
+            <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
           ))}
         </fieldset>
 
@@ -205,35 +86,17 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </form>
     );
     return (
-      <div css={StyledContactData}>
+      <StyledContactData>
         <Modal show={true} hider={this.cancel} bgColor="white" minWidth={650}>
           {form}
         </Modal>
-      </div>
+      </StyledContactData>
     );
   }
 
-  private formHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { value = '' } = e.currentTarget;
-    const { name } = e.currentTarget;
-    const { set = '' } = e.currentTarget.dataset;
-    // const produce = (await immer).default;
-    this.setState(
-      produce(draft => {
-        if (
-          !(draft.customer as any)[set] ||
-          !(name in (draft.customer as any)[set])
-        ) {
-          // tslint:disable-next-line:no-console
-          console.error(`${name} not found in ${set}`);
-          return;
-        }
-        (draft.customer as any)[set][name].value = value;
-      }),
-    );
-  };
   private cancel = (e: MouseEvent<Element>) => {
     e.preventDefault();
+    this.props.resetForm();
     this.props.history.goBack();
   };
   private submit = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -241,9 +104,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       try {
         e.preventDefault();
         this.setState({ loading: true });
-
-        const { deliveryMethod, basicInfo, address } = this.state.customer;
-
+        const { deliveryMethod, basicInfo, address } = this.props.customer;
         const order: IDbOrder = {
           basicInfo: {
             name: basicInfo.name.value,
@@ -262,11 +123,8 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
           date: Date(),
         };
 
-        const response = await axios.post('/orders.json', order);
-        // tslint:disable-next-line:no-console
-        console.log(response);
-        //   const orders = this.state.orders.concat(response.data.name);
-        //   this.setState({ orders });
+        await axios.post('/orders.json', order);
+        this.props.resetForm();
         this.setState(
           () => ({ loading: false }),
           () => this.props.history.push('/all-orders'),
@@ -280,4 +138,4 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
-export default ContactData;
+export default connectContactData(ContactData);
