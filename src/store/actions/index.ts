@@ -9,15 +9,15 @@ import { ImapDispatchIngredients } from './types';
 import { IingredientsKeys, Iingredients } from '../../types/ingredients';
 
 export interface IingActions {
-  INCREASE: 'INCREASE';
-  DECREASE: 'DECREASE';
-  STORE: 'STORE';
+  INCREASE_INGREDIENTS: 'INCREASE_INGREDIENTS';
+  DECREASE_INGREDIENTS: 'DECREASE_INGREDIENTS';
+  STORE_INGREDIENTS: 'STORE_INGREDIENTS';
 }
 
 export const ingredientActions: IingActions = {
-  INCREASE: 'INCREASE',
-  DECREASE: 'DECREASE',
-  STORE: 'STORE',
+  INCREASE_INGREDIENTS: 'INCREASE_INGREDIENTS',
+  DECREASE_INGREDIENTS: 'DECREASE_INGREDIENTS',
+  STORE_INGREDIENTS: 'STORE_INGREDIENTS',
 };
 
 export const mapIngredientsStateToProps = (state: IingredientReducerState) => ({
@@ -27,19 +27,19 @@ export const mapIngredientsStateToProps = (state: IingredientReducerState) => ({
 
 export const ingredientIncreaseHandler = (igkey: IingredientsKeys) => {
   return store.dispatch({
-    type: ingredientActions.INCREASE,
+    type: ingredientActions.INCREASE_INGREDIENTS,
     payload: { igkey },
   });
 };
 export const ingredientDecreaseHandler = (igkey: IingredientsKeys) => {
   return store.dispatch({
-    type: ingredientActions.DECREASE,
+    type: ingredientActions.DECREASE_INGREDIENTS,
     payload: { igkey },
   });
 };
 export const ingredientStoreHandler = (ingredients: Iingredients) => {
   return store.dispatch({
-    type: ingredientActions.STORE,
+    type: ingredientActions.STORE_INGREDIENTS,
     payload: { ingredients },
   });
 };
@@ -48,11 +48,20 @@ export const mapIngredientsDispatchToProps = (
   dispatch: Dispatch<IingredientReducerAction>,
 ): ImapDispatchIngredients => ({
   ingredientIncreaseHandler: igkey =>
-    dispatch({ type: ingredientActions.INCREASE, payload: { igkey } }),
+    dispatch({
+      type: ingredientActions.INCREASE_INGREDIENTS,
+      payload: { igkey },
+    }),
   ingredientDecreaseHandler: igkey =>
-    dispatch({ type: ingredientActions.DECREASE, payload: { igkey } }),
+    dispatch({
+      type: ingredientActions.DECREASE_INGREDIENTS,
+      payload: { igkey },
+    }),
   ingredientStoreHandler: ingredients =>
-    dispatch({ type: ingredientActions.STORE, payload: { ingredients } }),
+    dispatch({
+      type: ingredientActions.STORE_INGREDIENTS,
+      payload: { ingredients },
+    }),
 });
 
 export const connectIngredients = connect(

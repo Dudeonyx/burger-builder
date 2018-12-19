@@ -1,18 +1,22 @@
 import { Iingredients } from '../../../types/ingredients';
+import { IingActions } from '../../actions';
 
 export interface IingredientReducerState {
   ingredients: Iingredients | null;
   totalPrice: string;
 }
+
 export type IingredientReducerAction =
   | {
-      type: 'STORE';
+      type: IingActions['STORE_INGREDIENTS'];
       payload: {
         ingredients: Iingredients;
       };
     }
   | {
-      type: 'INCREASE' | 'DECREASE';
+      type:
+        | IingActions['INCREASE_INGREDIENTS']
+        | IingActions['DECREASE_INGREDIENTS'];
       payload: {
         igkey: keyof Iingredients;
       };
