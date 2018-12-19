@@ -41,39 +41,29 @@ const StyledInput = css`
   }
 `;
 /**
- * @param {IInputProps} {
- *   inputType,
- *   id,
- *   name,
- *   placeholder,
- *   onChange,
- *   value,
- *   label,
- *   defaultChecked
- * }
+ * @param {IInputProps} props
  * @interface FunctionComponent<IInputProps>
  */
-const Input: FunctionComponent<IInputProps> = ({
-  type,
-  id,
-  name,
-  placeholder,
-  onChange,
-  value,
-  label,
-  defaultChecked,
-  checked,
-  dataSet,
-  required,
-}) => {
-  let input = null;
+const Input: FunctionComponent<IInputProps> = props => {
+  const {
+    type,
+    id,
+    name,
+    placeholder,
+    onChange,
+    value,
+    label,
+    defaultChecked,
+    dataSet,
+    required,
+  } = props;
   switch (type) {
     case 'text':
     case 'email':
     case 'street-address':
     case 'country-name':
     case 'tel':
-      input = (
+      return (
         <div css={StyledInput}>
           <label htmlFor={id}>
             <span>{label} </span>
@@ -90,9 +80,8 @@ const Input: FunctionComponent<IInputProps> = ({
           </label>
         </div>
       );
-      break;
     case 'radio':
-      input = (
+      return (
         <div css={StyledInput}>
           <label htmlFor={id} className="radio">
             <input
@@ -108,12 +97,9 @@ const Input: FunctionComponent<IInputProps> = ({
           </label>
         </div>
       );
-      break;
     default:
-      break;
+      return null;
   }
-
-  return input;
 };
 
 export default Input;

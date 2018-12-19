@@ -1,30 +1,23 @@
 import styled from '@emotion/styled/macro';
-import React, { MouseEvent, Component, ChangeEvent } from 'react';
+// import styled from 'styled-components/macro';
+import React, { MouseEvent, Component } from 'react';
 import Button from '../../../components/Button/Button';
 import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
-import { IDbOrder } from '../../Orders/Orders';
-// import styled from 'styled-components/macro';
-// import styled from '@emotion/styled/macro';
+import { IDbOrder } from '../../Orders/types';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataProps, IContactDataState } from './types';
-import {
-  connectContactDataProps,
-  connectContactData,
-} from '../../../store/reducers/contactDataReducer/actions';
-// tslint:disable-next-line:no-unused-expression
+import { connectContactData } from '../../../store/reducers/contactDataReducer/actions';
 const StyledContactData = styled.div`
   margin: 10px auto;
   text-align: center;
-  /* max-width: 80%; */
 
   form div {
     margin: 4px 0;
   }
 
   form {
-    /* padding: 10px; */
     box-sizing: border-box;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.842);
@@ -34,18 +27,10 @@ const StyledContactData = styled.div`
     max-width: 540px;
   }
 `;
-class ContactData extends Component<
-  IContactDataProps & connectContactDataProps,
-  IContactDataState
-> {
-  constructor(props: IContactDataProps & connectContactDataProps) {
-    super(props);
-
-    this.state = {
-      loading: false,
-    };
-  }
-
+class ContactData extends Component<IContactDataProps, IContactDataState> {
+  public state: IContactDataState = {
+    loading: false,
+  };
   public render() {
     const { address, deliveryMethod, basicInfo } = this.props.customer;
     const form = this.state.loading ? (
@@ -54,18 +39,30 @@ class ContactData extends Component<
       <form id="order_form">
         <h3>Enter Your Contact Details to Complete Your Order.</h3>
         {Object.values(basicInfo).map(obj => (
-          <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
+          <Input
+            {...obj}
+            onChange={this.props.updateContactDataForm}
+            key={obj.id}
+          />
         ))}
         <fieldset>
           <legend>Address</legend>
           {Object.values(address).map(obj => (
-            <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
+            <Input
+              {...obj}
+              onChange={this.props.updateContactDataForm}
+              key={obj.id}
+            />
           ))}
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
           {deliveryMethod.deliveryMethod.options.map(obj => (
-            <Input {...obj} onChange={this.props.updateForm} key={obj.id} />
+            <Input
+              {...obj}
+              onChange={this.props.updateContactDataForm}
+              key={obj.id}
+            />
           ))}
         </fieldset>
 
@@ -96,7 +93,7 @@ class ContactData extends Component<
 
   private cancel = (e: MouseEvent<Element>) => {
     e.preventDefault();
-    this.props.resetForm();
+    this.props.resetContactDataForm();
     this.props.history.goBack();
   };
   private submit = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -118,13 +115,13 @@ class ContactData extends Component<
             country: address.country.value,
           },
           deliveryMethod: deliveryMethod.deliveryMethod.value,
-          ingredients: this.props.ingredients,
+          ingredients: this.props.ingredients!,
           price: this.props.totalPrice,
           date: Date(),
         };
 
         await axios.post('/orders.json', order);
-        this.props.resetForm();
+        this.props.resetContactDataForm();
         this.setState(
           () => ({ loading: false }),
           () => this.props.history.push('/all-orders'),

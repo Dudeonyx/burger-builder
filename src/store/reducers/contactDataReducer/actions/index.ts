@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { IcontactDataReducerAction } from '../types';
 import { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { store } from '../../../store';
 
 export const contactDataReducerActionTypes: IcontactDataReducerActionTypes = {
   UPDATE_CONTACT_FORM: 'UPDATE_CONTACT_FORM',
@@ -12,22 +13,30 @@ export const contactDataReducerActionTypes: IcontactDataReducerActionTypes = {
 
 export const mapContactDataStateToProps = (state: IstoreState) => ({
   customer: state.cData.customer,
+  ingredients: state.ings.ingredients,
+  totalPrice: state.ings.totalPrice,
 });
 
+export const updateContactDataForm = (e: ChangeEvent<HTMLInputElement>) => {
+  const { value = '' } = e.currentTarget;
+  const { name }: any = e.currentTarget;
+  const { set = '' }: any = e.currentTarget.dataset;
+  return store.dispatch<IcontactDataReducerAction>({
+    type: contactDataReducerActionTypes.UPDATE_CONTACT_FORM,
+    payload: { set, name, value },
+  });
+};
+export const resetContactDataForm = () => {
+  return store.dispatch<IcontactDataReducerAction>({
+    type: contactDataReducerActionTypes.RESET_CONTACT_FORM,
+  });
+};
+
 export const mapContactDataDispatchToProps = (
-  dispatch: Dispatch<IcontactDataReducerAction>,
+  _dispatch: Dispatch<IcontactDataReducerAction>,
 ) => ({
-  updateForm: (e: ChangeEvent<HTMLInputElement>) => {
-    const { value = '' } = e.currentTarget;
-    const { name }: any = e.currentTarget;
-    const { set = '' }: any = e.currentTarget.dataset;
-    return dispatch({
-      type: contactDataReducerActionTypes.UPDATE_CONTACT_FORM,
-      payload: { set, name, value },
-    });
-  },
-  resetForm: () =>
-    dispatch({ type: contactDataReducerActionTypes.RESET_CONTACT_FORM }),
+  updateContactDataForm,
+  resetContactDataForm,
 });
 
 export const connectContactData = connect(

@@ -1,6 +1,7 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
 import Button from '../Button/Button';
-import OrderText, { IOrderIngredientsPrice } from '../OrderText/OrderText';
+import OrderText from '../OrderText/OrderText';
+import { IOrderIngredientsPrice } from '../OrderText/types';
 
 export interface IOrderSummary extends IOrderIngredientsPrice {
   purchaseCancel: MouseEventHandler;

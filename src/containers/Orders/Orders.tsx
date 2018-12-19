@@ -1,46 +1,15 @@
-import React, { FunctionComponent, Component } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { Component } from 'react';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import styled from 'styled-components/macro';
-import { Iingredients } from '../../types/ingredients';
-// tslint:disable-next-line:no-empty-interface
-export interface IOrdersProps extends RouteComponentProps {}
-
-export interface IDbOrder {
-  basicInfo: {
-    name: string;
-    phone: string;
-    email: string;
-  };
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-  };
-  deliveryMethod: string;
-  ingredients: Iingredients;
-  date: string;
-  price: string;
-}
-export interface IDbOrders {
-  [x: string]: IDbOrder;
-}
-export interface IformattedOrder {
-  id: string;
-  ingredients: Iingredients;
-  name: string;
-  totalPrice: string;
-}
-export interface IOrdersState {
-  orders: IDbOrders | null;
-  loading: boolean;
-  formattedOrders: IformattedOrder[];
-}
-
+import styled from '@emotion/styled/macro';
+import {
+  IOrdersProps,
+  IOrdersState,
+  IDbOrders,
+  IformattedOrder,
+} from './types';
 const StyledOrders = styled.div`
   & {
     display: flex;

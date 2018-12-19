@@ -9,11 +9,11 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 
 const app = (
-  <Provider store={store}>
-    <BrowserRouter basename="/burger-builder">
+  <BrowserRouter basename="/burger-builder">
+    <Provider store={store}>
       <App />
-    </BrowserRouter>
-  </Provider>
+    </Provider>
+  </BrowserRouter>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

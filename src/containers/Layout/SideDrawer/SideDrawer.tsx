@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
-import styled from 'styled-components/macro';
+import styled from '@emotion/styled/macro';
 import Logo from '../../../components/UI/Logo/Logo';
 
 export interface ISideDrawerProps {

@@ -8,46 +8,28 @@ import { connect } from 'react-redux';
 import { ICheckoutProps, ICheckoutState } from './types';
 
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
-  constructor(props: ICheckoutProps) {
-    super(props);
-
-    this.state = {
-      purchasable: false,
-    };
-  }
+  public state: ICheckoutState = {
+    purchasable: false,
+  };
   public componentDidMount = () => {
-    // const query = new URLSearchParams(this.props.location.search);
-    // const newIngredients = {} as Iingredients;
-    // query.forEach(
-    //   (igVal, igKey) => (newIngredients[igKey as IingredientsKeys] = +igVal),
-    // );
-    // const newTotalPrice = getTotalPrice(newIngredients);
     if (!this.props.ingredients) {
       return;
     }
     const purchasable = updatePurchasable(this.props.ingredients);
     this.setState({
-      // ingredients: newIngredients,
       purchasable,
-      // totalPrice: newTotalPrice,
     });
   };
 
   public render() {
     return (
       <div>
-        <Route
-          path={this.props.match.path + '/contact-data'}
-          render={p =>
-            this.props.ingredients && this.props.totalPrice ? (
-              <ContactData
-                {...p}
-                ingredients={this.props.ingredients}
-                totalPrice={this.props.totalPrice}
-              />
-            ) : null
-          }
-        />
+        {this.props.ingredients && this.props.totalPrice ? (
+          <Route
+            path={this.props.match.path + '/contact-data'}
+            component={ContactData}
+          />
+        ) : null}
         {this.props.ingredients && this.props.totalPrice ? (
           <>
             <CheckoutSummary

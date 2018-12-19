@@ -6,7 +6,6 @@ import axios from '../../axios-orders';
 import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-
 import {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
@@ -20,12 +19,12 @@ import { IBurgerBuilderProps, IBurgerBuilderState } from './types';
 import { Iingredients } from '../../types/ingredients';
 
 const BurgerDisplay = lazy(() =>
-  import(/* webpackChunkName: "BurgerDisplay" */
+  import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
   '../../components/Burger/BurgerDisplay/BurgerDisplay'),
 );
 
 const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary" */ '../../components/OrderSummary/OrderSummary'),
+  import(/* webpackChunkName: "OrderSummary", webpackPrefetch: true */ '../../components/OrderSummary/OrderSummary'),
 );
 
 /**
@@ -113,9 +112,6 @@ class BurgerBuilder extends Component<
       );
     }
 
-    // if (this.state.loading) {
-    //   orderSummary = <Loader />;
-    // }
     return (
       <>
         <Modal show={this.state.purchasing} hider={this.purchaseCancelHandler}>

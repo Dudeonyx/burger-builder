@@ -5,7 +5,8 @@ import React, {
   Suspense,
 } from 'react';
 import Button from '../../Button/Button';
-import OrderText, { IOrderIngredientsPrice } from '../../OrderText/OrderText';
+import OrderText from '../../OrderText/OrderText';
+import { IOrderIngredientsPrice } from '../../OrderText/types';
 import styles from './CheckoutSummary.module.css';
 import Loader from '../../UI/Loader/Loader';
 

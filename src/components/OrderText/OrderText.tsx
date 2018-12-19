@@ -1,31 +1,23 @@
 import React, { FunctionComponent } from 'react';
-import styles from './OrderText.module.css';
-import { Iingredients } from '../../types/ingredients';
+import styled from '@emotion/styled/macro';
+import { IOrderTextProps } from './types';
 
-export interface IOrderIngredientsPrice {
-  /**
-   * @type {Iingredients}
-   * @memberof IOrderIngredientsPrice
-   */
-  ingredients: Iingredients;
-  /**
-   * @type {number}
-   * @memberof IOrderIngredientsPrice
-   */
-  totalCost: string;
-}
-export interface IOrderTextProps extends IOrderIngredientsPrice {
-  /** A heading to display
-   * @type {string}
-   * @memberof IOrderTextProps
-   */
-  title?: string;
-  /** The text to display before the totalcost
-   * @type {string}
-   * @memberof IOrderTextProps
-   */
-  totalCostPrefix?: string;
-}
+const StyledOrderText = styled.div`
+  text-align: center;
+
+  div {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* max-width: 10em;
+  margin: 0 auto; */
+  }
+
+  ul {
+    text-align: left;
+    /* min-width: 10em; */
+  }
+`;
 
 /**
  * Component that displays the individual ingredient costs
@@ -47,7 +39,7 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
     </li>
   ));
   return (
-    <div className={styles.OrderText}>
+    <StyledOrderText>
       {title ? <h3 style={{ fontWeight: 'bold' }}>{title}</h3> : null}
       <div>
         <ul>{summary}</ul>
@@ -57,7 +49,7 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
           {totalCostPrefix} ${totalCost}
         </p>
       ) : null}
-    </div>
+    </StyledOrderText>
   );
 };
 
