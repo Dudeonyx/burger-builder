@@ -7,8 +7,14 @@ import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
 import { IDbOrder } from '../../Orders/types';
 import Modal from '../../../components/UI/Modal/Modal';
-import { IContactDataProps, IContactDataState } from './types';
-import { connectContactData } from '../../../store/reducers/actions/actionCreators';
+import { IContactDataState } from './types';
+import {
+  mapContactDataStateToProps,
+  mapContactDataDispatchToProps,
+} from '../../../store/reducers/actions';
+import { connect } from 'react-redux';
+import { GetConnectProps } from '../../../store/types';
+import { RouteComponentProps } from 'react-router';
 const StyledContactData = styled.div`
   margin: 10px auto;
   text-align: center;
@@ -27,6 +33,8 @@ const StyledContactData = styled.div`
     max-width: 540px;
   }
 `;
+
+export type IContactDataProps = RouteComponentProps & TConnectContactDataProps;
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public state: IContactDataState = {
     loading: false,
@@ -102,6 +110,46 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         e.preventDefault();
         this.setState({ loading: true });
         const { deliveryMethod, basicInfo, address } = this.props.customer;
+
+        const test0: IDbOrder = {
+          ...Object.entries(this.props.customer).reduce(
+            (cObj, [cKey, cConfig,]) => {
+              if (cKey === 'deliveryMethod' && cKey in cConfig) {
+                (cObj as any).deliveryMethod = (cConfig as any)[cKey].value;
+                return cObj;
+              }
+              (cObj as any)[cKey] = Object.entries(cConfig).reduce(
+                (obj, [key, config,]) => {
+                  (obj as any)[key] = config.value;
+                  return obj;
+                },
+                {} as IDbOrder['basicInfo' | 'address' | 'deliveryMethod'],
+              );
+              return cObj;
+            },
+            {} as IDbOrder,
+          ),
+          ingredients: this.props.ingredients!,
+          price: this.props.totalPrice,
+          date: Date(),
+        };
+        // tslint:disable-next-line: no-console
+        console.log('[Test Form object]', test0);
+
+        // const test = Object.entries(basicInfo).reduce(
+        //   (obj, [key, config,]) => {
+        //     (obj as any)[key] = config.value;
+        //     return obj;
+        //   },
+        //   {} as IDbOrder['basicInfo'],
+        // );
+        // const test2 = Object.entries(address).reduce(
+        //   (obj, [key, config,]) => {
+        //     (obj as any)[key] = config.value;
+        //     return obj;
+        //   },
+        //   {} as IDbOrder['address'],
+        // );
         const order: IDbOrder = {
           basicInfo: {
             name: basicInfo.name.value,
@@ -134,5 +182,13 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     }
   };
 }
+
+const connectContactData = connect(
+  mapContactDataStateToProps,
+  mapContactDataDispatchToProps,
+);
+export type TConnectContactDataProps = GetConnectProps<
+  typeof connectContactData
+>;
 
 export default connectContactData(ContactData);
