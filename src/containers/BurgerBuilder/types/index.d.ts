@@ -24,5 +24,4 @@ export interface IBurgerBuilderState {
    * @type {(Error | null | false)}
    * @memberof IBurgerBuilderState
    */
-  error: Error | null | false;
 }

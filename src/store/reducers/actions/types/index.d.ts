@@ -1,12 +1,8 @@
-import {
-  mapIngredientsStateToProps,
-  mapIngredientsDispatchToProps,
-} from '../actionCreators';
-
 export interface IingActionTypes {
-  readonly INCREASE_INGREDIENT: 'INCREASE_INGREDIENT';
-  readonly DECREASE_INGREDIENT: 'DECREASE_INGREDIENT';
-  readonly SET_INGREDIENTS: 'SET_INGREDIENTS';
+  INCREASE_INGREDIENT: 'INCREASE_INGREDIENT';
+  DECREASE_INGREDIENT: 'DECREASE_INGREDIENT';
+  SET_INGREDIENTS: 'SET_INGREDIENTS';
+  SET_ERROR: 'SET_ERROR';
 }
 
 // export type IconnectIngredientsProps<

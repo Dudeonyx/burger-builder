@@ -3,6 +3,7 @@ import { IingActionTypes } from '../../actions/types';
 
 export interface IingredientReducerState {
   ingredients: Iingredients | null;
+  error: boolean;
 }
 
 export type IingredientReducerAction =
@@ -18,5 +19,11 @@ export type IingredientReducerAction =
         | IingActionTypes['DECREASE_INGREDIENT'];
       payload: {
         igkey: keyof Iingredients;
+      };
+    }
+  | {
+      type: IingActionTypes['SET_ERROR'];
+      payload: {
+        error: boolean;
       };
     };

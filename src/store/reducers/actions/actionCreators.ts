@@ -1,85 +1,63 @@
 import { Dispatch } from 'redux';
 import { ChangeEvent } from 'react';
-import { connect } from 'react-redux';
-import { IstoreState, GetConnectProps } from '../../types';
-import {
-  getBurgerBuilderPropsFromState,
-  getContactDataPropsFromState,
-} from '../../selectors/selectors';
+
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
-import { store } from '../../store';
 import { IingredientReducerAction } from '../ingredientReducer/types';
-import { IcontactDataReducerAction } from '../contactDataReducer/types';
-import {
-  contactDataReducerActionTypes,
-  ingredientActionTypes,
-} from './actionTypes';
+import { contactDataReducerActionTypes, ingredientActionTypes } from './index';
+import axios from '../../../axios-orders';
 
 export const ingredientIncreaseHandler = (igkey: IingredientsKeys) => {
-  return store.dispatch<IingredientReducerAction>({
+  return {
     type: ingredientActionTypes.INCREASE_INGREDIENT,
     payload: { igkey },
-  });
+  };
 };
 export const ingredientDecreaseHandler = (igkey: IingredientsKeys) => {
-  return store.dispatch<IingredientReducerAction>({
+  return {
     type: ingredientActionTypes.DECREASE_INGREDIENT,
     payload: { igkey },
-  });
+  };
 };
-export const ingredientStoreHandler = (ingredients: Iingredients | null) => {
-  return store.dispatch<IingredientReducerAction>({
+export const ingredientSetHandler = (ingredients: Iingredients | null) => {
+  return {
     type: ingredientActionTypes.SET_INGREDIENTS,
     payload: { ingredients },
-  });
+  };
+};
+export const ingredientErrorHandler = (error: boolean) => {
+  return {
+    type: ingredientActionTypes.SET_ERROR,
+    payload: { error },
+  };
+};
+
+export const fetchIngredientsHandler = () => {
+  return async (dispatch: Dispatch<IingredientReducerAction>) => {
+    // this.setState({ error: null });
+    dispatch(ingredientErrorHandler(false));
+    try {
+      const response = await axios.get<Iingredients>('/ingredients.json');
+      const { data: newIngredients } = response;
+      dispatch(ingredientSetHandler(newIngredients));
+    } catch (error) {
+      dispatch(ingredientErrorHandler(true));
+    }
+  };
 };
 
 export const updateContactDataForm = (e: ChangeEvent<HTMLInputElement>) => {
-  const { value = '' } = e.currentTarget;
-  const { name = '' }: any = e.currentTarget;
-  const { set = '' }: any = e.currentTarget.dataset;
-  return store.dispatch<IcontactDataReducerAction>({
+  const {
+    value = '',
+    dataset: { set = '' },
+    name = '',
+  } = e.currentTarget as any;
+  return {
     type: contactDataReducerActionTypes.UPDATE_CONTACT_FORM,
     payload: { set, name, value },
-  });
+  };
 };
 export const resetContactDataForm = () => {
-  return store.dispatch<IcontactDataReducerAction>({
+  return {
     type: contactDataReducerActionTypes.RESET_CONTACT_FORM,
-  });
+  };
 };
-
-export const mapIngredientsStateToProps = (state: IstoreState) => {
-  return getBurgerBuilderPropsFromState(state);
-};
-
-export const mapContactDataStateToProps = (state: IstoreState) => {
-  return getContactDataPropsFromState(state);
-};
-export const mapContactDataDispatchToProps = (
-  _dispatch: Dispatch<IcontactDataReducerAction>,
-) => ({
-  updateContactDataForm,
-  resetContactDataForm,
-});
-
-export const connectContactData = connect(
-  mapContactDataStateToProps,
-  mapContactDataDispatchToProps,
-);
-export type TConnectContactDataProps = GetConnectProps<
-  typeof connectContactData
->;
-
-export const mapIngredientsDispatchToProps = (
-  _dispatch: Dispatch<IingredientReducerAction>,
-) => ({
-  ingredientIncreaseHandler,
-  ingredientDecreaseHandler,
-  ingredientStoreHandler,
-});
-
-export const connectIngredients = connect(
-  mapIngredientsStateToProps,
-  mapIngredientsDispatchToProps,
-);

@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { IContactDataReducerState, IcontactDataReducerAction } from './types';
-import { contactDataReducerActionTypes } from '../actions/actionTypes';
+import { contactDataReducerActionTypes } from '../actions';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {

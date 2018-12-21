@@ -14,11 +14,15 @@ import { Iingredients } from '../../types/ingredients';
 import {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
-  ingredientStoreHandler,
-  mapIngredientsStateToProps,
-} from '../../store/reducers/actions/actionCreators';
+  ingredientSetHandler,
+  ingredientErrorHandler,
+  fetchIngredientsHandler,
+} from '../../store/reducers/actions';
 import { GetConnectProps } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
+import { Dispatch, bindActionCreators } from 'redux';
+import { IingredientReducerAction } from '../../store/reducers/ingredientReducer/types';
+import { mapIngredientsStateToProps } from '../../store/reducers/actions';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -41,15 +45,18 @@ class BurgerBuilder extends Component<
     purchasing: false,
     loading: false,
     orders: [],
-    error: null,
   };
 
   public async componentDidMount() {
-    this.props.ingredientStoreHandler(null);
-    this.fetchIngredients();
+    this.props.ingredientSetHandler(null);
+    this.props.fetchIngredientsHandler();
+    setTimeout(() => {
+      import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
+    }, 10000);
   }
 
   public purchaseStartHandler = () => {
+    import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
     this.setState({ purchasing: true });
   };
   public purchaseCancelHandler = () => {
@@ -65,7 +72,7 @@ class BurgerBuilder extends Component<
   };
 
   public render() {
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <Retry
         retryHandler={this.fetchIngredients}
         mainMessage="Ingredients Failed To Load. Please "
@@ -124,42 +131,48 @@ class BurgerBuilder extends Component<
   }
 
   private fetchIngredients = async () => {
-    this.setState({ error: null });
+    // this.setState({ error: null });
     try {
       const response: AxiosResponse<Iingredients> = await axios.get(
         '/ingredients.json',
       );
       const { data: newIngredients } = response;
-      this.props.ingredientStoreHandler(newIngredients);
+      this.props.ingredientSetHandler(newIngredients);
     } catch (error) {
       // tslint:disable-next-line:no-console
-      this.setState({
-        error,
-      });
-    } finally {
-      import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
+      // this.setState({
+      //   error,
+      // });
     }
   };
   private offline = () => {
-    this.setState(
-      () => ({ error: false }),
-      () =>
-        this.props.ingredientStoreHandler({
-          bacon: 0,
-          cheese: 0,
-          meat: 0,
-          salad: 0,
-        }),
-    );
+    this.props.ingredientSetHandler({
+      bacon: 0,
+      cheese: 0,
+      meat: 0,
+      salad: 0,
+    });
+    this.props.ingredientErrorHandler(false);
   };
 }
 
-const mapDispatch = () => ({
-  ingredientIncreaseHandler,
-  ingredientDecreaseHandler,
-  ingredientStoreHandler,
-});
+const mapDispatch = (dispatch: Dispatch<IingredientReducerAction>) => {
+  return bindActionCreators(
+    {
+      ingredientIncreaseHandler,
+      ingredientDecreaseHandler,
+      ingredientSetHandler,
+      fetchIngredientsHandler,
+      ingredientErrorHandler,
+    },
+    dispatch as Dispatch,
+  );
+};
 
-const connectBurgerBuilder = connect(mapIngredientsStateToProps, mapDispatch);
-export type IBurgerBuilderProps = RouteComponentProps & GetConnectProps<typeof connectBurgerBuilder>;
+const connectBurgerBuilder = connect(
+  mapIngredientsStateToProps,
+  mapDispatch,
+);
+export type IBurgerBuilderProps = RouteComponentProps &
+  GetConnectProps<typeof connectBurgerBuilder>;
 export default connectBurgerBuilder(withErrorHandler(BurgerBuilder, axios));

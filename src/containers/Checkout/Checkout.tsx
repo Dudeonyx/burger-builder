@@ -5,8 +5,8 @@ import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
-import { mapIngredientsStateToProps } from '../../store/reducers/actions/actionCreators';
 import { GetConnectProps } from '../../store/types';
+import { mapIngredientsStateToProps } from '../../store/reducers/actions';
 
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   public state: ICheckoutState = {
@@ -58,6 +58,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
 }
 const connectIngredientsState = connect(mapIngredientsStateToProps);
 
-export type ICheckoutProps = RouteComponentProps & GetConnectProps<typeof connectIngredientsState>;
+export type ICheckoutProps = RouteComponentProps &
+  GetConnectProps<typeof connectIngredientsState>;
 
 export default connectIngredientsState(Checkout);

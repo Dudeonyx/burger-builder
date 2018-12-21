@@ -1,9 +1,11 @@
 import produce from 'immer';
+
 import { IingredientReducerState, IingredientReducerAction } from './types';
-import { ingredientActionTypes } from '../actions/actionTypes';
+import { ingredientActionTypes } from '../actions';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
+  error: false,
 };
 export const ingredientReducer = (
   state = initialState,
@@ -32,6 +34,9 @@ export const ingredientReducer = (
           break;
         }
         draft.ingredients = action.payload.ingredients;
+        break;
+      case ingredientActionTypes.SET_ERROR:
+        draft.error = action.payload.error;
         break;
       default:
         break;

@@ -1,29 +1,34 @@
-import PropTypes from 'prop-types';
-import React, { Component, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './BurgerIngredient.module.css';
+import { IBurgerIngredientProps } from './types';
 
-
-const ingredient = {
-  bacon: <div className={styles.Bacon} />,
-  'bread-bottom': <div className={styles.BreadBottom} />,
-  'bread-top': (
-    <div className={styles.BreadTop}>
-      <div className={styles.Seeds1} />
-      <div className={styles.Seeds2} />
-    </div>
-  ),
-  cheese: <div className={styles.Cheese} />,
-  meat: <div className={styles.Meat} />,
-  salad: <div className={styles.Salad} />,
-};
-  export interface IBurgerIngredient {
-    type: 'bacon' | 'bread-bottom' | 'bread-top' | 'cheese' | 'meat' | 'salad';
+const ingredient = (type: IBurgerIngredientProps['type']) => {
+  switch (type) {
+    case 'bread-bottom':
+      return <div className={styles.BreadBottom} />;
+    case 'bread-top':
+      return (
+        <div className={styles.BreadTop}>
+          <div className={styles.Seeds1} />
+          <div className={styles.Seeds2} />
+        </div>
+      );
+    case 'bacon':
+      return <div className={styles.Bacon} />;
+    case 'cheese':
+      return <div className={styles.Cheese} />;
+    case 'meat':
+      return <div className={styles.Meat} />;
+    case 'salad':
+      return <div className={styles.Salad} />;
+    default:
+      return null;
   }
-const BurgerIngredient: FunctionComponent<IBurgerIngredient> = ({type}) => {
-  
-  return ingredient[type] || null;
-  
-}
+};
+const BurgerIngredient: FunctionComponent<IBurgerIngredientProps> = ({
+  type,
+}) => {
+  return ingredient(type);
+};
 
-
-export default BurgerIngredient;
+export default React.memo(BurgerIngredient);
