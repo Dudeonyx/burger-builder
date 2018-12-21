@@ -111,45 +111,6 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         this.setState({ loading: true });
         const { deliveryMethod, basicInfo, address } = this.props.customer;
 
-        const test0: IDbOrder = {
-          ...Object.entries(this.props.customer).reduce(
-            (cObj, [cKey, cConfig,]) => {
-              if (cKey === 'deliveryMethod' && cKey in cConfig) {
-                (cObj as any).deliveryMethod = (cConfig as any)[cKey].value;
-                return cObj;
-              }
-              (cObj as any)[cKey] = Object.entries(cConfig).reduce(
-                (obj, [key, config,]) => {
-                  (obj as any)[key] = config.value;
-                  return obj;
-                },
-                {} as IDbOrder['basicInfo' | 'address' | 'deliveryMethod'],
-              );
-              return cObj;
-            },
-            {} as IDbOrder,
-          ),
-          ingredients: this.props.ingredients!,
-          price: this.props.totalPrice,
-          date: Date(),
-        };
-        // tslint:disable-next-line: no-console
-        console.log('[Test Form object]', test0);
-
-        // const test = Object.entries(basicInfo).reduce(
-        //   (obj, [key, config,]) => {
-        //     (obj as any)[key] = config.value;
-        //     return obj;
-        //   },
-        //   {} as IDbOrder['basicInfo'],
-        // );
-        // const test2 = Object.entries(address).reduce(
-        //   (obj, [key, config,]) => {
-        //     (obj as any)[key] = config.value;
-        //     return obj;
-        //   },
-        //   {} as IDbOrder['address'],
-        // );
         const order: IDbOrder = {
           basicInfo: {
             name: basicInfo.name.value,
