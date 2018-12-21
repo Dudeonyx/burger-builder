@@ -23,16 +23,6 @@ export const mapIngredientsStateToProps = (state: IstoreState) => {
 export const mapContactDataStateToProps = (state: IstoreState) => {
   return getContactDataState(state);
 };
-export const mapContactDataDispatchToProps = (
-  dispatch: Dispatch<IcontactDataReducerAction>,
-) =>
-  bindActionCreators(
-    {
-      updateContactDataForm,
-      resetContactDataForm,
-    },
-    dispatch,
-  );
 
 export const mapIngredientsDispatchToProps = (
   dispatch: Dispatch<IingredientReducerAction>,

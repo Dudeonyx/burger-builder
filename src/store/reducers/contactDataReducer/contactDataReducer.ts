@@ -131,6 +131,8 @@ const initialState: IContactDataReducerState = {
       },
     },
   },
+  orders: {},
+  error: false,
 };
 
 export const contactDataReducer = (
@@ -157,6 +159,12 @@ export const contactDataReducer = (
             obj.value === value ? (obj.checked = true) : (obj.checked = false);
           });
         }
+        break;
+      case contactDataReducerActionTypes.ORDER_SUCCESSFUL:
+        draft.orders[action.payload.name] = action.payload.order;
+        break;
+      case contactDataReducerActionTypes.ORDER_FAILED:
+        draft.error = action.payload.error;
         break;
       case contactDataReducerActionTypes.RESET_CONTACT_FORM:
         draft.customer = initialState.customer;

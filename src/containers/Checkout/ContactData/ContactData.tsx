@@ -2,7 +2,6 @@ import styled from '@emotion/styled/macro';
 // import styled from 'styled-components/macro';
 import React, { MouseEvent, Component } from 'react';
 import Button from '../../../components/Button/Button';
-import axios from '../../../axios-orders';
 import Loader from '../../../components/UI/Loader/Loader';
 import Input from './Input/Input';
 import { IDbOrder } from '../../Orders/types';
@@ -10,11 +9,17 @@ import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import {
   mapContactDataStateToProps,
-  mapContactDataDispatchToProps,
+  updateContactDataForm,
+  resetContactDataForm,
+  submitOrder,
 } from '../../../store/reducers/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../../store/types';
 import { RouteComponentProps } from 'react-router';
+import { IcontactDataReducerAction } from '../../../store/reducers/contactDataReducer/types';
+import { Dispatch, bindActionCreators } from 'redux';
+import withErrorHandler from '../../../HOCs/withErrorHandler';
+import axios from '../../../axios-orders';
 const StyledContactData = styled.div`
   margin: 10px auto;
   text-align: center;
@@ -128,13 +133,17 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
           price: this.props.totalPrice,
           date: Date(),
         };
+        // tslint:disable-next-line: no-console
+        await this.props.submitOrder(order);
 
-        await axios.post('/orders.json', order);
-        this.props.resetContactDataForm();
         this.setState(
           () => ({ loading: false }),
           () => this.props.history.push('/all-orders'),
         );
+        // const response = await axios.post('/orders.json', order);
+        // // tslint:disable-next-line: no-console
+        // console.log(response);
+        // this.props.resetContactDataForm();
       } catch (error) {
         // tslint:disable-next-line:no-console
         console.log(error);
@@ -144,6 +153,18 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
+const mapContactDataDispatchToProps = (
+  dispatch: Dispatch<IcontactDataReducerAction>,
+) =>
+  bindActionCreators(
+    {
+      updateContactDataForm,
+      resetContactDataForm,
+      submitOrder,
+    },
+    dispatch,
+  );
+
 const connectContactData = connect(
   mapContactDataStateToProps,
   mapContactDataDispatchToProps,
@@ -152,4 +173,4 @@ export type TConnectContactDataProps = GetConnectProps<
   typeof connectContactData
 >;
 
-export default connectContactData(ContactData);
+export default connectContactData(withErrorHandler(ContactData, axios));
