@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { IContactDataReducerState, IcontactDataReducerAction } from './types';
-import { contactDataReducerActionTypes } from './actions';
+import { contactDataReducerActionTypes } from '../actions/actionTypes';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {
@@ -89,6 +89,7 @@ const initialState: IContactDataReducerState = {
             name: 'deliveryMethod',
             label: 'Cheapest',
             dataSet: 'deliveryMethod',
+            checked: false,
           },
           {
             value: 'cheap',
@@ -97,6 +98,7 @@ const initialState: IContactDataReducerState = {
             name: 'deliveryMethod',
             label: 'Cheap',
             dataSet: 'deliveryMethod',
+            checked: false,
           },
           {
             value: 'normal',
@@ -104,8 +106,8 @@ const initialState: IContactDataReducerState = {
             id: 'normal_id',
             name: 'deliveryMethod',
             label: 'Normal',
-            defaultChecked: true,
             dataSet: 'deliveryMethod',
+            checked: true,
           },
           {
             value: 'expensive',
@@ -114,6 +116,7 @@ const initialState: IContactDataReducerState = {
             name: 'deliveryMethod',
             label: 'Expensive',
             dataSet: 'deliveryMethod',
+            checked: false,
           },
           {
             value: 'very_expensive',
@@ -122,6 +125,7 @@ const initialState: IContactDataReducerState = {
             name: 'deliveryMethod',
             label: 'Very Expensive',
             dataSet: 'deliveryMethod',
+            checked: false,
           },
         ],
       },
@@ -137,10 +141,22 @@ export const contactDataReducer = (
     switch (action.type) {
       case contactDataReducerActionTypes.UPDATE_CONTACT_FORM:
         const { set, name, value } = action.payload;
+        if (!(set in draft.customer)) {
+          // tslint:disable-next-line:no-console
+          console.error(`${set} not found in Form.customer`);
+          break;
+        }
         if (!(name in draft.customer[set])) {
+          // tslint:disable-next-line:no-console
+          console.error(`${name} not found in ${set}`);
           break;
         }
         (draft.customer as any)[set][name].value = value;
+        if (name === 'deliveryMethod') {
+          draft.customer.deliveryMethod.deliveryMethod.options.map(obj => {
+            obj.value === value ? (obj.checked = true) : (obj.checked = false);
+          });
+        }
         break;
       case contactDataReducerActionTypes.RESET_CONTACT_FORM:
         draft.customer = initialState.customer;

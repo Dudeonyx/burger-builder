@@ -1,4 +1,4 @@
-import { IcontactDataReducerActionTypes } from '../actions/types';
+import { IcontactDataReducerActionTypes } from "../../actions/types";
 
 export interface IReducerInputConfig {
   value: string;

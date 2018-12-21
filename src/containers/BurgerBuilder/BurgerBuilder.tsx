@@ -1,4 +1,3 @@
-import { updatePurchasable } from '../../shared/updatePurchasable';
 import React, { Component, lazy } from 'react';
 
 import { AxiosResponse } from 'axios';
@@ -6,17 +5,20 @@ import axios from '../../axios-orders';
 import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import { connect } from 'react-redux';
+import Modal from '../../components/UI/Modal/Modal';
+import { updatePurchasable } from '../../shared/updatePurchasable';
+import { IBurgerBuilderState } from './types';
+import { Iingredients } from '../../types/ingredients';
 import {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
   ingredientStoreHandler,
   mapIngredientsStateToProps,
-} from '../../store/reducers/ingredientReducer/actions';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import { connect } from 'react-redux';
-import Modal from '../../components/UI/Modal/Modal';
-import { IBurgerBuilderProps, IBurgerBuilderState } from './types';
-import { Iingredients } from '../../types/ingredients';
+} from '../../store/reducers/actions/actionCreators';
+import { GetConnectProps } from '../../store/types';
+import { RouteComponentProps } from 'react-router';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -42,7 +44,7 @@ class BurgerBuilder extends Component<
     error: null,
   };
 
-  public componentDidMount() {
+  public async componentDidMount() {
     this.props.ingredientStoreHandler(null);
     this.fetchIngredients();
   }
@@ -59,7 +61,6 @@ class BurgerBuilder extends Component<
     }
     this.props.history.push({
       pathname: '/checkout',
-      // search: '?' + newQueryString,
     });
   };
 
@@ -135,6 +136,8 @@ class BurgerBuilder extends Component<
       this.setState({
         error,
       });
+    } finally {
+      import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
     }
   };
   private offline = () => {
@@ -157,7 +160,6 @@ const mapDispatch = () => ({
   ingredientStoreHandler,
 });
 
-export default connect(
-  mapIngredientsStateToProps,
-  mapDispatch,
-)(withErrorHandler(BurgerBuilder, axios));
+const connectBurgerBuilder = connect(mapIngredientsStateToProps, mapDispatch);
+export type IBurgerBuilderProps = RouteComponentProps & GetConnectProps<typeof connectBurgerBuilder>;
+export default connectBurgerBuilder(withErrorHandler(BurgerBuilder, axios));

@@ -84,6 +84,8 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
       // tslint:disable-next-line:no-console
       console.error(error);
       this.setState({ loading: false });
+    } finally {
+      import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder');
     }
   };
 
@@ -106,13 +108,5 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
     );
   }
 }
-
-// Orders.propTypes = {
-//   // bla: PropTypes.string,
-// };
-
-// Orders.defaultProps = {
-//   // bla: 'test',
-// };
 
 export default withErrorHandler(Orders, axios);

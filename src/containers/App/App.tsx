@@ -4,13 +4,13 @@ import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
 import { suspenseNode2 } from '../../HOCs/suspensed';
 const Orders = lazy(() =>
-  import(/* webpackChunkName: "Orders", webpackPrefetch: true */ '../Orders/Orders'),
+  import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
 );
 const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout", webpackPrefetch: true */ '../Checkout/Checkout'),
+  import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'),
 );
 const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder", webpackPrefetch: true */ '../BurgerBuilder/BurgerBuilder'),
+  import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
 import '../../components/UI/Loader/Loader';
 import '../../shared/getTotalPrice';
@@ -24,6 +24,8 @@ import '../../components/UI/Modal/Modal';
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
+
+// const Page = lazy(() => import(/* webpackChunkName: "Page" */ '../Page/Page'));
 
 const App = () => {
   return (

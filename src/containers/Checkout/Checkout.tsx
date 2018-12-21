@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
-import { mapIngredientsStateToProps } from '../../store/reducers/ingredientReducer/actions';
 import { connect } from 'react-redux';
-import { ICheckoutProps, ICheckoutState } from './types';
+import { ICheckoutState } from './types';
+import { mapIngredientsStateToProps } from '../../store/reducers/actions/actionCreators';
+import { GetConnectProps } from '../../store/types';
 
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   public state: ICheckoutState = {
@@ -51,7 +52,12 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
     this.props.history.goBack();
   };
   private checkoutContinue = () => {
+    import(/* webpackChunkName: "Orders" */ '../Orders/Orders');
     this.props.history.push(this.props.match.path + '/contact-data');
   };
 }
-export default connect(mapIngredientsStateToProps)(Checkout);
+const connectIngredientsState = connect(mapIngredientsStateToProps);
+
+export type ICheckoutProps = RouteComponentProps & GetConnectProps<typeof connectIngredientsState>;
+
+export default connectIngredientsState(Checkout);

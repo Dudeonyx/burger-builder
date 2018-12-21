@@ -53,7 +53,7 @@ const Input: FunctionComponent<IInputProps> = props => {
     onChange,
     value,
     label,
-    defaultChecked,
+    checked,
     dataSet,
     required,
   } = props;
@@ -90,7 +90,7 @@ const Input: FunctionComponent<IInputProps> = props => {
               name={name}
               onChange={onChange}
               value={value}
-              defaultChecked={defaultChecked}
+              checked={checked}
               data-set={dataSet}
             />{' '}
             <span>{label}</span>

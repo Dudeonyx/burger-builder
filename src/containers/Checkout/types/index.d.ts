@@ -1,5 +1,4 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { IconnectIngredientsProps } from '../../../store/reducers/ingredientReducer/actions/types';
 /**
  * @export
  * @interface ICheckoutState
@@ -7,4 +6,4 @@ import { IconnectIngredientsProps } from '../../../store/reducers/ingredientRedu
 export interface ICheckoutState {
   purchasable: boolean;
 }
-export type ICheckoutProps = IconnectIngredientsProps<RouteComponentProps, {}>;
+

@@ -1,5 +1,4 @@
 import { RouteComponentProps } from 'react-router-dom';
-import { IconnectIngredientsProps } from '../../../store/reducers/ingredientReducer/actions/types';
 
 /**
  * @export
@@ -27,4 +26,3 @@ export interface IBurgerBuilderState {
    */
   error: Error | null | false;
 }
-export type IBurgerBuilderProps = IconnectIngredientsProps<RouteComponentProps>;

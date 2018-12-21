@@ -8,7 +8,7 @@ import Input from './Input/Input';
 import { IDbOrder } from '../../Orders/types';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataProps, IContactDataState } from './types';
-import { connectContactData } from '../../../store/reducers/contactDataReducer/actions';
+import { connectContactData } from '../../../store/reducers/actions/actionCreators';
 const StyledContactData = styled.div`
   margin: 10px auto;
   text-align: center;
