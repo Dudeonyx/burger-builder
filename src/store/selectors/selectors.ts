@@ -21,17 +21,29 @@ export const getTotalPriceFromStore = createSelector(
     return getTotalPrice(ingredients);
   },
 );
-export const getContactDataState = createSelector(
+export const getCustomerFromState = createSelector(
+  customerSelector,
+  customer => customer,
+);
+export const getSubmitOrderState = createSelector(
   customerSelector,
   ingredientsSelector,
-  submittingSelector,
   getTotalPriceFromStore,
-  (customer, ingredients, submitting, totalPrice) => {
+  (customer, ingredients, totalPrice) => {
     return {
       customer,
       ingredients,
-      submitting,
       totalPrice,
+    };
+  },
+);
+export const getContactDataState = createSelector(
+  customerSelector,
+  submittingSelector,
+  (customer, submitting) => {
+    return {
+      customer,
+      submitting,
     };
   },
 );

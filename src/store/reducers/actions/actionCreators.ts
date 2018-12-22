@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
 import { IingredientReducerAction } from '../ingredientReducer/types';
@@ -8,6 +8,11 @@ import axios from '../../../axios-orders';
 import { IDbOrder } from '../../../containers/Orders/types';
 import { IContactDataReducerState } from '../contactDataReducer/types';
 import { IActions } from './types';
+import { IstoreState } from '../../types';
+import {
+  getContactDataState,
+  getSubmitOrderState,
+} from '../../selectors/selectors';
 
 export const ingredientIncreaseHandler = (
   igkey: IingredientsKeys,
@@ -102,14 +107,17 @@ export const setOrderSubmitting = (submitting: boolean): IActions => {
   };
 };
 
-export const submitOrder = (
-  customer: IContactDataReducerState['customer'],
-  ingredients: Iingredients,
-  totalPrice: string,
-): Promise<VoidFunction> => {
-  return (async (dispatch: Dispatch<IActions>) => {
+export const submitOrder = (): Promise<VoidFunction> => {
+  return (async (dispatch: Dispatch<IActions>, getState: () => IstoreState) => {
     try {
+      const { customer, ingredients, totalPrice } = getSubmitOrderState(
+        getState(),
+      );
       const { deliveryMethod, basicInfo, address } = customer;
+
+      if (!ingredients) {
+        throw new Error('Empty Ingredients object!!!');
+      }
 
       const order: IDbOrder = {
         basicInfo: {

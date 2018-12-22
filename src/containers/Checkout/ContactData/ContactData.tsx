@@ -74,14 +74,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
       try {
         e.preventDefault();
-        if (!this.props.ingredients) {
-          return;
-        }
-        await this.props.submitOrder(
-          this.props.customer,
-          this.props.ingredients,
-          this.props.totalPrice,
-        );
+        await this.props.submitOrder();
         this.props.history.push('/all-orders');
       } catch (error) {
         // tslint:disable-next-line:no-console
