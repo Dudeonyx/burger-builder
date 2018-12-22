@@ -1,5 +1,5 @@
 import { Iingredients } from '../../../../types/ingredients';
-import { IingActionTypes } from '../../actions/types';
+import { IActionTypes } from '../../actions/types';
 
 export interface IingredientReducerState {
   ingredients: Iingredients | null;
@@ -8,21 +8,21 @@ export interface IingredientReducerState {
 
 export type IingredientReducerAction =
   | {
-      type: IingActionTypes['SET_INGREDIENTS'];
+      type: IActionTypes['SET_INGREDIENTS'];
       payload: {
         ingredients: Iingredients | null;
       };
     }
   | {
       type:
-        | IingActionTypes['INCREASE_INGREDIENT']
-        | IingActionTypes['DECREASE_INGREDIENT'];
+        | IActionTypes['INCREASE_INGREDIENT']
+        | IActionTypes['DECREASE_INGREDIENT'];
       payload: {
         igkey: keyof Iingredients;
       };
     }
   | {
-      type: IingActionTypes['SET_ERROR'];
+      type: IActionTypes['SET_ERROR'];
       payload: {
         error: boolean;
       };

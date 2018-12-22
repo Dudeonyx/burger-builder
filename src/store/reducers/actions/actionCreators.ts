@@ -3,19 +3,17 @@ import { ChangeEvent, MouseEvent } from 'react';
 
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
 import { IingredientReducerAction } from '../ingredientReducer/types';
-import { contactDataReducerActionTypes, ingredientActionTypes } from './index';
+import { ActionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IDbOrder } from '../../../containers/Orders/types';
-import {
-  IcontactDataReducerAction,
-  IContactDataReducerState,
-} from '../contactDataReducer/types';
+import { IContactDataReducerState } from '../contactDataReducer/types';
+import { IActions } from './types';
 
 export const ingredientIncreaseHandler = (
   igkey: IingredientsKeys,
 ): IingredientReducerAction => {
   return {
-    type: ingredientActionTypes.INCREASE_INGREDIENT,
+    type: ActionTypes.INCREASE_INGREDIENT,
     payload: { igkey },
   };
 };
@@ -23,7 +21,7 @@ export const ingredientDecreaseHandler = (
   igkey: IingredientsKeys,
 ): IingredientReducerAction => {
   return {
-    type: ingredientActionTypes.DECREASE_INGREDIENT,
+    type: ActionTypes.DECREASE_INGREDIENT,
     payload: { igkey },
   };
 };
@@ -31,7 +29,7 @@ export const ingredientSetHandler = (
   ingredients: Iingredients | null,
 ): IingredientReducerAction => {
   return {
-    type: ingredientActionTypes.SET_INGREDIENTS,
+    type: ActionTypes.SET_INGREDIENTS,
     payload: { ingredients },
   };
 };
@@ -39,7 +37,7 @@ export const ingredientErrorHandler = (
   error: boolean,
 ): IingredientReducerAction => {
   return {
-    type: ingredientActionTypes.SET_ERROR,
+    type: ActionTypes.SET_ERROR,
     payload: { error },
   };
 };
@@ -60,50 +58,77 @@ export const fetchIngredientsHandler = (): Promise<VoidFunction> => {
 
 export const updateContactDataForm = (
   e: ChangeEvent<HTMLInputElement>,
-): IcontactDataReducerAction => {
+): IActions => {
   const {
     value = '',
     dataset: { set = '' },
     name = '',
   } = e.currentTarget as any;
   return {
-    type: contactDataReducerActionTypes.UPDATE_CONTACT_FORM,
+    type: ActionTypes.UPDATE_CONTACT_FORM,
     payload: { set, name, value },
   };
 };
-export const resetContactDataForm = (): IcontactDataReducerAction => {
+export const resetContactDataForm = (): IActions => {
   return {
-    type: contactDataReducerActionTypes.RESET_CONTACT_FORM,
+    type: ActionTypes.RESET_CONTACT_FORM,
   };
 };
 
-export const orderSuccessful = (
-  name: string,
-  order: IDbOrder,
-): IcontactDataReducerAction => {
+export const orderSuccessful = (name: string, order: IDbOrder): IActions => {
   return {
-    type: 'ORDER_SUCCESSFUL',
+    type: ActionTypes.ORDER_SUCCESSFUL,
     payload: {
       name,
       order,
     },
   };
 };
-export const orderFailed = (
-  error: Error | false,
-): IcontactDataReducerAction => {
+export const orderFailed = (error: Error | false): IActions => {
   return {
-    type: 'ORDER_FAILED',
+    type: ActionTypes.ORDER_FAILED,
     payload: {
       error,
     },
   };
 };
 
-export const submitOrder = (order: IDbOrder): Promise<VoidFunction> => {
-  return (async (dispatch: Dispatch<IcontactDataReducerAction>) => {
+export const setOrderSubmitting = (submitting: boolean): IActions => {
+  return {
+    type: ActionTypes.SET_SUBMITTING,
+    payload: {
+      submitting,
+    },
+  };
+};
+
+export const submitOrder = (
+  customer: IContactDataReducerState['customer'],
+  ingredients: Iingredients,
+  totalPrice: string,
+): Promise<VoidFunction> => {
+  return (async (dispatch: Dispatch<IActions>) => {
     try {
-      // this.setState({ loading: true });
+      const { deliveryMethod, basicInfo, address } = customer;
+
+      const order: IDbOrder = {
+        basicInfo: {
+          name: basicInfo.name.value,
+          phone: basicInfo.phone.value,
+          email: basicInfo.email.value,
+        },
+        address: {
+          street: address.street.value,
+          city: address.city.value,
+          state: address.state.value,
+          country: address.country.value,
+        },
+        deliveryMethod: deliveryMethod.deliveryMethod.value,
+        ingredients,
+        price: totalPrice,
+        date: Date(),
+      };
+      dispatch(setOrderSubmitting(true));
       const response = await axios.post('/orders.json', order);
       // tslint:disable-next-line: no-console
       console.log(response);
@@ -111,12 +136,13 @@ export const submitOrder = (order: IDbOrder): Promise<VoidFunction> => {
         data: { name },
       } = response;
       dispatch(orderSuccessful(name, order));
+      dispatch(setOrderSubmitting(false));
       dispatch(resetContactDataForm());
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error(error);
       dispatch(orderFailed(error));
-      // this.setState({ loading: false });
+      dispatch(setOrderSubmitting(false));
     }
   }) as any;
 };

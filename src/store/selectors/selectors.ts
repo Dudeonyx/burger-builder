@@ -11,6 +11,9 @@ export const ingredientsErrorSelector = (state: IstoreState) => {
 export const customerSelector = (state: IstoreState) => {
   return state.cData.customer;
 };
+export const submittingSelector = (state: IstoreState) => {
+  return state.cData.submitting;
+};
 
 export const getTotalPriceFromStore = createSelector(
   ingredientsSelector,
@@ -21,11 +24,13 @@ export const getTotalPriceFromStore = createSelector(
 export const getContactDataState = createSelector(
   customerSelector,
   ingredientsSelector,
+  submittingSelector,
   getTotalPriceFromStore,
-  (customer, ingredients, totalPrice) => {
+  (customer, ingredients, submitting, totalPrice) => {
     return {
       customer,
       ingredients,
+      submitting,
       totalPrice,
     };
   },

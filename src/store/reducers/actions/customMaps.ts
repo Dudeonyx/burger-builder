@@ -1,15 +1,12 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { IstoreState, GetConnectProps } from '../../types';
+import { IstoreState } from '../../types';
 import {
   getIngredientState,
   getContactDataState,
 } from '../../selectors/selectors';
-import { IcontactDataReducerAction } from '../contactDataReducer/types';
 import {
-  updateContactDataForm,
-  resetContactDataForm,
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
   ingredientSetHandler,

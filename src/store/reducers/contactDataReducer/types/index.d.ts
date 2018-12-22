@@ -1,4 +1,4 @@
-import { IcontactDataReducerActionTypes } from '../../actions/types';
+import { IActionTypes } from '../../actions/types';
 import { IDbOrder, IDbOrders } from '../../../../containers/Orders/types';
 
 export interface IReducerInputConfig {
@@ -42,44 +42,6 @@ export interface IContactDataReducerState {
   };
   orders: IDbOrders;
   error: Error | false;
+  submitting: boolean;
 }
 type customerKeys = keyof IContactDataReducerState['customer'];
-export type IcontactDataReducerAction =
-  | ({
-      type: IcontactDataReducerActionTypes['UPDATE_CONTACT_FORM'];
-      payload: { value: string };
-    } & (
-      | {
-          payload: {
-            set: 'basicInfo';
-            name: keyof IContactDataReducerState['customer']['basicInfo'];
-          };
-        }
-      | {
-          payload: {
-            set: 'address';
-            name: keyof IContactDataReducerState['customer']['address'];
-          };
-        }
-      | {
-          payload: {
-            set: 'deliveryMethod';
-            name: 'deliveryMethod';
-          };
-        }))
-  | {
-      type: IcontactDataReducerActionTypes['RESET_CONTACT_FORM'];
-    }
-  | {
-      type: IcontactDataReducerActionTypes['ORDER_SUCCESSFUL'];
-      payload: {
-        name: string;
-        order: IDbOrder;
-      };
-    }
-  | {
-      type: IcontactDataReducerActionTypes['ORDER_FAILED'];
-      payload: {
-        error: Error | false;
-      };
-    };
