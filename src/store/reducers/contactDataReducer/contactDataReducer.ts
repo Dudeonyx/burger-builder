@@ -140,8 +140,8 @@ const initialState: IContactDataReducerState = {
 export const contactDataReducer = (
   state = initialState,
   action: IContactDataReducerActions,
-) =>
-  produce(state, draft => {
+) => {
+  return produce(state, draft => {
     switch (action.type) {
       case ActionTypes.UPDATE_CONTACT_FORM:
         updateform(draft, action);
@@ -162,3 +162,4 @@ export const contactDataReducer = (
         break;
     }
   });
+};
