@@ -18,11 +18,11 @@ import {
   ingredientErrorHandler,
   fetchIngredientsHandler,
 } from '../../store/reducers/actions';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, IstoreState } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch, bindActionCreators } from 'redux';
 import { IingredientReducerAction } from '../../store/reducers/ingredientReducer/types';
-import { mapIngredientsStateToProps } from '../../store/reducers/actions';
+import { getIngredientState } from '../../store/selectors/selectors';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -43,8 +43,6 @@ class BurgerBuilder extends Component<
 > {
   public state: IBurgerBuilderState = {
     purchasing: false,
-    loading: false,
-    orders: [],
   };
 
   public async componentDidMount() {
@@ -102,7 +100,7 @@ class BurgerBuilder extends Component<
             price={this.props.totalPrice}
             increase={this.props.ingredientIncreaseHandler}
             decrease={this.props.ingredientDecreaseHandler}
-            purchasable={updatePurchasable(this.props.ingredients)}
+            purchaseable={this.props.purchaseable}
             purchaseStart={this.purchaseStartHandler}
           />
         </>
@@ -155,6 +153,10 @@ class BurgerBuilder extends Component<
     this.props.ingredientErrorHandler(false);
   };
 }
+
+export const mapIngredientsStateToProps = (state: IstoreState) => {
+  return getIngredientState(state);
+};
 
 const mapDispatch = (dispatch: Dispatch<IingredientReducerAction>) => {
   return bindActionCreators(

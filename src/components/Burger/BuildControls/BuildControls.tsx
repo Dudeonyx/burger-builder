@@ -15,7 +15,7 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
   increase,
   ingredients,
   price,
-  purchasable,
+  purchaseable,
   purchaseStart,
 }) => {
   const disabledCheck: TdisabledCheck = {
@@ -47,7 +47,7 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
       <button
         onClick={purchaseStart}
         className={styles.OrderButton}
-        disabled={!purchasable}
+        disabled={!purchaseable}
       >
         ORDER NOW
       </button>

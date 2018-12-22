@@ -1,5 +1,3 @@
-import { IingredientReducerState } from '../reducers/ingredientReducer/types';
-import { IContactDataReducerState } from '../reducers/contactDataReducer/types';
 import { store } from '../store';
 import { InferableComponentEnhancerWithProps } from 'react-redux';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './containers/App/App';
 import './index.css';
 import './normalize.css';
@@ -9,11 +9,11 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 
 const app = (
-  <BrowserRouter basename="/burger-builder">
-    <Provider store={store}>
+  <Provider store={store}>
+    <Router basename="/burger-builder">
       <App />
-    </Provider>
-  </BrowserRouter>
+    </Router>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

@@ -5,8 +5,13 @@ import ContactData from './ContactData/ContactData';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
-import { GetConnectProps } from '../../store/types';
-import { mapIngredientsStateToProps } from '../../store/reducers/actions';
+import { GetConnectProps, IstoreState } from '../../store/types';
+import { createSelector } from 'reselect';
+import {
+  selectIngredients,
+  getTotalPriceFromStore,
+  getPurchaseableFromStore,
+} from '../../store/selectors/selectors';
 
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   public state: ICheckoutState = {
@@ -26,13 +31,11 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
     return (
       <div>
         {this.props.ingredients && this.props.totalPrice ? (
-          <Route
-            path={this.props.match.path + '/contact-data'}
-            component={ContactData}
-          />
-        ) : null}
-        {this.props.ingredients && this.props.totalPrice ? (
           <>
+            <Route
+              path={this.props.match.path + '/contact-data'}
+              component={ContactData}
+            />
             <CheckoutSummary
               ingredients={this.props.ingredients}
               totalCost={this.props.totalPrice}
@@ -56,7 +59,22 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
     this.props.history.push(this.props.match.path + '/contact-data');
   };
 }
-const connectIngredientsState = connect(mapIngredientsStateToProps);
+
+const getCheckoutState = createSelector(
+  selectIngredients,
+  getTotalPriceFromStore,
+  getPurchaseableFromStore,
+  (ingredients, totalPrice, purchaseable) => ({
+    ingredients,
+    totalPrice,
+    purchaseable,
+  }),
+);
+
+const connectIngredientsState = connect(
+  (state: IstoreState) => getCheckoutState(state),
+  null,
+);
 
 export type ICheckoutProps = RouteComponentProps &
   GetConnectProps<typeof connectIngredientsState>;

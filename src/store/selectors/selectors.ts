@@ -1,33 +1,38 @@
 import { IstoreState } from '../types';
 import { createSelector } from 'reselect';
 import { getTotalPrice } from '../../shared/getTotalPrice';
+import { updatePurchasable } from '../../shared/updatePurchasable';
 
-export const ingredientsSelector = (state: IstoreState) => {
+export const selectIngredients = (state: IstoreState) => {
   return state.ings.ingredients;
 };
-export const ingredientsErrorSelector = (state: IstoreState) => {
+export const selectIngredientsError = (state: IstoreState) => {
   return state.ings.error;
 };
-export const customerSelector = (state: IstoreState) => {
+export const selectCustomer = (state: IstoreState) => {
   return state.cData.customer;
 };
-export const submittingSelector = (state: IstoreState) => {
+export const selectSubmitting = (state: IstoreState) => {
   return state.cData.submitting;
 };
 
 export const getTotalPriceFromStore = createSelector(
-  ingredientsSelector,
+  selectIngredients,
   ingredients => {
     return getTotalPrice(ingredients);
   },
 );
+export const getPurchaseableFromStore = createSelector(
+  selectIngredients,
+  ingredients => updatePurchasable(ingredients),
+);
 export const getCustomerFromState = createSelector(
-  customerSelector,
+  selectCustomer,
   customer => customer,
 );
 export const getSubmitOrderState = createSelector(
-  customerSelector,
-  ingredientsSelector,
+  selectCustomer,
+  selectIngredients,
   getTotalPriceFromStore,
   (customer, ingredients, totalPrice) => {
     return {
@@ -38,8 +43,8 @@ export const getSubmitOrderState = createSelector(
   },
 );
 export const getContactDataState = createSelector(
-  customerSelector,
-  submittingSelector,
+  selectCustomer,
+  selectSubmitting,
   (customer, submitting) => {
     return {
       customer,
@@ -48,14 +53,16 @@ export const getContactDataState = createSelector(
   },
 );
 export const getIngredientState = createSelector(
-  ingredientsSelector,
+  selectIngredients,
   getTotalPriceFromStore,
-  ingredientsErrorSelector,
-  (ingredients, totalPrice, error) => {
+  selectIngredientsError,
+  getPurchaseableFromStore,
+  (ingredients, totalPrice, error, purchaseable) => {
     return {
       ingredients,
       totalPrice,
       error,
+      purchaseable,
     };
   },
 );

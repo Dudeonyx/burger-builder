@@ -24,4 +24,5 @@ export interface Iingredients {
    */
   meat: number;
 }
+/** All ingredient types */
 export type IingredientsKeys = keyof Iingredients;
