@@ -148,14 +148,17 @@ export const contactDataReducer = (
         break;
       case actionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;
+        draft.submitting = false;
         break;
       case actionTypes.ORDER_FAILED:
         draft.error = action.payload.error;
+        draft.submitting = false;
         break;
-      case actionTypes.SET_SUBMITTING:
-        draft.submitting = action.payload.submitting;
+      case actionTypes.SET_ORDER_SUBMITTING:
+        draft.submitting = true;
         break;
       case actionTypes.RESET_CONTACT_FORM:
+        draft.submitting = false;
         draft.customer = initialState.customer;
         break;
       default:

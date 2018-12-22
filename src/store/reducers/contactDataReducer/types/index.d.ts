@@ -85,8 +85,5 @@ export type IContactDataReducerActions =
       };
     }
   | {
-      type: IActionTypes['SET_SUBMITTING'];
-      payload: {
-        submitting: boolean;
-      };
+      type: IActionTypes['SET_ORDER_SUBMITTING'];
     };

@@ -14,14 +14,16 @@ export const ordersReducer = (
 ) => {
   return produce(state, draft => {
     switch (action.type) {
-      case actionTypes.SET_ORDERS:
-        draft.orders = action.payload.orders;
-        break;
       case actionTypes.SET_FORMATTEDORDERS:
         draft.formattedOrders = action.payload.formattedOrders;
+        draft.loading = false;
         break;
       case actionTypes.SET_ORDERS_LOADING:
-        draft.loading = action.payload.loading;
+        draft.loading = true;
+        break;
+      case actionTypes.SET_ORDERS:
+        draft.orders = action.payload.orders;
+        draft.loading = false;
         break;
       default:
         break;

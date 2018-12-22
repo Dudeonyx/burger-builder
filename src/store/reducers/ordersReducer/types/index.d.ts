@@ -42,9 +42,6 @@ export type IordersReducerAction =
     }
   | {
       type: IActionTypes['SET_ORDERS_LOADING'];
-      payload: {
-        loading: boolean;
-      };
     }
   | {
       type: IActionTypes['SET_FORMATTEDORDERS'];

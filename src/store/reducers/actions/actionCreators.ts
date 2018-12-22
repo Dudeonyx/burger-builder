@@ -99,12 +99,9 @@ export const orderFailed = (error: Error | false): IActions => {
   };
 };
 
-export const setOrderSubmitting = (submitting: boolean): IActions => {
+export const setOrderSubmitting = (): IActions => {
   return {
-    type: actionTypes.SET_SUBMITTING,
-    payload: {
-      submitting,
-    },
+    type: actionTypes.SET_ORDER_SUBMITTING,
   };
 };
 
@@ -137,7 +134,7 @@ export const submitOrder = (): Promise<VoidFunction> => {
         price: totalPrice,
         date: Date(),
       };
-      dispatch(setOrderSubmitting(true));
+      dispatch(setOrderSubmitting());
       const response = await axios.post('/orders.json', order);
       // tslint:disable-next-line: no-console
       console.log(response);
@@ -145,13 +142,11 @@ export const submitOrder = (): Promise<VoidFunction> => {
         data: { name },
       } = response;
       dispatch(orderSuccessful(name, order));
-      dispatch(setOrderSubmitting(false));
       dispatch(resetContactDataForm());
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error(error);
       dispatch(orderFailed(error));
-      dispatch(setOrderSubmitting(false));
     }
   }) as any;
 };
@@ -165,12 +160,9 @@ export const setOrders = (orders: IDbOrders): IordersReducerAction => {
   };
 };
 
-export const setOrdersLoading = (loading: boolean): IordersReducerAction => {
+export const setOrdersLoading = (): IordersReducerAction => {
   return {
     type: actionTypes.SET_ORDERS_LOADING,
-    payload: {
-      loading,
-    },
   };
 };
 
@@ -189,7 +181,7 @@ export const fetchOrders = () => {
   return async (dispatch: Dispatch<IordersReducerAction>) => {
     try {
       type T = string;
-      dispatch(setOrdersLoading(true));
+      dispatch(setOrdersLoading());
       const response = await axios.get<IDbOrders>('/orders.json');
       const { data } = response;
 
@@ -210,7 +202,6 @@ export const fetchOrders = () => {
         );
       // dispatch(setOrders(data));
       dispatch(setFormattedOrders(formattedOrders));
-      dispatch(setOrdersLoading(false));
     } catch (error) {
       // tslint:disable-next-line: no-console
       console.error(error);
