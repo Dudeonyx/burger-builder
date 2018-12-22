@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { IContactDataReducerState, IContactDataReducerActions } from './types';
 import { ActionTypes } from '../actions';
-import { IActions } from '../actions/types';
+import { updateform } from './utilities';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {
@@ -144,23 +144,7 @@ export const contactDataReducer = (
   produce(state, draft => {
     switch (action.type) {
       case ActionTypes.UPDATE_CONTACT_FORM:
-        const { set, name, value } = action.payload;
-        if (!(set in draft.customer)) {
-          // tslint:disable-next-line:no-console
-          console.error(`${set} not found in Form.customer`);
-          break;
-        }
-        if (!(name in draft.customer[set])) {
-          // tslint:disable-next-line:no-console
-          console.error(`${name} not found in ${set}`);
-          break;
-        }
-        (draft.customer as any)[set][name].value = value;
-        if (name === 'deliveryMethod') {
-          draft.customer.deliveryMethod.deliveryMethod.options.map(obj => {
-            obj.value === value ? (obj.checked = true) : (obj.checked = false);
-          });
-        }
+        updateform(draft, action);
         break;
       case ActionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;

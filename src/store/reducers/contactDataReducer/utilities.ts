@@ -1,9 +1,8 @@
-import { IContactDataReducerState } from './types';
-import { IActions } from '../actions/types';
+import { IContactDataReducerState, IContactDataReducerActions } from './types';
 
 export const updateform = (
   draft: IContactDataReducerState,
-  action: IActions,
+  action: IContactDataReducerActions,
 ) => {
   if (action.type === 'UPDATE_CONTACT_FORM') {
     const { set, name, value } = action.payload;
@@ -19,7 +18,7 @@ export const updateform = (
     }
     (draft.customer as any)[set][name].value = value;
     if (name === 'deliveryMethod') {
-      draft.customer.deliveryMethod.deliveryMethod.options.map(obj => {
+      draft.customer.deliveryMethod.deliveryMethod.options.forEach(obj => {
         obj.value === value ? (obj.checked = true) : (obj.checked = false);
       });
     }
