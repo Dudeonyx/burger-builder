@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, Action } from 'redux';
 import { ingredientReducer } from './reducers/ingredientReducer/ingredientReducer';
 import { contactDataReducer } from './reducers/contactDataReducer/contactDataReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   cData: contactDataReducer,
 });
 
-/* const logger = (myStore: { getState: () => any }) => {
+const logger = (myStore: { getState: () => any }) => {
   return (next: (arg0: Action) => any) => {
     return (action: Action) => {
       // tslint:disable-next-line:no-console
@@ -22,9 +22,9 @@ const rootReducer = combineReducers({
       return result;
     };
   };
-}; */
+};
 
 export const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
+  composeWithDevTools(applyMiddleware(logger, thunk)),
 );
