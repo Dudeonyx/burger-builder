@@ -1,6 +1,7 @@
 import produce from 'immer';
-import { IContactDataReducerState, IcontactDataReducerAction } from './types';
-import { contactDataReducerActionTypes } from '../actions';
+import { IContactDataReducerState, IContactDataReducerActions } from './types';
+import { ActionTypes } from '../actions';
+import { IActions } from '../actions/types';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {
@@ -133,15 +134,16 @@ const initialState: IContactDataReducerState = {
   },
   orders: {},
   error: false,
+  submitting: false,
 };
 
 export const contactDataReducer = (
   state = initialState,
-  action: IcontactDataReducerAction,
+  action: IContactDataReducerActions,
 ) =>
   produce(state, draft => {
     switch (action.type) {
-      case contactDataReducerActionTypes.UPDATE_CONTACT_FORM:
+      case ActionTypes.UPDATE_CONTACT_FORM:
         const { set, name, value } = action.payload;
         if (!(set in draft.customer)) {
           // tslint:disable-next-line:no-console
@@ -160,13 +162,16 @@ export const contactDataReducer = (
           });
         }
         break;
-      case contactDataReducerActionTypes.ORDER_SUCCESSFUL:
+      case ActionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;
         break;
-      case contactDataReducerActionTypes.ORDER_FAILED:
+      case ActionTypes.ORDER_FAILED:
         draft.error = action.payload.error;
         break;
-      case contactDataReducerActionTypes.RESET_CONTACT_FORM:
+      case ActionTypes.SET_SUBMITTING:
+        draft.submitting = action.payload.submitting;
+        break;
+      case ActionTypes.RESET_CONTACT_FORM:
         draft.customer = initialState.customer;
         break;
       default:
