@@ -16,9 +16,9 @@ const logger = (myStore: { getState: () => any }) => {
       console.log('[Middleware logger] action: ', action);
       const result = next(action);
       // tslint:disable-next-line:no-console
-      console.log('[Middleware logger] result: ', result);
-      // tslint:disable-next-line:no-console
       console.log('[Middleware logger] store: ', myStore.getState());
+      // tslint:disable-next-line:no-console
+      console.log('--------------[Middleware logger] DONE--------------');
       return result;
     };
   };
