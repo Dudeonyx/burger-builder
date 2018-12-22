@@ -1,3 +1,1 @@
-export interface IContactDataState {
-  loading: boolean;
-}
+export interface IContactDataState {}
