@@ -6,7 +6,6 @@ import { IingredientReducerAction } from '../ingredientReducer/types';
 import { ActionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IDbOrder } from '../../../containers/Orders/types';
-import { IContactDataReducerState } from '../contactDataReducer/types';
 import { IActions } from './types';
 import { IstoreState } from '../../types';
 import {
