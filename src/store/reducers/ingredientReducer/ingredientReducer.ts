@@ -1,7 +1,7 @@
 import produce from 'immer';
 
 import { IingredientReducerState, IingredientReducerAction } from './types';
-import { ActionTypes } from '../actions';
+import { actionTypes } from '../actions';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
@@ -13,13 +13,13 @@ export const ingredientReducer = (
 ) => {
   return produce(state, draft => {
     switch (action.type) {
-      case ActionTypes.INCREASE_INGREDIENT:
+      case actionTypes.INCREASE_INGREDIENT:
         if (!draft.ingredients || !action.payload.igkey) {
           break;
         }
         draft.ingredients[action.payload.igkey] += 1;
         break;
-      case ActionTypes.DECREASE_INGREDIENT:
+      case actionTypes.DECREASE_INGREDIENT:
         if (
           !draft.ingredients ||
           !action.payload.igkey ||
@@ -29,13 +29,13 @@ export const ingredientReducer = (
         }
         draft.ingredients[action.payload.igkey] -= 1;
         break;
-      case ActionTypes.SET_INGREDIENTS:
+      case actionTypes.SET_INGREDIENTS:
         if (action.payload.ingredients === undefined) {
           break;
         }
         draft.ingredients = action.payload.ingredients;
         break;
-      case ActionTypes.SET_ERROR:
+      case actionTypes.SET_ERROR:
         draft.error = action.payload.error;
         break;
       default:

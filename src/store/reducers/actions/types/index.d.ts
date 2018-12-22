@@ -2,9 +2,9 @@ import {
   IContactDataReducerState,
   IContactDataReducerActions,
 } from '../../contactDataReducer/types';
-import { IDbOrder } from '../../../../containers/Orders/types';
 import { IingredientsKeys, Iingredients } from '../../../../types/ingredients';
 import { IingredientReducerAction } from '../../ingredientReducer/types';
+import { IordersReducerAction } from '../../ordersReducer/types';
 
 // export type IconnectIngredientsProps<
 //   T,
@@ -25,6 +25,12 @@ export interface IActionTypes {
   ORDER_SUCCESSFUL: 'ORDER_SUCCESSFUL';
   ORDER_FAILED: 'ORDER_FAILED';
   SET_SUBMITTING: 'SET_SUBMITTING';
+  SET_ORDERS: 'SET_ORDERS';
+  SET_FORMATTEDORDERS: 'SET_FORMATTEDORDERS';
+  SET_ORDERS_LOADING: 'SET_ORDERS_LOADING';
 }
 
-export type IActions = IContactDataReducerActions | IingredientReducerAction;
+export type IActions =
+  | IContactDataReducerActions
+  | IingredientReducerAction
+  | IordersReducerAction;

@@ -6,7 +6,6 @@ import Input from './Input/Input';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import {
-  mapContactDataStateToProps,
   updateContactDataForm,
   resetContactDataForm,
   submitOrder,
@@ -20,6 +19,7 @@ import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
 import { IReducerInputConfig } from '../../../store/reducers/contactDataReducer/types';
 import { StyledContactData } from './ContactData.styles';
+import { getContactDataState } from '../../../store/selectors/selectors';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public render() {
     const { address, deliveryMethod, basicInfo } = this.props.customer;
@@ -84,8 +84,8 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
-const mapContactDataDispatchToProps = (dispatch: Dispatch<IActions>) =>
-  bindActionCreators(
+const mapContactDataDispatchToProps = (dispatch: Dispatch<IActions>) => {
+  return bindActionCreators(
     {
       updateContactDataForm,
       resetContactDataForm,
@@ -93,9 +93,10 @@ const mapContactDataDispatchToProps = (dispatch: Dispatch<IActions>) =>
     },
     dispatch,
   );
+};
 
 const connectContactData = connect(
-  mapContactDataStateToProps,
+  getContactDataState,
   mapContactDataDispatchToProps,
 );
 export type IContactDataProps = RouteComponentProps &

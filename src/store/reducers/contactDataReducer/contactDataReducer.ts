@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { IContactDataReducerState, IContactDataReducerActions } from './types';
-import { ActionTypes } from '../actions';
+import { actionTypes } from '../actions';
 import { updateform } from './utilities';
 const initialState: IContactDataReducerState = {
   customer: {
@@ -81,7 +81,7 @@ const initialState: IContactDataReducerState = {
 
     deliveryMethod: {
       deliveryMethod: {
-        value: '',
+        value: 'normal',
         options: [
           {
             value: 'cheapest',
@@ -143,19 +143,19 @@ export const contactDataReducer = (
 ) => {
   return produce(state, draft => {
     switch (action.type) {
-      case ActionTypes.UPDATE_CONTACT_FORM:
+      case actionTypes.UPDATE_CONTACT_FORM:
         updateform(draft, action);
         break;
-      case ActionTypes.ORDER_SUCCESSFUL:
+      case actionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;
         break;
-      case ActionTypes.ORDER_FAILED:
+      case actionTypes.ORDER_FAILED:
         draft.error = action.payload.error;
         break;
-      case ActionTypes.SET_SUBMITTING:
+      case actionTypes.SET_SUBMITTING:
         draft.submitting = action.payload.submitting;
         break;
-      case ActionTypes.RESET_CONTACT_FORM:
+      case actionTypes.RESET_CONTACT_FORM:
         draft.customer = initialState.customer;
         break;
       default:

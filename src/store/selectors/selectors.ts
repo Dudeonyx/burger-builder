@@ -3,18 +3,16 @@ import { createSelector } from 'reselect';
 import { getTotalPrice } from '../../shared/getTotalPrice';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 
-export const selectIngredients = (state: IstoreState) => {
-  return state.ings.ingredients;
+export const selectIngredients = (state: IstoreState) => state.ings.ingredients;
+export const selectIngredientsError = (state: IstoreState) => state.ings.error;
+export const selectCustomer = (state: IstoreState) => state.cData.customer;
+export const selectSubmitting = (state: IstoreState) => state.cData.submitting;
+
+export const selectOrders = (state: IstoreState) => state.ords.orders;
+export const selectformattedOrders = (state: IstoreState) => {
+  return state.ords.formattedOrders;
 };
-export const selectIngredientsError = (state: IstoreState) => {
-  return state.ings.error;
-};
-export const selectCustomer = (state: IstoreState) => {
-  return state.cData.customer;
-};
-export const selectSubmitting = (state: IstoreState) => {
-  return state.cData.submitting;
-};
+export const selectOrdersLoading = (state: IstoreState) => state.ords.loading;
 
 export const getTotalPriceFromStore = createSelector(
   selectIngredients,

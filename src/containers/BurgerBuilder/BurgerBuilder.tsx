@@ -8,7 +8,6 @@ import withErrorHandler from '../../HOCs/withErrorHandler';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { connect } from 'react-redux';
 import Modal from '../../components/UI/Modal/Modal';
-import { updatePurchasable } from '../../shared/updatePurchasable';
 import { IBurgerBuilderState } from './types';
 import { Iingredients } from '../../types/ingredients';
 import {
@@ -18,7 +17,7 @@ import {
   ingredientErrorHandler,
   fetchIngredientsHandler,
 } from '../../store/reducers/actions';
-import { GetConnectProps, IstoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch, bindActionCreators } from 'redux';
 import { IingredientReducerAction } from '../../store/reducers/ingredientReducer/types';
@@ -154,10 +153,6 @@ class BurgerBuilder extends Component<
   };
 }
 
-export const mapIngredientsStateToProps = (state: IstoreState) => {
-  return getIngredientState(state);
-};
-
 const mapDispatch = (dispatch: Dispatch<IingredientReducerAction>) => {
   return bindActionCreators(
     {
@@ -172,7 +167,7 @@ const mapDispatch = (dispatch: Dispatch<IingredientReducerAction>) => {
 };
 
 const connectBurgerBuilder = connect(
-  mapIngredientsStateToProps,
+  getIngredientState,
   mapDispatch,
 );
 export type IBurgerBuilderProps = RouteComponentProps &

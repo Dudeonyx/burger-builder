@@ -1,6 +1,5 @@
 import { IActionTypes } from '../../actions/types';
-import { IDbOrder, IDbOrders } from '../../../../containers/Orders/types';
-
+import { IDbOrders, IDbOrder } from '../../ordersReducer/types';
 export interface IReducerInputConfig {
   value: string;
   readonly type:

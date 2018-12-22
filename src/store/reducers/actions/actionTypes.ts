@@ -1,5 +1,5 @@
 import { IActionTypes } from './types';
-export const ActionTypes = Object.freeze<IActionTypes>({
+export const actionTypes = Object.freeze<IActionTypes>({
   UPDATE_CONTACT_FORM: 'UPDATE_CONTACT_FORM',
   RESET_CONTACT_FORM: 'RESET_CONTACT_FORM',
   ORDER_SUCCESSFUL: 'ORDER_SUCCESSFUL',
@@ -9,4 +9,7 @@ export const ActionTypes = Object.freeze<IActionTypes>({
   DECREASE_INGREDIENT: 'DECREASE_INGREDIENT',
   SET_INGREDIENTS: 'SET_INGREDIENTS',
   SET_ERROR: 'SET_ERROR',
+  SET_ORDERS: 'SET_ORDERS',
+  SET_FORMATTEDORDERS: 'SET_FORMATTEDORDERS',
+  SET_ORDERS_LOADING: 'SET_ORDERS_LOADING',
 });

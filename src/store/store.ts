@@ -3,10 +3,12 @@ import { ingredientReducer } from './reducers/ingredientReducer/ingredientReduce
 import { contactDataReducer } from './reducers/contactDataReducer/contactDataReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
 
 const rootReducer = combineReducers({
   ings: ingredientReducer,
   cData: contactDataReducer,
+  ords: ordersReducer,
 });
 
 const logger = (myStore: { getState: () => any }) => {

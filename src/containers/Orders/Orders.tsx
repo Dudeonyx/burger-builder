@@ -3,101 +3,43 @@ import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
-import styled from '@emotion/styled/macro';
+import { IOrdersState } from './types';
+import { StyledOrders } from './Orders.styles';
 import {
-  IOrdersProps,
-  IOrdersState,
-  IDbOrders,
   IformattedOrder,
-} from './types';
-const StyledOrders = styled.div`
-  & {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    margin: 10px 0;
-  }
-  .OrderBox {
-    padding: 10px;
-    box-sizing: border-box;
-    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.658);
-    margin: 15px;
-    border-radius: 20px;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: center;
-    width: 90%;
-    min-height: 65vh;
-  }
-  .OrderWrapper {
-    flex: 0.3 0.2 100%;
-  }
-
-  @media (min-width: 650px) {
-    .OrderBox {
-      max-width: 600px;
-    }
-  }
-`;
+  IordersReducerAction,
+} from '../../store/reducers/ordersReducer/types';
+import { GetConnectProps } from '../../store/types';
+import { createSelector } from 'reselect';
+import {
+  selectformattedOrders,
+  selectOrdersLoading,
+} from '../../store/selectors/selectors';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { fetchOrders } from '../../store/reducers/actions';
+import { RouteComponentProps } from 'react-router-dom';
 class Orders extends Component<IOrdersProps, IOrdersState> {
-  constructor(props: IOrdersProps) {
-    super(props);
-    this.state = {
-      orders: null,
-      loading: false,
-      formattedOrders: [],
-    };
-  }
-
   public componentDidMount = () => {
     this.fetchOrders();
   };
 
   private fetchOrders = async () => {
     try {
-      type T = string;
-      this.setState({ loading: true });
-      const response = await axios.get<IDbOrders>('/orders.json');
-      const { data } = response;
-
-      const formattedOrders: IformattedOrder[] = (Object.entries(data) as Array<
-        [T, IDbOrders[T]]
-      >)
-        .reverse()
-        .slice()
-        .map(
-          ([
-            id,
-            {
-              basicInfo: { name },
-              ingredients,
-              price: totalPrice,
-            },
-          ]) => ({ id, name, ingredients, totalPrice }),
-        );
-
-      this.setState({ orders: data, formattedOrders, loading: false });
+      await this.props.fetchOrders();
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error(error);
-      this.setState({ loading: false });
     } finally {
       import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder');
     }
   };
 
   public render() {
-    const allOrders = this.state.loading ? (
+    const allOrders = this.props.loading ? (
       <Loader />
-    ) : this.state.formattedOrders.length > 0 ? (
-      this.state.formattedOrders.map(customer => (
-        <div className="OrderWrapper" key={customer.id}>
-          <Order {...customer} />
-        </div>
-      ))
+    ) : this.props.formattedOrders.length > 0 ? (
+      this.props.formattedOrders.map(this.generateOrderArray)
     ) : null;
 
     return (
@@ -107,6 +49,45 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
       </StyledOrders>
     );
   }
+
+  private generateOrderArray = (
+    customer: IformattedOrder,
+    _index: number,
+    _array: IformattedOrder[],
+  ) => {
+    return (
+      <div className="OrderWrapper" key={customer.id}>
+        <Order {...customer} />
+      </div>
+    );
+  };
 }
 
-export default withErrorHandler(Orders, axios);
+export const getOrdersState = createSelector(
+  selectformattedOrders,
+  selectOrdersLoading,
+  (formattedOrders, loading) => {
+    return {
+      formattedOrders,
+      loading,
+    };
+  },
+);
+
+const mapOrdersDispatchToProps = (dispatch: Dispatch<IordersReducerAction>) => {
+  return bindActionCreators(
+    {
+      fetchOrders,
+    },
+    dispatch as any,
+  );
+};
+
+const connectOrders = connect(
+  getOrdersState,
+  mapOrdersDispatchToProps,
+);
+
+export type IOrdersProps = RouteComponentProps &
+  GetConnectProps<typeof connectOrders>;
+export default connectOrders(withErrorHandler(Orders, axios));

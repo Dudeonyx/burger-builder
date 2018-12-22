@@ -3,21 +3,23 @@ import { ChangeEvent } from 'react';
 
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
 import { IingredientReducerAction } from '../ingredientReducer/types';
-import { ActionTypes } from './index';
+import { actionTypes } from './index';
 import axios from '../../../axios-orders';
-import { IDbOrder } from '../../../containers/Orders/types';
 import { IActions } from './types';
 import { IstoreState } from '../../types';
+import { getSubmitOrderState } from '../../selectors/selectors';
 import {
-  getContactDataState,
-  getSubmitOrderState,
-} from '../../selectors/selectors';
+  IDbOrder,
+  IordersReducerAction,
+  IDbOrders,
+  IformattedOrder,
+} from '../ordersReducer/types';
 
 export const ingredientIncreaseHandler = (
   igkey: IingredientsKeys,
 ): IingredientReducerAction => {
   return {
-    type: ActionTypes.INCREASE_INGREDIENT,
+    type: actionTypes.INCREASE_INGREDIENT,
     payload: { igkey },
   };
 };
@@ -25,7 +27,7 @@ export const ingredientDecreaseHandler = (
   igkey: IingredientsKeys,
 ): IingredientReducerAction => {
   return {
-    type: ActionTypes.DECREASE_INGREDIENT,
+    type: actionTypes.DECREASE_INGREDIENT,
     payload: { igkey },
   };
 };
@@ -33,7 +35,7 @@ export const ingredientSetHandler = (
   ingredients: Iingredients | null,
 ): IingredientReducerAction => {
   return {
-    type: ActionTypes.SET_INGREDIENTS,
+    type: actionTypes.SET_INGREDIENTS,
     payload: { ingredients },
   };
 };
@@ -41,7 +43,7 @@ export const ingredientErrorHandler = (
   error: boolean,
 ): IingredientReducerAction => {
   return {
-    type: ActionTypes.SET_ERROR,
+    type: actionTypes.SET_ERROR,
     payload: { error },
   };
 };
@@ -69,19 +71,19 @@ export const updateContactDataForm = (
     name = '',
   } = e.currentTarget as any;
   return {
-    type: ActionTypes.UPDATE_CONTACT_FORM,
+    type: actionTypes.UPDATE_CONTACT_FORM,
     payload: { set, name, value },
   };
 };
 export const resetContactDataForm = (): IActions => {
   return {
-    type: ActionTypes.RESET_CONTACT_FORM,
+    type: actionTypes.RESET_CONTACT_FORM,
   };
 };
 
 export const orderSuccessful = (name: string, order: IDbOrder): IActions => {
   return {
-    type: ActionTypes.ORDER_SUCCESSFUL,
+    type: actionTypes.ORDER_SUCCESSFUL,
     payload: {
       name,
       order,
@@ -90,7 +92,7 @@ export const orderSuccessful = (name: string, order: IDbOrder): IActions => {
 };
 export const orderFailed = (error: Error | false): IActions => {
   return {
-    type: ActionTypes.ORDER_FAILED,
+    type: actionTypes.ORDER_FAILED,
     payload: {
       error,
     },
@@ -99,7 +101,7 @@ export const orderFailed = (error: Error | false): IActions => {
 
 export const setOrderSubmitting = (submitting: boolean): IActions => {
   return {
-    type: ActionTypes.SET_SUBMITTING,
+    type: actionTypes.SET_SUBMITTING,
     payload: {
       submitting,
     },
@@ -152,4 +154,66 @@ export const submitOrder = (): Promise<VoidFunction> => {
       dispatch(setOrderSubmitting(false));
     }
   }) as any;
+};
+
+export const setOrders = (orders: IDbOrders): IordersReducerAction => {
+  return {
+    type: actionTypes.SET_ORDERS,
+    payload: {
+      orders,
+    },
+  };
+};
+
+export const setOrdersLoading = (loading: boolean): IordersReducerAction => {
+  return {
+    type: actionTypes.SET_ORDERS_LOADING,
+    payload: {
+      loading,
+    },
+  };
+};
+
+export const setFormattedOrders = (
+  formattedOrders: IformattedOrder[],
+): IordersReducerAction => {
+  return {
+    type: actionTypes.SET_FORMATTEDORDERS,
+    payload: {
+      formattedOrders,
+    },
+  };
+};
+
+export const fetchOrders = () => {
+  return async (dispatch: Dispatch<IordersReducerAction>) => {
+    try {
+      type T = string;
+      dispatch(setOrdersLoading(true));
+      const response = await axios.get<IDbOrders>('/orders.json');
+      const { data } = response;
+
+      const formattedOrders: IformattedOrder[] = (Object.entries(data) as Array<
+        [T, IDbOrders[T]]
+      >)
+        .reverse()
+        .slice()
+        .map(
+          ([
+            id,
+            {
+              basicInfo: { name },
+              ingredients,
+              price: totalPrice,
+            },
+          ]) => ({ id, name, ingredients, totalPrice }),
+        );
+      // dispatch(setOrders(data));
+      dispatch(setFormattedOrders(formattedOrders));
+      dispatch(setOrdersLoading(false));
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.error(error);
+    }
+  };
 };
