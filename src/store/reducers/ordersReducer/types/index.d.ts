@@ -33,19 +33,23 @@ export interface IordersReducerState {
   formattedOrders: IformattedOrder[];
 }
 
+interface ISET_ORDERS {
+  type: IActionTypes['SET_ORDERS'];
+  payload: {
+    orders: IDbOrders;
+  };
+}
+interface ISET_ORDERS_LOADING {
+  type: IActionTypes['SET_ORDERS_LOADING'];
+}
+interface ISET_FORMATTEDORDERS {
+  type: IActionTypes['SET_FORMATTEDORDERS'];
+  payload: {
+    formattedOrders: IformattedOrder[];
+  };
+}
+
 export type IordersReducerAction =
-  | {
-      type: IActionTypes['SET_ORDERS'];
-      payload: {
-        orders: IDbOrders | null;
-      };
-    }
-  | {
-      type: IActionTypes['SET_ORDERS_LOADING'];
-    }
-  | {
-      type: IActionTypes['SET_FORMATTEDORDERS'];
-      payload: {
-        formattedOrders: IformattedOrder[];
-      };
-    };
+  | ISET_ORDERS
+  | ISET_ORDERS_LOADING
+  | ISET_FORMATTEDORDERS;

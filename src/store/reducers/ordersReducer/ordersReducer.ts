@@ -1,4 +1,11 @@
-import { IordersReducerState, IordersReducerAction } from './types';
+import { formatOrders } from './utilities';
+import {
+  IordersReducerState,
+  IordersReducerAction,
+  IformattedOrder,
+  IDbOrders,
+  ISET_ORDERS,
+} from './types';
 import produce from 'immer';
 import { actionTypes } from '../actions';
 
@@ -22,7 +29,9 @@ export const ordersReducer = (
         draft.loading = true;
         break;
       case actionTypes.SET_ORDERS:
-        draft.orders = action.payload.orders;
+        // draft.orders = action.payload.orders;
+        const formattedOrders = formatOrders(action);
+        draft.formattedOrders = formattedOrders;
         draft.loading = false;
         break;
       default:

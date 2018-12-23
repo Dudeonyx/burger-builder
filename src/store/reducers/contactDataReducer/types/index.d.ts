@@ -1,5 +1,6 @@
 import { IActionTypes } from '../../actions/types';
 import { IDbOrders, IDbOrder } from '../../ordersReducer/types';
+import { Iingredients } from '../../../../types/ingredients';
 export interface IReducerInputConfig {
   value: string;
   readonly type:
@@ -39,51 +40,61 @@ export interface IContactDataReducerState {
       };
     };
   };
+  presubmitOrder: IDbOrder | null;
   orders: IDbOrders;
   error: Error | false;
   submitting: boolean;
 }
 type customerKeys = keyof IContactDataReducerState['customer'];
 
+export interface IUPDATE_CONTACT_FORM {
+  type: IActionTypes['UPDATE_CONTACT_FORM'];
+  payload: { value: string } & (
+    | {
+        set: 'basicInfo';
+        name: keyof IContactDataReducerState['customer']['basicInfo'];
+      }
+    | {
+        set: 'address';
+        name: keyof IContactDataReducerState['customer']['address'];
+      }
+    | {
+        set: 'deliveryMethod';
+        name: 'deliveryMethod';
+      });
+}
+
+export interface IRESET_CONTACT_FORM {
+  type: IActionTypes['RESET_CONTACT_FORM'];
+}
+
+export interface IORDER_SUCCESSFUL {
+  type: IActionTypes['ORDER_SUCCESSFUL'];
+  payload: {
+    name: string;
+    order: IDbOrder;
+  };
+}
+export interface IORDER_FAILED {
+  type: IActionTypes['ORDER_FAILED'];
+  payload: {
+    error: Error | false;
+  };
+}
+export interface ISET_ORDER_SUBMITTING {
+  type: IActionTypes['SET_ORDER_SUBMITTING'];
+}
+export interface IGENERATE_PRESUBMIT_ORDER {
+  type: IActionTypes['GENERATE_PRESUBMIT_ORDER'];
+  payload: {
+    ingredients: Iingredients;
+    totalPrice: string;
+  };
+}
 export type IContactDataReducerActions =
-  | ({
-      type: IActionTypes['UPDATE_CONTACT_FORM'];
-      payload: { value: string };
-    } & (
-      | {
-          payload: {
-            set: 'basicInfo';
-            name: keyof IContactDataReducerState['customer']['basicInfo'];
-          };
-        }
-      | {
-          payload: {
-            set: 'address';
-            name: keyof IContactDataReducerState['customer']['address'];
-          };
-        }
-      | {
-          payload: {
-            set: 'deliveryMethod';
-            name: 'deliveryMethod';
-          };
-        }))
-  | {
-      type: IActionTypes['RESET_CONTACT_FORM'];
-    }
-  | {
-      type: IActionTypes['ORDER_SUCCESSFUL'];
-      payload: {
-        name: string;
-        order: IDbOrder;
-      };
-    }
-  | {
-      type: IActionTypes['ORDER_FAILED'];
-      payload: {
-        error: Error | false;
-      };
-    }
-  | {
-      type: IActionTypes['SET_ORDER_SUBMITTING'];
-    };
+  | IUPDATE_CONTACT_FORM
+  | IRESET_CONTACT_FORM
+  | IORDER_SUCCESSFUL
+  | IORDER_FAILED
+  | ISET_ORDER_SUBMITTING
+  | IGENERATE_PRESUBMIT_ORDER;

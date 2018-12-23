@@ -19,7 +19,13 @@ import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
 import { IReducerInputConfig } from '../../../store/reducers/contactDataReducer/types';
 import { StyledContactData } from './ContactData.styles';
-import { getContactDataState } from '../../../store/selectors/selectors';
+import {
+  selectCustomer,
+  selectSubmitting,
+  selectIngredients,
+  getTotalPriceFromStore,
+} from '../../../store/selectors/selectors';
+import { createSelector } from 'reselect';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public render() {
     const { address, deliveryMethod, basicInfo } = this.props.customer;
@@ -74,7 +80,13 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
       try {
         e.preventDefault();
-        await this.props.submitOrder();
+        if (!this.props.ingredients) {
+          throw new Error('Empty Ingredients object!!!');
+        }
+        await this.props.submitOrder(
+          this.props.ingredients,
+          this.props.totalPrice,
+        );
         this.props.history.push('/all-orders');
       } catch (error) {
         // tslint:disable-next-line:no-console
@@ -83,6 +95,21 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     }
   };
 }
+
+export const getContactDataState = createSelector(
+  selectCustomer,
+  selectSubmitting,
+  selectIngredients,
+  getTotalPriceFromStore,
+  (customer, submitting, ingredients, totalPrice) => {
+    return {
+      customer,
+      submitting,
+      ingredients,
+      totalPrice,
+    };
+  },
+);
 
 const mapContactDataDispatchToProps = (dispatch: Dispatch<IActions>) => {
   return bindActionCreators(

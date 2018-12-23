@@ -7,7 +7,10 @@ import { actionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IActions } from './types';
 import { IstoreState } from '../../types';
-import { getSubmitOrderState } from '../../selectors/selectors';
+import {
+  getSubmitOrderState,
+  selectPresubmitOrder,
+} from '../../selectors/selectors';
 import {
   IDbOrder,
   IordersReducerAction,
@@ -40,10 +43,10 @@ export const ingredientSetHandler = (
   };
 };
 export const ingredientErrorHandler = (
-  error: boolean,
+  error: boolean = true,
 ): IingredientReducerAction => {
   return {
-    type: actionTypes.SET_ERROR,
+    type: actionTypes.SET_INGREDIENTS_ERROR,
     payload: { error },
   };
 };
@@ -98,6 +101,18 @@ export const orderFailed = (error: Error | false): IActions => {
     },
   };
 };
+export const generatePresubmitOrder = (
+  ingredients: Iingredients,
+  totalPrice: string,
+): IActions => {
+  return {
+    type: actionTypes.GENERATE_PRESUBMIT_ORDER,
+    payload: {
+      ingredients,
+      totalPrice,
+    },
+  };
+};
 
 export const setOrderSubmitting = (): IActions => {
   return {
@@ -105,39 +120,21 @@ export const setOrderSubmitting = (): IActions => {
   };
 };
 
-export const submitOrder = (): Promise<VoidFunction> => {
+export const submitOrder = (
+  ingredients: Iingredients,
+  totalPrice: string,
+): Promise<VoidFunction> => {
   return (async (dispatch: Dispatch<IActions>, getState: () => IstoreState) => {
     try {
-      const { customer, ingredients, totalPrice } = getSubmitOrderState(
-        getState(),
-      );
-      const { deliveryMethod, basicInfo, address } = customer;
-
-      if (!ingredients) {
-        throw new Error('Empty Ingredients object!!!');
-      }
-
-      const order: IDbOrder = {
-        basicInfo: {
-          name: basicInfo.name.value,
-          phone: basicInfo.phone.value,
-          email: basicInfo.email.value,
-        },
-        address: {
-          street: address.street.value,
-          city: address.city.value,
-          state: address.state.value,
-          country: address.country.value,
-        },
-        deliveryMethod: deliveryMethod.deliveryMethod.value,
-        ingredients,
-        price: totalPrice,
-        date: Date(),
-      };
+      dispatch(generatePresubmitOrder(ingredients, totalPrice));
       dispatch(setOrderSubmitting());
+      const order = selectPresubmitOrder(getState());
+      if (!order) {
+        throw new Error(
+          'An error occurred while generating your order, pls try again',
+        );
+      }
       const response = await axios.post('/orders.json', order);
-      // tslint:disable-next-line: no-console
-      console.log(response);
       const {
         data: { name },
       } = response;
@@ -184,24 +181,7 @@ export const fetchOrders = () => {
       dispatch(setOrdersLoading());
       const response = await axios.get<IDbOrders>('/orders.json');
       const { data } = response;
-
-      const formattedOrders: IformattedOrder[] = (Object.entries(data) as Array<
-        [T, IDbOrders[T]]
-      >)
-        .reverse()
-        .slice()
-        .map(
-          ([
-            id,
-            {
-              basicInfo: { name },
-              ingredients,
-              price: totalPrice,
-            },
-          ]) => ({ id, name, ingredients, totalPrice }),
-        );
-      // dispatch(setOrders(data));
-      dispatch(setFormattedOrders(formattedOrders));
+      dispatch(setOrders(data));
     } catch (error) {
       // tslint:disable-next-line: no-console
       console.error(error);

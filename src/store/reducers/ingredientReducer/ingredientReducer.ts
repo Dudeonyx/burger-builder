@@ -33,9 +33,10 @@ export const ingredientReducer = (
         if (action.payload.ingredients === undefined) {
           break;
         }
+        draft.error = false;
         draft.ingredients = action.payload.ingredients;
         break;
-      case actionTypes.SET_ERROR:
+      case actionTypes.SET_INGREDIENTS_ERROR:
         draft.error = action.payload.error;
         break;
       default:

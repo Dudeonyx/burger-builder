@@ -1,7 +1,8 @@
 import produce from 'immer';
 import { IContactDataReducerState, IContactDataReducerActions } from './types';
 import { actionTypes } from '../actions';
-import { updateform } from './utilities';
+import { updateform, generateOrder } from './utilities';
+import { IDbOrder } from '../ordersReducer/types';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {
@@ -132,6 +133,7 @@ const initialState: IContactDataReducerState = {
       },
     },
   },
+  presubmitOrder: null,
   orders: {},
   error: false,
   submitting: false,
@@ -160,6 +162,10 @@ export const contactDataReducer = (
       case actionTypes.RESET_CONTACT_FORM:
         draft.submitting = false;
         draft.customer = initialState.customer;
+        break;
+      case actionTypes.GENERATE_PRESUBMIT_ORDER:
+        const order: IDbOrder = generateOrder(draft, action);
+        draft.presubmitOrder = order;
         break;
       default:
         break;

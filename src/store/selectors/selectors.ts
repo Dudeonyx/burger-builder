@@ -9,6 +9,8 @@ export const selectCustomer = (state: IstoreState) => state.cData.customer;
 export const selectSubmitting = (state: IstoreState) => state.cData.submitting;
 
 export const selectOrders = (state: IstoreState) => state.ords.orders;
+export const selectPresubmitOrder = (state: IstoreState) =>
+  state.cData.presubmitOrder;
 export const selectformattedOrders = (state: IstoreState) => {
   return state.ords.formattedOrders;
 };
@@ -40,16 +42,7 @@ export const getSubmitOrderState = createSelector(
     };
   },
 );
-export const getContactDataState = createSelector(
-  selectCustomer,
-  selectSubmitting,
-  (customer, submitting) => {
-    return {
-      customer,
-      submitting,
-    };
-  },
-);
+
 export const getIngredientState = createSelector(
   selectIngredients,
   getTotalPriceFromStore,
