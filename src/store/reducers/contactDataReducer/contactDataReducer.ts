@@ -169,7 +169,8 @@ export const contactDataReducer = (
         draft.customer = initialState.customer;
         break;
       default:
-        return assertActionIsNever(action);
+        assertActionIsNever(action);
+        break;
     }
   });
 };

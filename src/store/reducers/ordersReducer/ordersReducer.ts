@@ -30,7 +30,8 @@ export const ordersReducer = (
         draft.loading = false;
         break;
       default:
-        return assertActionIsNever(action);
+        assertActionIsNever(action);
+        break;
     }
   });
 };

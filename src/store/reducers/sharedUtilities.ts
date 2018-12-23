@@ -1,3 +1,2 @@
-export function assertActionIsNever(x: never): never {
-  throw new Error('Unexpected action: ' + x);
-}
+// tslint:disable-next-line: no-empty
+export function assertActionIsNever(x: never) {}

@@ -12,10 +12,14 @@ interface ISET_INGREDIENTS {
     ingredients: Iingredients | null;
   };
 }
-interface IIN_DE_CREASE__INGREDIENT {
-  type:
-    | IActionTypes['INCREASE_INGREDIENT']
-    | IActionTypes['DECREASE_INGREDIENT'];
+interface IINCREASE_INGREDIENT {
+  type: IActionTypes['INCREASE_INGREDIENT'];
+  payload: {
+    igkey: keyof Iingredients;
+  };
+}
+interface IDECREASE_INGREDIENT {
+  type: IActionTypes['DECREASE_INGREDIENT'];
   payload: {
     igkey: keyof Iingredients;
   };
@@ -29,5 +33,6 @@ interface ISET_INGREDIENT_ERROR {
 
 export type IingredientReducerAction =
   | ISET_INGREDIENTS
-  | IIN_DE_CREASE__INGREDIENT
+  | IINCREASE_INGREDIENT
+  | IDECREASE_INGREDIENT
   | ISET_INGREDIENT_ERROR;
