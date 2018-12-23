@@ -3,6 +3,7 @@ import { IContactDataReducerState, IContactDataReducerActions } from './types';
 import { actionTypes } from '../actions';
 import { updateform, generateOrder } from './utilities';
 import { IDbOrder } from '../ordersReducer/types';
+import { assertActionIsNever } from '../sharedUtilities';
 const initialState: IContactDataReducerState = {
   customer: {
     basicInfo: {
@@ -148,6 +149,10 @@ export const contactDataReducer = (
       case actionTypes.UPDATE_CONTACT_FORM:
         updateform(draft, action);
         break;
+      case actionTypes.GENERATE_PRESUBMIT_ORDER:
+        const order: IDbOrder = generateOrder(draft, action);
+        draft.presubmitOrder = order;
+        break;
       case actionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;
         draft.submitting = false;
@@ -163,12 +168,8 @@ export const contactDataReducer = (
         draft.submitting = false;
         draft.customer = initialState.customer;
         break;
-      case actionTypes.GENERATE_PRESUBMIT_ORDER:
-        const order: IDbOrder = generateOrder(draft, action);
-        draft.presubmitOrder = order;
-        break;
       default:
-        break;
+        return assertActionIsNever(action);
     }
   });
 };

@@ -4,7 +4,7 @@ import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
-import { GetConnectProps, IstoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import { createSelector } from 'reselect';
 import {
   selectIngredients,
@@ -41,7 +41,10 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
     this.props.history.goBack();
   };
   private checkoutContinue = () => {
-    import(/* webpackChunkName: "Orders" */ '../Orders/Orders');
+    setTimeout(
+      () => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
+      2000,
+    );
     this.props.history.push(this.props.match.path + '/contact-data');
   };
 }
