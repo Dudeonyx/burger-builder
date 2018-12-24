@@ -1,43 +1,21 @@
 import { IActionTypes } from '../../actions/types';
 import { IDbOrders, IDbOrder } from '../../ordersReducer/types';
 import { Iingredients } from '../../../../types/ingredients';
-export interface IReducerInputConfig {
-  value: string;
-  readonly type:
-    | 'text'
-    | 'email'
-    | 'street-address'
-    | 'country-name'
-    | 'tel'
-    | 'radio';
-  readonly placeholder?: string;
-  readonly id: string;
-  readonly name: string;
-  readonly label: string;
-  readonly dataSet: 'basicInfo' | 'address' | 'deliveryMethod';
-  checked?: boolean;
-  readonly defaultChecked?: boolean;
-  readonly required?: boolean;
-}
+import { IInputConfig } from '../../../../components/UI/Input/types';
+
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataReducerState {
   customer: {
-    basicInfo: {
-      name: IReducerInputConfig;
-      phone: IReducerInputConfig;
-      email: IReducerInputConfig;
-    };
-    address: {
-      street: IReducerInputConfig;
-      city: IReducerInputConfig;
-      state: IReducerInputConfig;
-      country: IReducerInputConfig;
-    };
+    name: IInputConfig;
+    phone: IInputConfig;
+    email: IInputConfig;
+    street: IInputConfig;
+    city: IInputConfig;
+    state: IInputConfig;
+    country: IInputConfig;
     deliveryMethod: {
-      deliveryMethod: {
-        value: string;
-        options: IReducerInputConfig[];
-      };
+      value: string;
+      options: IInputConfig[];
     };
   };
   presubmitOrder: IDbOrder | null;
@@ -45,23 +23,14 @@ export interface IContactDataReducerState {
   error: Error | false;
   submitting: boolean;
 }
-type customerKeys = keyof IContactDataReducerState['customer'];
+type CustomerKeys = keyof IContactDataReducerState['customer'];
 
 export interface IUPDATE_CONTACT_FORM {
   type: IActionTypes['UPDATE_CONTACT_FORM'];
-  payload: { value: string } & (
-    | {
-        set: 'basicInfo';
-        name: keyof IContactDataReducerState['customer']['basicInfo'];
-      }
-    | {
-        set: 'address';
-        name: keyof IContactDataReducerState['customer']['address'];
-      }
-    | {
-        set: 'deliveryMethod';
-        name: 'deliveryMethod';
-      });
+  payload: {
+    value: string;
+    name: CustomerKeys;
+  };
 }
 
 export interface IRESET_CONTACT_FORM {

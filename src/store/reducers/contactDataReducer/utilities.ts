@@ -4,25 +4,27 @@ import {
   IGENERATE_PRESUBMIT_ORDER,
 } from './types';
 import { IDbOrder } from '../ordersReducer/types';
+import { IInputRules } from '../../../components/UI/Input/types';
+import { checkValidity } from '../../../components/UI/Input/checkInputValidity';
 
 export const updateform = (
   draft: IContactDataReducerState,
   action: IUPDATE_CONTACT_FORM,
 ) => {
-  const { set, name, value } = action.payload;
-  if (!(set in draft.customer)) {
+  const { name, value } = action.payload;
+
+  if (!(name in draft.customer)) {
     // tslint:disable-next-line:no-console
-    console.error(`${set} not found in Form.customer`);
+    console.error(`${name} not found in Form`);
     return;
   }
-  if (!(name in draft.customer[set])) {
-    // tslint:disable-next-line:no-console
-    console.error(`${name} not found in ${set}`);
-    return;
-  }
-  (draft.customer as any)[set][name].value = value;
-  if (name === 'deliveryMethod') {
-    draft.customer.deliveryMethod.deliveryMethod.options.forEach(obj => {
+  draft.customer[name].value = value;
+  if (name !== 'deliveryMethod' && draft.customer[name].validation) {
+    const valid = checkValidity(value, draft.customer[name].validation);
+    draft.customer[name].validation!.valid = valid;
+    draft.customer[name].validation!.touched = true;
+  } else if (name === 'deliveryMethod') {
+    draft.customer.deliveryMethod.options.forEach(obj => {
       obj.value === value ? (obj.checked = true) : (obj.checked = false);
     });
   }
@@ -32,21 +34,30 @@ export function generateOrder(
   draft: IContactDataReducerState,
   action: IGENERATE_PRESUBMIT_ORDER,
 ) {
-  const { deliveryMethod, basicInfo, address } = draft.customer;
+  const {
+    deliveryMethod,
+    name,
+    city,
+    country,
+    email,
+    phone,
+    state,
+    street,
+  } = draft.customer;
   const { ingredients, totalPrice } = action.payload;
   const order: IDbOrder = {
     basicInfo: {
-      name: basicInfo.name.value,
-      phone: basicInfo.phone.value,
-      email: basicInfo.email.value,
+      name: name.value,
+      phone: phone.value,
+      email: email.value,
     },
     address: {
-      street: address.street.value,
-      city: address.city.value,
-      state: address.state.value,
-      country: address.country.value,
+      street: street.value,
+      city: city.value,
+      state: state.value,
+      country: country.value,
     },
-    deliveryMethod: deliveryMethod.deliveryMethod.value,
+    deliveryMethod: deliveryMethod.value,
     ingredients,
     price: totalPrice,
     date: Date(),

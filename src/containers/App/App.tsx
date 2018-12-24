@@ -17,9 +17,10 @@ import '../../shared/getTotalPrice';
 import '../../shared/updatePurchasable';
 import '../../axios-orders';
 import '../../HOCs/withErrorHandler';
-import '../../components/Button/Button';
+import '../../components/UI/Button/Button';
 import 'regenerator-runtime';
 import '../../components/UI/Modal/Modal';
+import Auth from '../Auth/Auth';
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
           <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
           <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
+          <Route path="/login" exact={false} component={Auth} />
         </Switch>
       </ErrorBoundary>
     </Layout>

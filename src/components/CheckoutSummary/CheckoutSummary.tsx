@@ -3,7 +3,7 @@ import Loader from '../UI/Loader/Loader';
 import styled from '@emotion/styled/macro';
 import { ICheckoutSummaryProps } from './types';
 import OrderText from '../OrderText/OrderText';
-import Button from '../Button/Button';
+import Button from '../UI/Button/Button';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay" */ '../Burger/BurgerDisplay/BurgerDisplay'),

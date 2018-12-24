@@ -1,8 +1,8 @@
 // import styled from 'styled-components/macro';
 import React, { MouseEvent, Component } from 'react';
-import Button from '../../../components/Button/Button';
+import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
-import Input from './Input/Input';
+import Input from '../../../components/UI/Input/Input';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import {
@@ -17,7 +17,6 @@ import { IActions } from '../../../store/reducers/actions/types';
 import { Dispatch, bindActionCreators } from 'redux';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
-import { IReducerInputConfig } from '../../../store/reducers/contactDataReducer/types';
 import { StyledContactData } from './ContactData.styles';
 import {
   selectCustomer,
@@ -26,9 +25,10 @@ import {
   getTotalPriceFromStore,
 } from '../../../store/selectors/selectors';
 import { createSelector } from 'reselect';
+import { IInputConfig } from '../../../components/UI/Input/types';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public render() {
-    const { address, deliveryMethod, basicInfo } = this.props.customer;
+    const { basicInfo, address, deliveryMethod } = this.props.customer;
     const form = this.props.submitting ? (
       <Loader />
     ) : (
@@ -41,7 +41,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
-          {deliveryMethod.deliveryMethod.options.map(this.mapToInput)}
+          {deliveryMethod.options.map(this.mapToInput)}
         </fieldset>
 
         <div>
@@ -68,7 +68,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </StyledContactData>
     );
   }
-  private mapToInput = (obj: IReducerInputConfig) => (
+  private mapToInput = (obj: IInputConfig) => (
     <Input {...obj} onChange={this.props.updateContactDataForm} key={obj.id} />
   );
   private cancel = (e: MouseEvent<Element>) => {
@@ -96,8 +96,41 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
-export const getContactDataState = createSelector(
+const getContactDataCustomer = createSelector(
   selectCustomer,
+  customer => {
+    const {
+      name,
+      city,
+      country,
+      deliveryMethod,
+      email,
+      phone,
+      state,
+      street,
+    } = customer;
+    const basicInfo = {
+      name,
+      email,
+      phone,
+    };
+    const address = {
+      street,
+      city,
+      state,
+      country,
+    };
+
+    return {
+      basicInfo,
+      address,
+      deliveryMethod,
+    };
+  },
+);
+
+export const getContactDataState = createSelector(
+  getContactDataCustomer,
   selectSubmitting,
   selectIngredients,
   getTotalPriceFromStore,

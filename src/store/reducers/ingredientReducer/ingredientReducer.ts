@@ -7,7 +7,7 @@ import produce from 'immer';
 
 import { IingredientReducerState, IingredientReducerAction } from './types';
 import { actionTypes } from '../actions';
-import { assertActionIsNever } from '../sharedUtilities';
+import { assertIsNever } from '../sharedUtilities';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
@@ -39,7 +39,7 @@ export const ingredientReducer = (
         draft.error = action.payload.error;
         break;
       default:
-        assertActionIsNever(action);
+        assertIsNever(action);
         break;
     }
   });

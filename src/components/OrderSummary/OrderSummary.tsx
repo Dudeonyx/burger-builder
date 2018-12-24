@@ -1,5 +1,5 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
-import Button from '../Button/Button';
+import Button from '../UI/Button/Button';
 import OrderText from '../OrderText/OrderText';
 import { IOrderIngredientsPrice } from '../OrderText/types';
 

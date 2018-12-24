@@ -1,47 +1,10 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import css from '@emotion/css/macro';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 import { IInputProps } from './types';
+import React from 'react';
+import { StyledInput } from './input.styles';
+import { assertIsNever } from '../../../store/reducers/sharedUtilities';
 
-const dfdfdf = jsx;
-const StyledInput = css`
-  * {
-    box-sizing: border-box;
-  }
-  label {
-    display: flex;
-    justify-content: space-between;
-  }
-  label.radio {
-    justify-content: center;
-  }
-  span {
-    flex: 2 1 5em;
-    align-self: center;
-    text-align: left;
-    padding-left: 1em;
-  }
-  input {
-    flex: 10 1 auto;
-    background-color: rgba(255, 255, 255, 0.74);
-    border-radius: 10px;
-    padding: 4px;
-    outline: none;
-  }
-  .radio input {
-    flex: 0;
-  }
-  input:focus {
-    background-color: rgb(255, 255, 255);
-    border: 2px solid rgb(255, 166, 0);
-  }
-  @media (max-width: 400px) {
-    font-size: 0.85em;
-  }
-`;
 /**
- * @param {IInputProps} props
  * @interface FunctionComponent<IInputProps>
  */
 const Input: FunctionComponent<IInputProps> = props => {
@@ -55,16 +18,22 @@ const Input: FunctionComponent<IInputProps> = props => {
     label,
     checked,
     dataSet,
-    required,
+    validation: { required = false } = { required: false },
+    validation,
   } = props;
+  let valid = true;
+  if (validation && validation.touched === true && !validation.valid) {
+    valid = false;
+  }
   switch (type) {
     case 'text':
     case 'email':
     case 'street-address':
     case 'country-name':
     case 'tel':
+    case 'password':
       return (
-        <div css={StyledInput}>
+        <StyledInput valid={valid}>
           <label htmlFor={id}>
             <span>{label} </span>
             <input
@@ -78,11 +47,11 @@ const Input: FunctionComponent<IInputProps> = props => {
               required={required}
             />
           </label>
-        </div>
+        </StyledInput>
       );
     case 'radio':
       return (
-        <div css={StyledInput}>
+        <StyledInput valid={valid}>
           <label htmlFor={id} className="radio">
             <input
               id={id}
@@ -95,11 +64,23 @@ const Input: FunctionComponent<IInputProps> = props => {
             />{' '}
             <span>{label}</span>
           </label>
-        </div>
+        </StyledInput>
       );
+    case 'select':
+      return null;
     default:
+      assertIsNever(type);
       return null;
   }
 };
 
-export default Input;
+// const isEqual = (prevProps: IInputProps, nextProps: IInputProps) => {
+//   return (
+//     nextProps.value === prevProps.value &&
+//     (nextProps.checked !== undefined
+//       ? nextProps.checked === prevProps.checked
+//       : true)
+//   );
+// };
+
+export default memo(Input);
