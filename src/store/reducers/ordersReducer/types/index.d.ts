@@ -1,5 +1,5 @@
 import { Iingredients } from '../../../../types/ingredients';
-import { IActionTypes } from '../../actions/types';
+import { actionTypes } from '../../actions';
 
 export interface IDbOrder {
   basicInfo: {
@@ -34,16 +34,16 @@ export interface IordersReducerState {
 }
 
 interface ISET_ORDERS {
-  type: IActionTypes['SET_ORDERS'];
+  type: typeof actionTypes.SET_ORDERS;
   payload: {
     orders: IDbOrders;
   };
 }
 interface ISET_ORDERS_LOADING {
-  type: IActionTypes['SET_ORDERS_LOADING'];
+  type: typeof actionTypes.SET_ORDERS_LOADING;
 }
 interface ISET_FORMATTEDORDERS {
-  type: IActionTypes['SET_FORMATTEDORDERS'];
+  type: typeof actionTypes.SET_FORMATTEDORDERS;
   payload: {
     formattedOrders: IformattedOrder[];
   };

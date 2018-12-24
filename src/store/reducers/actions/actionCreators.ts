@@ -7,10 +7,7 @@ import { actionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IActions } from './types';
 import { IstoreState } from '../../types';
-import {
-  getSubmitOrderState,
-  selectPresubmitOrder,
-} from '../../selectors/selectors';
+import { selectPresubmitOrder } from '../../selectors/selectors';
 import {
   IDbOrder,
   IordersReducerAction,

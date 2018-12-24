@@ -1,5 +1,5 @@
 import { Iingredients } from '../../../../types/ingredients';
-import { IActionTypes } from '../../actions/types';
+import { actionTypes } from '../../actions';
 
 export interface IingredientReducerState {
   ingredients: Iingredients | null;
@@ -7,25 +7,25 @@ export interface IingredientReducerState {
 }
 
 interface ISET_INGREDIENTS {
-  type: IActionTypes['SET_INGREDIENTS'];
+  type: typeof actionTypes.SET_INGREDIENTS;
   payload: {
     ingredients: Iingredients | null;
   };
 }
 interface IINCREASE_INGREDIENT {
-  type: IActionTypes['INCREASE_INGREDIENT'];
+  type: typeof actionTypes.INCREASE_INGREDIENT;
   payload: {
     igkey: keyof Iingredients;
   };
 }
 interface IDECREASE_INGREDIENT {
-  type: IActionTypes['DECREASE_INGREDIENT'];
+  type: typeof actionTypes.DECREASE_INGREDIENT;
   payload: {
     igkey: keyof Iingredients;
   };
 }
 interface ISET_INGREDIENT_ERROR {
-  type: IActionTypes['SET_INGREDIENTS_ERROR'];
+  type: typeof actionTypes.SET_INGREDIENTS_ERROR;
   payload: {
     error: boolean;
   };
