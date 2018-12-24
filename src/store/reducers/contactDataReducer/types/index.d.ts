@@ -13,10 +13,7 @@ export interface IContactDataReducerState {
     city: IInputConfig;
     state: IInputConfig;
     country: IInputConfig;
-    deliveryMethod: {
-      value: string;
-      options: IInputConfig[];
-    };
+    deliveryMethod: IInputConfig;
   };
   presubmitOrder: IDbOrder | null;
   orders: IDbOrders;

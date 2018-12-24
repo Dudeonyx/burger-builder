@@ -16,7 +16,6 @@ const Input: FunctionComponent<IInputProps> = props => {
     onChange,
     value,
     label,
-    checked,
     dataSet,
     validation: { required = false } = { required: false },
     validation,
@@ -25,7 +24,7 @@ const Input: FunctionComponent<IInputProps> = props => {
   if (validation && validation.touched === true && !validation.valid) {
     valid = false;
   }
-  switch (type) {
+  switch (props.type) {
     case 'text':
     case 'email':
     case 'street-address':
@@ -50,26 +49,51 @@ const Input: FunctionComponent<IInputProps> = props => {
         </StyledInput>
       );
     case 'radio':
+      const radioBtns = props.options
+        ? props.options.map(obj => (
+            <label htmlFor={id} className="radio" key={obj.id}>
+              <input
+                id={obj.id}
+                type={type}
+                name={name}
+                onChange={onChange}
+                value={obj.value}
+                checked={obj.checked}
+                defaultChecked={obj.defaultChecked}
+                data-set={dataSet}
+              />{' '}
+              <span>{obj.label}</span>
+            </label>
+          ))
+        : null;
       return (
-        <StyledInput valid={valid}>
-          <label htmlFor={id} className="radio">
-            <input
-              id={id}
-              type={type}
-              name={name}
-              onChange={onChange}
-              value={value}
-              checked={checked}
-              data-set={dataSet}
-            />{' '}
-            <span>{label}</span>
-          </label>
+        <StyledInput valid={valid} id={id}>
+          {radioBtns}
         </StyledInput>
       );
     case 'select':
-      return null;
+      const selectList = props.options
+        ? props.options.map(obj => (
+            <option
+              key={obj.id}
+              id={obj.id}
+              value={obj.value}
+              selected={obj.checked}
+              data-set={dataSet}
+              children={obj.label}
+            />
+          ))
+        : null;
+      return (
+        <>
+          <label htmlFor={id} className="select" children={label} />
+          <select id={id} onChange={onChange} name={name} required={required}>
+            {selectList}
+          </select>
+        </>
+      );
     default:
-      assertIsNever(type);
+      assertIsNever(props);
       return null;
   }
 };

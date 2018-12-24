@@ -1,6 +1,6 @@
-export const verifyObjKey = <T extends {}>(
+export function verifyObjKey<T extends {}>(
   obj: T,
   key: string | number | symbol,
-): key is keyof T => {
+): key is keyof T {
   return key in obj;
-};
+}

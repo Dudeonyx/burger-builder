@@ -1,4 +1,4 @@
-import { Iingredients } from '../../../../types/ingredients';
+import { Iingredients, IingredientsKeys } from '../../../../types/ingredients';
 import { actionTypes } from '../../actions';
 
 export interface IingredientReducerState {
@@ -15,13 +15,13 @@ interface ISET_INGREDIENTS {
 interface IINCREASE_INGREDIENT {
   type: typeof actionTypes.INCREASE_INGREDIENT;
   payload: {
-    igkey: keyof Iingredients;
+    igkey: IingredientsKeys;
   };
 }
 interface IDECREASE_INGREDIENT {
   type: typeof actionTypes.DECREASE_INGREDIENT;
   payload: {
-    igkey: keyof Iingredients;
+    igkey: IingredientsKeys;
   };
 }
 interface ISET_INGREDIENT_ERROR {

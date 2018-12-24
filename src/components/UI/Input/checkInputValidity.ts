@@ -1,6 +1,49 @@
-import { IInputRules } from './types';
+import { IInputRules, IInputConfig } from './types';
+import { isDraft } from 'immer';
 
-export function checkValidity(value: string, rules: IInputRules | undefined) {
+export function updateCheckedFormItem(value: string, field: IInputConfig) {
+  if (field.type === 'radio' || field.type === 'select') {
+    if (isDraft(field)) {
+      field.options.forEach(obj => {
+        obj.checked = obj.value === value ? true : false;
+      });
+      return field;
+    } else {
+      const newOptions = field.options.map(obj => {
+        return obj.value === value
+          ? { ...obj, checked: true }
+          : { ...obj, checked: false };
+      });
+      const newField = { ...field, options: newOptions };
+      return newField;
+    }
+  } else {
+    return field;
+  }
+}
+
+export function updateFormFieldValidation(value: string, rules: IInputRules) {
+  if (isDraft(rules)) {
+    const valid = checkFormFieldValidity(value, rules);
+    rules.valid = valid;
+    rules.touched = true;
+    // tslint:disable-next-line: no-console
+    console.log('[updateValidation] Rules isDraft');
+    return rules;
+  } else if (rules) {
+    const newRules = { ...rules };
+    const valid = checkFormFieldValidity(value, newRules);
+    newRules.valid = valid;
+    newRules.touched = true;
+    // tslint:disable-next-line: no-console
+    console.log('[updateValidation] Rules not isDraft');
+    return newRules;
+  } else {
+    return rules;
+  }
+}
+
+export function checkFormFieldValidity(value: string, rules: IInputRules) {
   let isValid = true;
 
   if (!rules) {

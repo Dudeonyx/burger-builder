@@ -13,11 +13,8 @@ const initialState: IingredientReducerState = {
   ingredients: null,
   error: false,
 };
-export const ingredientReducer = (
-  state = initialState,
-  action: IingredientReducerAction,
-) => {
-  return produce(state, draft => {
+export const ingredientReducer = produce(
+  (draft, action: IingredientReducerAction) => {
     switch (action.type) {
       case actionTypes.INCREASE_INGREDIENT:
         if (isValidIncreaseAction(draft.ingredients, action)) {
@@ -42,5 +39,6 @@ export const ingredientReducer = (
         assertIsNever(action);
         break;
     }
-  });
-};
+  },
+  initialState,
+);

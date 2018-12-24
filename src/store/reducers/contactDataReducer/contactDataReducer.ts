@@ -115,51 +115,46 @@ const initialState: IContactDataReducerState = {
     },
 
     deliveryMethod: {
+      id: 'deliveryMethod_id',
+      label: '',
       value: 'normal',
+      type: 'radio',
+      name: 'deliveryMethod',
+      dataSet: 'deliveryMethod',
+      validation: {
+        required: true,
+        valid: true,
+        touched: true,
+      },
       options: [
         {
           value: 'cheapest',
-          type: 'radio',
           id: 'cheapest_id',
-          name: 'deliveryMethod',
           label: 'Cheapest',
-          dataSet: 'deliveryMethod',
           checked: false,
         },
         {
           value: 'cheap',
-          type: 'radio',
           id: 'cheap_id',
-          name: 'deliveryMethod',
           label: 'Cheap',
-          dataSet: 'deliveryMethod',
           checked: false,
         },
         {
           value: 'normal',
-          type: 'radio',
           id: 'normal_id',
-          name: 'deliveryMethod',
           label: 'Normal',
-          dataSet: 'deliveryMethod',
           checked: true,
         },
         {
           value: 'expensive',
-          type: 'radio',
           id: 'expensive_id',
-          name: 'deliveryMethod',
           label: 'Expensive',
-          dataSet: 'deliveryMethod',
           checked: false,
         },
         {
           value: 'very_expensive',
-          type: 'radio',
           id: 'very_expensive_id',
-          name: 'deliveryMethod',
           label: 'Very Expensive',
-          dataSet: 'deliveryMethod',
           checked: false,
         },
       ],
@@ -171,11 +166,8 @@ const initialState: IContactDataReducerState = {
   submitting: false,
 };
 
-export const contactDataReducer = (
-  state = initialState,
-  action: IContactDataReducerActions,
-) => {
-  return produce(state, draft => {
+export const contactDataReducer = produce(
+  (draft, action: IContactDataReducerActions) => {
     switch (action.type) {
       case actionTypes.UPDATE_CONTACT_FORM:
         updateform(draft, action);
@@ -203,5 +195,6 @@ export const contactDataReducer = (
         assertIsNever(action);
         break;
     }
-  });
-};
+  },
+  initialState,
+);

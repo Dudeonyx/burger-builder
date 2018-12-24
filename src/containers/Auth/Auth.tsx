@@ -3,7 +3,10 @@ import Button from '../../components/UI/Button/Button';
 import React, { Component, ChangeEvent } from 'react';
 import { IInputConfig } from '../../components/UI/Input/types';
 import { verifyObjKey } from '../../shared/verifyObjKey';
-import { checkValidity } from '../../components/UI/Input/checkInputValidity';
+import {
+  checkFormFieldValidity,
+  updateFormFieldValidation,
+} from '../../components/UI/Input/checkInputValidity';
 
 // tslint:disable-next-line: no-empty-interface
 export interface IAuthProps {}
@@ -74,33 +77,17 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
     const newAuthFormData = { ...this.state.authFormData };
     if (verifyObjKey(newAuthFormData, name)) {
       // newAuthFormData[name].value = value;
-      const newSubField = { ...newAuthFormData[name] };
-      newSubField.value = value;
-      if (newSubField.validation) {
-        const newValidation = { ...newSubField.validation };
-        const valid = checkValidity(value, newSubField.validation);
-        newValidation.valid = valid;
-        newValidation.touched = true;
-        // newSubField.validation = newValidation;
-        this.setState({
-          authFormData: {
-            ...newAuthFormData,
-            [name]: { ...newSubField, validation: newValidation },
-          },
-        });
-        return;
-      }
-
-      // newAuthFormData[name] = newSubField;
+      const subField = { ...newAuthFormData[name] };
+      const validation = updateFormFieldValidation(value, subField.validation);
+      // newSubField.validation = newValidation;
+      const newSubField = { ...subField, value, validation };
       this.setState({
         authFormData: {
           ...newAuthFormData,
           [name]: { ...newSubField },
         },
       });
-      return;
     }
-    // this.setState({ [name]: value})
   };
 
   public render() {

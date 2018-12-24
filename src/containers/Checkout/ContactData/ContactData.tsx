@@ -41,7 +41,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
-          {deliveryMethod.options.map(this.mapToInput)}
+          {[deliveryMethod,].map(this.mapToInput)}
         </fieldset>
 
         <div>

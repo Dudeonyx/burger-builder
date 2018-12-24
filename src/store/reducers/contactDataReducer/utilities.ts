@@ -4,31 +4,34 @@ import {
   IGENERATE_PRESUBMIT_ORDER,
 } from './types';
 import { IDbOrder } from '../ordersReducer/types';
-import { IInputRules } from '../../../components/UI/Input/types';
-import { checkValidity } from '../../../components/UI/Input/checkInputValidity';
+import {
+  updateFormFieldValidation,
+  updateCheckedFormItem,
+} from '../../../components/UI/Input/checkInputValidity';
+import { isDraft } from 'immer';
 
-export const updateform = (
+export function updateform(
   draft: IContactDataReducerState,
   action: IUPDATE_CONTACT_FORM,
-) => {
+) {
+  if (!isDraft(draft)) {
+    // tslint:disable-next-line:no-console
+    console.error(
+      `updateForm function can only be used with drafts produced by 'immer'`,
+    );
+    return draft;
+  }
   const { name, value } = action.payload;
-
   if (!(name in draft.customer)) {
     // tslint:disable-next-line:no-console
     console.error(`${name} not found in Form`);
     return;
   }
-  draft.customer[name].value = value;
-  if (name !== 'deliveryMethod' && draft.customer[name].validation) {
-    const valid = checkValidity(value, draft.customer[name].validation);
-    draft.customer[name].validation!.valid = valid;
-    draft.customer[name].validation!.touched = true;
-  } else if (name === 'deliveryMethod') {
-    draft.customer.deliveryMethod.options.forEach(obj => {
-      obj.value === value ? (obj.checked = true) : (obj.checked = false);
-    });
-  }
-};
+  const field = draft.customer[name];
+  field.value = value;
+  updateFormFieldValidation(value, field.validation);
+  updateCheckedFormItem(value, field);
+}
 
 export function generateOrder(
   draft: IContactDataReducerState,
