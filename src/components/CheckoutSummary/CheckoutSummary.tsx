@@ -9,13 +9,13 @@ const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay" */ '../Burger/BurgerDisplay/BurgerDisplay'),
 );
 const StyledCheckoutSummary = styled.div`
-  max-width: 80%;
+  /* max-width: 80%; */
   text-align: center;
   margin: auto;
-
+  /* 
   @media (min-width: 550px) {
     max-width: 500px;
-  }
+  } */
 `;
 const CheckoutSummary: FunctionComponent<ICheckoutSummaryProps> = ({
   ingredients,

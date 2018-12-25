@@ -88,7 +88,6 @@ const Input: FunctionComponent<IInputProps> = props => {
               key={obj.id}
               id={obj.id}
               value={obj.value}
-              selected={obj.checked}
               data-set={dataSet}
               children={obj.label}
             />
@@ -97,7 +96,13 @@ const Input: FunctionComponent<IInputProps> = props => {
       return (
         <>
           <label htmlFor={id} className="select" children={label} />
-          <select id={id} onChange={onChange} name={name} required={required}>
+          <select
+            id={id}
+            onChange={onChange}
+            name={name}
+            required={required}
+            value={value}
+          >
             {selectList}
           </select>
         </>

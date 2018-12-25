@@ -28,5 +28,5 @@ const logger = (myStore: { getState: () => any }) => {
 
 export const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(logger, thunk)),
+  composeWithDevTools(applyMiddleware(thunk)),
 );

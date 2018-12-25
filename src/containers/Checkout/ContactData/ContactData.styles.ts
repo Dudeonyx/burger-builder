@@ -8,6 +8,7 @@ export const StyledContactData = styled.div`
   }
 
   form {
+    overflow: auto;
     box-sizing: border-box;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.842);

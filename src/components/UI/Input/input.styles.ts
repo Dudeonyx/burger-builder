@@ -31,6 +31,7 @@ export const StyledInput = styled.div`
   label {
     display: flex;
     justify-content: space-between;
+    position: relative;
   }
   label.radio {
     justify-content: center;

@@ -5,6 +5,7 @@ import styles from './NavigationItems.module.css';
 const navItems = [
   { url: '/', name: 'BurgerBuilder', exact: true },
   { url: '/all-orders', name: 'My Orders', exact: true },
+  { url: '/login', name: 'Login/Sign Up', exact: true },
   // { url: '/', name: 'About Us' },
 ];
 // export interface INavigationItems {}
