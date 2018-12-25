@@ -2,7 +2,6 @@ import { formatOrders } from './utilities';
 import { IordersReducerState, IordersReducerAction } from './types';
 import produce from 'immer';
 import { actionTypes } from '../actions';
-import { assertIsNever } from '../sharedUtilities';
 
 const initialState: IordersReducerState = {
   orders: null,
@@ -26,7 +25,7 @@ export const ordersReducer = produce((draft, action: IordersReducerAction) => {
       draft.loading = false;
       break;
     default:
-      assertIsNever(action);
+      const _: never = action;
       break;
   }
 }, initialState);

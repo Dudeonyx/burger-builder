@@ -1,8 +1,6 @@
-import { FunctionComponent, memo } from 'react';
 import { IInputProps } from './types';
-import React from 'react';
+import React, { FunctionComponent, memo } from 'react';
 import { StyledInput } from './input.styles';
-import { assertIsNever } from '../../../store/reducers/sharedUtilities';
 
 const emailPattern =
   '^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$';
@@ -108,7 +106,7 @@ const Input: FunctionComponent<IInputProps> = props => {
         </>
       );
     default:
-      assertIsNever(props);
+      const _o: never = props;
       return null;
   }
 };

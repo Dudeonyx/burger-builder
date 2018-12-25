@@ -1,13 +1,9 @@
-import {
-  reShapeIngredients,
-  isValidDecreaseAction,
-  isValidIncreaseAction,
-} from './utilities';
+import { reShapeIngredients } from './utilities';
 import produce from 'immer';
 
 import { IingredientReducerState, IingredientReducerAction } from './types';
 import { actionTypes } from '../actions';
-import { assertIsNever } from '../sharedUtilities';
+import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
@@ -17,14 +13,10 @@ export const ingredientReducer = produce(
   (draft, action: IingredientReducerAction) => {
     switch (action.type) {
       case actionTypes.INCREASE_INGREDIENT:
-        if (isValidIncreaseAction(draft.ingredients, action)) {
-          draft.ingredients[action.payload.igkey] += 1;
-        }
+        incrementKeyInObj(draft.ingredients, action.payload.igkey);
         break;
       case actionTypes.DECREASE_INGREDIENT:
-        if (isValidDecreaseAction(draft.ingredients, action)) {
-          draft.ingredients[action.payload.igkey] -= 1;
-        }
+        decrementKeyInObj(draft.ingredients, action.payload.igkey);
         break;
       case actionTypes.SET_INGREDIENTS:
         draft.error = false;
@@ -36,7 +28,7 @@ export const ingredientReducer = produce(
         draft.error = action.payload.error;
         break;
       default:
-        assertIsNever(action);
+        const _: never = action;
         break;
     }
   },

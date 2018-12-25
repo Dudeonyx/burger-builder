@@ -3,7 +3,6 @@ import { IContactDataReducerState, IContactDataReducerActions } from './types';
 import { actionTypes } from '../actions';
 import { updateform, generateOrder } from './utilities';
 import { IDbOrder } from '../ordersReducer/types';
-import { assertIsNever } from '../sharedUtilities';
 const initialState: IContactDataReducerState = {
   customer: {
     name: {
@@ -192,7 +191,7 @@ export const contactDataReducer = produce(
         draft.customer = initialState.customer;
         break;
       default:
-        assertIsNever(action);
+        const _: never = action;
         break;
     }
   },
