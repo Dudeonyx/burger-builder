@@ -3,10 +3,8 @@ import Button from '../../components/UI/Button/Button';
 import React, { Component, ChangeEvent } from 'react';
 import { IInputConfig } from '../../components/UI/Input/types';
 import { verifyObjKey } from '../../shared/verifyObjKey';
-import {
-  checkFormFieldValidity,
-  updateFormFieldValidation,
-} from '../../components/UI/Input/checkInputValidity';
+import { updateFormFieldValidation } from '../../components/UI/Input/InputUtilities';
+import mapToInputs from '../../components/UI/Input/mapToInputs';
 
 // tslint:disable-next-line: no-empty-interface
 export interface IAuthProps {}
@@ -29,7 +27,7 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
           value: '',
           type: 'text',
           placeholder: 'Your Name',
-          id: 'name_id',
+          id: 'Auth_name_id',
           name: 'name',
           label: 'Name:',
           validation: {
@@ -43,7 +41,7 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
           value: '',
           type: 'email',
           placeholder: 'Your Email',
-          id: 'email_id',
+          id: 'Auth_email_id',
           name: 'email',
           label: 'Email:',
           validation: {
@@ -58,7 +56,7 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
           value: '',
           type: 'password',
           placeholder: 'Password',
-          id: 'word_id',
+          id: 'Auth_word_id',
           name: 'password',
           label: 'Password:',
           validation: {
@@ -104,11 +102,5 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
     );
   }
 
-  private mapInputs = (
-    obj: IInputConfig,
-    _index: number,
-    _array: IInputConfig[],
-  ) => {
-    return <Input {...obj} key={obj.id} onChange={this.handleAuthFormChange} />;
-  };
+  private mapInputs = mapToInputs(this.handleAuthFormChange);
 }

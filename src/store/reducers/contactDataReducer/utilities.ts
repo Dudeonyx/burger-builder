@@ -7,7 +7,7 @@ import { IDbOrder } from '../ordersReducer/types';
 import {
   updateFormFieldValidation,
   updateCheckedFormItem,
-} from '../../../components/UI/Input/checkInputValidity';
+} from '../../../components/UI/Input/InputUtilities';
 import { isDraft } from 'immer';
 
 export function updateform(

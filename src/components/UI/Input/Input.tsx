@@ -4,6 +4,12 @@ import React from 'react';
 import { StyledInput } from './input.styles';
 import { assertIsNever } from '../../../store/reducers/sharedUtilities';
 
+const emailPattern =
+  '^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$';
+const emailConfig = {
+  pattern: emailPattern,
+  title: 'Valid Email Address',
+};
 /**
  * @interface FunctionComponent<IInputProps>
  */
@@ -40,11 +46,15 @@ const Input: FunctionComponent<IInputProps> = props => {
               type={type}
               name={name}
               placeholder={placeholder}
+              {...(type === 'email' ? emailConfig : null)}
               onChange={onChange}
               value={value}
               data-set={dataSet}
               required={required}
+              minLength={validation.minLength}
+              maxLength={validation.maxLength}
             />
+            <i />
           </label>
         </StyledInput>
       );

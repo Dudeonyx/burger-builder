@@ -4,6 +4,23 @@ const invalid = css`
   border: 1px solid red;
   background-color: #fda49a;
 `;
+const validMark = css`
+  content: "✓";
+  position: absolute;
+  color: #26b72b;
+`;
+const inValidMark = css`
+  content: "✖";
+  position: absolute;
+  color: #f00;
+`;
+const showValidMark = ({ valid }: { valid: boolean }) => {
+  return valid ? validMark : inValidMark;
+};
+const validInput = ({ valid }: { valid: boolean }) => {
+  return valid ? null : invalid;
+};
+
 export const StyledInput = styled.div`
   margin: 5px;
   *::before,
@@ -24,20 +41,29 @@ export const StyledInput = styled.div`
     text-align: left;
     padding-left: 1em;
   }
+  input + i::after {
+    padding: 6px;
+    margin-left: -25px;
+    ${showValidMark};
+  }
   input {
     flex: 10 1 auto;
     background-color: rgba(255, 255, 255, 0.74);
+    vertical-align: center;
     border-radius: 10px;
+    line-height: 0.5em;
     padding: 4px;
     outline: none;
-    ${({ valid }: { valid: boolean }) => (valid ? null : invalid)}
-  }
-  .radio input {
-    flex: 0;
+    ${validInput};
   }
   input:focus {
     background-color: rgb(255, 255, 255);
     border: 2px solid rgb(255, 166, 0);
+  }
+  .radio input {
+    flex: 0;
+    vertical-align: unset;
+    border-radius: unset;
   }
   @media (max-width: 400px) {
     font-size: 0.85em;

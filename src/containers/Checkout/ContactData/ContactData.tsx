@@ -2,7 +2,6 @@
 import React, { MouseEvent, Component } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
-import Input from '../../../components/UI/Input/Input';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import {
@@ -25,19 +24,29 @@ import {
   getTotalPriceFromStore,
 } from '../../../store/selectors/selectors';
 import { createSelector } from 'reselect';
-import { IInputConfig } from '../../../components/UI/Input/types';
+import mapToInputs from '../../../components/UI/Input/mapToInputs';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public render() {
-    const { basicInfo, address, deliveryMethod } = this.props.customer;
+    const {
+      name,
+      city,
+      country,
+      deliveryMethod,
+      email,
+      phone,
+      state,
+      street,
+    } = this.props.customer;
+
     const form = this.props.submitting ? (
       <Loader />
     ) : (
       <form id="order_form">
         <h3>Enter Your Contact Details to Complete Your Order.</h3>
-        {Object.values(basicInfo).map(this.mapToInput)}
+        {[name, email, phone,].map(this.mapToInput)}
         <fieldset>
           <legend>Address</legend>
-          {Object.values(address).map(this.mapToInput)}
+          {[street, city, state, country,].map(this.mapToInput)}
         </fieldset>
         <fieldset>
           <legend>Delivery Method</legend>
@@ -68,9 +77,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </StyledContactData>
     );
   }
-  private mapToInput = (obj: IInputConfig) => (
-    <Input {...obj} onChange={this.props.updateContactDataForm} key={obj.id} />
-  );
+  private mapToInput = mapToInputs(this.props.updateContactDataForm);
   private cancel = (e: MouseEvent<Element>) => {
     e.preventDefault();
     this.props.resetContactDataForm();
@@ -96,41 +103,8 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
-const getContactDataCustomer = createSelector(
-  selectCustomer,
-  customer => {
-    const {
-      name,
-      city,
-      country,
-      deliveryMethod,
-      email,
-      phone,
-      state,
-      street,
-    } = customer;
-    const basicInfo = {
-      name,
-      email,
-      phone,
-    };
-    const address = {
-      street,
-      city,
-      state,
-      country,
-    };
-
-    return {
-      basicInfo,
-      address,
-      deliveryMethod,
-    };
-  },
-);
-
 export const getContactDataState = createSelector(
-  getContactDataCustomer,
+  selectCustomer,
   selectSubmitting,
   selectIngredients,
   getTotalPriceFromStore,
