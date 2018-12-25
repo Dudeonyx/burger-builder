@@ -2,6 +2,7 @@ import { IDbOrders, IDbOrder } from '../../ordersReducer/types';
 import { Iingredients } from '../../../../types/ingredients';
 import { IInputConfig } from '../../../../components/UI/Input/types';
 import { actionTypes } from '../../actions';
+import { ChangeEvent } from 'react';
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataReducerState {
@@ -25,8 +26,7 @@ type CustomerKeys = keyof IContactDataReducerState['customer'];
 export interface IUPDATE_CONTACT_FORM {
   type: typeof actionTypes.UPDATE_CONTACT_FORM;
   payload: {
-    value: string;
-    name: CustomerKeys;
+    event: ChangeEvent<HTMLInputElement>;
   };
 }
 

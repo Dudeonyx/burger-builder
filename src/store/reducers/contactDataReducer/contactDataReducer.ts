@@ -1,8 +1,9 @@
 import produce from 'immer';
 import { IContactDataReducerState, IContactDataReducerActions } from './types';
 import { actionTypes } from '../actions';
-import { updateform, generateOrder } from './utilities';
+import { generateOrder } from './utilities';
 import { IDbOrder } from '../ordersReducer/types';
+import { updateform } from '../../../components/UI/Input/InputUtilities';
 const initialState: IContactDataReducerState = {
   customer: {
     name: {
@@ -169,10 +170,10 @@ export const contactDataReducer = produce(
   (draft, action: IContactDataReducerActions) => {
     switch (action.type) {
       case actionTypes.UPDATE_CONTACT_FORM:
-        updateform(draft, action);
+        updateform(draft.customer, action.payload.event);
         break;
       case actionTypes.GENERATE_PRESUBMIT_ORDER:
-        const order: IDbOrder = generateOrder(draft, action);
+        const order: IDbOrder = generateOrder(draft.customer, action.payload);
         draft.presubmitOrder = order;
         break;
       case actionTypes.ORDER_SUCCESSFUL:

@@ -65,10 +65,9 @@ export const fetchIngredientsHandler = (): Promise<VoidFunction> => {
 export const updateContactDataForm = (
   e: ChangeEvent<HTMLInputElement>,
 ): IActions => {
-  const { value = '', name = '' } = e.currentTarget as any;
   return {
     type: actionTypes.UPDATE_CONTACT_FORM,
-    payload: { name, value },
+    payload: { event: e },
   };
 };
 export const resetContactDataForm = (): IActions => {

@@ -1,49 +1,131 @@
-import { IInputRules, IInputConfig } from './types';
+import { IInputRules, IInputConfig, IInputSelectConfig } from './types';
 import { isDraft } from 'immer';
+import { ChangeEvent } from 'react';
+import { verifyObjKey } from '../../../shared/verifyObjKey';
 
-export function updateCheckedFormItem(value: string, field: IInputConfig) {
+export function updateform<F extends { [x: string]: IInputConfig }>(
+  form: F,
+  event: ChangeEvent<HTMLInputElement>,
+) {
+  const { name, value } = event.target;
+  if (!verifyObjKey(form, name)) {
+    // tslint:disable-next-line:no-console
+    console.error(`${name} not found in Form`);
+    return form;
+  }
+  if (isDraft(form)) {
+    return updateDraftForm<F>(form, name, value);
+  } else {
+    return updateFormImmutably<F>(form, name, value);
+  }
+}
+
+function updateFormImmutably<
+  F extends {
+    [x: string]: IInputConfig;
+  }
+>(form: Readonly<F>, name: string, value: string) {
+  const field = { ...form[name] };
+  const validation = updateFormFieldValidationImmutably(
+    field.validation,
+    value,
+  );
+  const newField = updateCheckedFormItemImmutably(field, value);
+  newField.value = value;
+  const newForm = {
+    ...form,
+    [name]: { ...newField, validation },
+  };
+  return newForm;
+}
+
+function updateDraftForm<
+  F extends {
+    [x: string]: IInputConfig;
+  }
+>(form: F, name: string, value: string) {
+  const field = form[name];
+  field.value = value;
+  updateDraftFormFieldValidation(field.validation, value);
+  updateDraftCheckedFormItem(field, value);
+  return form;
+}
+
+function updateCheckedFormItem(field: IInputConfig, value: string) {
   if (field.type === 'radio' || field.type === 'select') {
     if (isDraft(field)) {
-      field.options.forEach(obj => {
-        obj.checked = obj.value === value ? true : false;
-      });
-      return field;
+      return updateDraftCheckedFormItem(field, value);
     } else {
-      const newOptions = field.options.map(obj => {
-        return obj.value === value
-          ? { ...obj, checked: true }
-          : { ...obj, checked: false };
-      });
-      const newField = { ...field, options: newOptions };
-      return newField;
+      return updateCheckedFormItemImmutably(field, value);
     }
   } else {
     return field;
   }
 }
 
-export function updateFormFieldValidation(value: string, rules: IInputRules) {
+function updateCheckedFormItemImmutably(
+  field: Readonly<IInputConfig>,
+  value: string,
+) {
+  if (field.type === 'radio' || field.type === 'select') {
+    const newOptions = field.options.map(obj => {
+      return obj.value === value
+        ? { ...obj, checked: true }
+        : { ...obj, checked: false };
+    });
+    const newField = { ...field, options: newOptions };
+    return newField;
+  }
+  const cpField = { ...field };
+  return cpField;
+}
+
+function updateDraftCheckedFormItem(field: IInputConfig, value: string) {
+  if (field.type === 'radio' || field.type === 'select') {
+    field.options.forEach(obj => {
+      obj.checked = obj.value === value ? true : false;
+    });
+    return field;
+  }
+  return field;
+}
+
+function updateFormFieldValidation(rules: IInputRules, value: string) {
   if (isDraft(rules)) {
-    const valid = checkFormFieldValidity(value, rules);
-    rules.valid = valid;
-    rules.touched = true;
-    // tslint:disable-next-line: no-console
-    console.log('[updateValidation] Rules isDraft');
-    return rules;
+    return updateDraftFormFieldValidation(rules, value);
   } else if (rules) {
-    const newRules = { ...rules };
-    const valid = checkFormFieldValidity(value, newRules);
-    newRules.valid = valid;
-    newRules.touched = true;
-    // tslint:disable-next-line: no-console
-    console.log('[updateValidation] Rules not isDraft');
-    return newRules;
+    return updateFormFieldValidationImmutably(rules, value);
   } else {
     return rules;
   }
 }
 
-export function checkFormFieldValidity(value: string, rules: IInputRules) {
+function updateFormFieldValidationImmutably(
+  rules: Readonly<IInputRules>,
+  value: string,
+) {
+  const newRules = { ...rules };
+  const valid = checkFormFieldValidity(newRules, value);
+  newRules.valid = valid;
+  newRules.touched = true;
+  // tslint:disable-next-line: no-console
+  console.log('[updateValidation] Rules not isDraft');
+  return newRules;
+}
+
+function updateDraftFormFieldValidation(rules: IInputRules, value: string) {
+  const valid = checkFormFieldValidity(rules, value);
+  rules.valid = valid;
+  rules.touched = true;
+  // tslint:disable-next-line: no-console
+  console.log('[updateValidation] Rules isDraft');
+  return rules;
+}
+
+export function checkFormFieldValidity(
+  rules: Readonly<IInputRules>,
+  value: string,
+) {
   let isValid = true;
 
   if (!rules) {

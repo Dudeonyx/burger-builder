@@ -3,7 +3,7 @@ import Button from '../../components/UI/Button/Button';
 import React, { Component, ChangeEvent } from 'react';
 import { IInputConfig } from '../../components/UI/Input/types';
 import { verifyObjKey } from '../../shared/verifyObjKey';
-import { updateFormFieldValidation } from '../../components/UI/Input/InputUtilities';
+import { updateform } from '../../components/UI/Input/InputUtilities';
 import mapToInputs from '../../components/UI/Input/mapToInputs';
 
 // tslint:disable-next-line: no-empty-interface
@@ -71,21 +71,8 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
   }
 
   private handleAuthFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newAuthFormData = { ...this.state.authFormData };
-    if (verifyObjKey(newAuthFormData, name)) {
-      // newAuthFormData[name].value = value;
-      const subField = { ...newAuthFormData[name] };
-      const validation = updateFormFieldValidation(value, subField.validation);
-      // newSubField.validation = newValidation;
-      const newSubField = { ...subField, value, validation };
-      this.setState({
-        authFormData: {
-          ...newAuthFormData,
-          [name]: { ...newSubField },
-        },
-      });
-    }
+    const newAuthFormData = updateform(this.state.authFormData, e);
+    this.setState({ authFormData: newAuthFormData });
   };
 
   public render() {
