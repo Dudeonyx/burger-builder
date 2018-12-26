@@ -6,11 +6,14 @@ import withErrorHandler from '../../HOCs/withErrorHandler';
 import { IOrdersState } from './types';
 import { StyledOrders } from './Orders.styles';
 import { IformattedOrder } from '../../store/reducers/ordersReducer/types';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, StoreState } from '../../store/types';
 import { createSelector } from 'reselect';
 import {
-  selectformattedOrders,
+  getFormattedOrders,
   selectOrdersLoading,
+  selectOrdersError,
+  selectAuthIdToken,
+  getOrdersErrorMessage,
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../../store/reducers/actions';
@@ -23,21 +26,29 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
 
   private fetchOrders = async () => {
     try {
-      await this.props.fetchOrders();
+      await this.props.fetchOrders(this.props.token);
     } catch (error) {
       // tslint:disable-next-line:no-console
-      console.error(error);
+      console.error('[fetchOrders(Orders)]', error);
     } finally {
       import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder');
     }
   };
 
   public render() {
-    const allOrders = this.props.loading ? (
+    const allOrders = this.props.errorMessage ? (
+      <div>
+        <p>{this.props.errorMessage}</p>
+      </div>
+    ) : this.props.loading ? (
       <Loader />
     ) : this.props.formattedOrders.length > 0 ? (
       this.props.formattedOrders.map(this.generateOrderArray)
-    ) : null;
+    ) : (
+      <div>
+        <p>Your order history is blank.</p>
+      </div>
+    );
 
     return (
       <StyledOrders>
@@ -60,20 +71,19 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
   };
 }
 
-const getOrdersState = createSelector(
-  [selectformattedOrders, selectOrdersLoading,],
-  (formattedOrders, loading) => {
-    return {
-      formattedOrders,
-      loading,
-    };
-  },
-);
-
+const mapOrderStateToProps = (state: StoreState) => {
+  return {
+    formattedOrders: getFormattedOrders(state),
+    loading: selectOrdersLoading(state),
+    error: selectOrdersError(state),
+    errorMessage: getOrdersErrorMessage(state),
+    token: selectAuthIdToken(state),
+  };
+};
 const mapOrdersDispatchToProps = { fetchOrders };
 
 const connectOrders = connect(
-  getOrdersState,
+  mapOrderStateToProps,
   mapOrdersDispatchToProps,
 );
 

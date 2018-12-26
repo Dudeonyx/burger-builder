@@ -30,26 +30,26 @@ export interface IformattedOrder {
 export interface IordersReducerState {
   orders: IDbOrders | null;
   loading: boolean;
-  formattedOrders: IformattedOrder[];
+  error: Error & { [x: string]: any } | null;
 }
 
 interface ISET_ORDERS {
   type: typeof actionTypes.SET_ORDERS;
   payload: {
-    orders: IDbOrders;
+    orders: IDbOrders | null;
+  };
+}
+interface ISET_ORDERS_ERROR {
+  type: typeof actionTypes.SET_ORDERS_ERROR;
+  payload: {
+    error: Error & { [x: string]: any };
   };
 }
 interface ISET_ORDERS_LOADING {
   type: typeof actionTypes.SET_ORDERS_LOADING;
 }
-interface ISET_FORMATTEDORDERS {
-  type: typeof actionTypes.SET_FORMATTEDORDERS;
-  payload: {
-    formattedOrders: IformattedOrder[];
-  };
-}
 
 export type IordersReducerAction =
   | ISET_ORDERS
   | ISET_ORDERS_LOADING
-  | ISET_FORMATTEDORDERS;
+  | ISET_ORDERS_ERROR;

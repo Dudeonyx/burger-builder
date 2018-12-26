@@ -4,11 +4,13 @@ import { contactDataReducer } from './reducers/contactDataReducer/contactDataRed
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
+import authReducer from './reducers/authReducer/authReducer';
 
 const rootReducer = combineReducers({
   ings: ingredientReducer,
   cData: contactDataReducer,
   ords: ordersReducer,
+  auth: authReducer,
 });
 
 const logger = (myStore: { getState: () => any }) => {

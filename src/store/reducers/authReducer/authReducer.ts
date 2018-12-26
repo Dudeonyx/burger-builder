@@ -1,24 +1,38 @@
 import { actionTypes } from '../actions';
-import { AuthAction } from './types';
+import { AuthAction, IauthReducerState } from './types';
 import produce from 'immer';
 
-const initialState = {
+const initialState: IauthReducerState = {
   authenticating: false,
+  error: false,
+  idToken: null,
+  userId: null,
+  displayName: null,
 };
 
-const authReducer = produce((draft, { type, payload }: AuthAction) => {
-  switch (type) {
+const authReducer = produce((draft, action: AuthAction) => {
+  switch (action.type) {
     case actionTypes.AUTH_START:
       draft.authenticating = true;
+      draft.error = false;
       break;
     case actionTypes.AUTH_SUCCESS:
       draft.authenticating = false;
+      draft.error = false;
+      draft.userId = action.payload.localId;
+      draft.idToken = action.payload.idToken;
       break;
     case actionTypes.AUTH_FAIL:
       draft.authenticating = false;
+      draft.error = action.payload.error;
+      break;
+    case actionTypes.AUTH_LOGOUT:
+      draft.idToken = null;
+      draft.userId = null;
+      draft.displayName = null;
       break;
     default:
-      const _: never = type;
+      const _: never = action;
       break;
   }
 }, initialState);
