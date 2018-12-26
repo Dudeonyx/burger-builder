@@ -6,7 +6,7 @@ import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import { submitOrder } from '../../../store/reducers/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps } from '../../../store/types';
+import { GetConnectProps, StoreState } from '../../../store/types';
 import { RouteComponentProps } from 'react-router';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
@@ -258,29 +258,26 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
         this.props.history.push('/all-orders');
       } catch (error) {
         // tslint:disable-next-line:no-console
-        console.error(error);
+        console.error('[submit(ContactData)]', error);
       }
     }
   };
 }
 
-export const getContactDataState = createSelector(
-  [selectSubmitting, selectIngredients, getTotalPriceFromStore,],
-  (submitting, ingredients, totalPrice) => {
-    return {
-      submitting,
-      ingredients,
-      totalPrice,
-    };
-  },
-);
+export const mapContactDataStateToProps = (state: StoreState) => {
+  return {
+    submitting: selectSubmitting(state),
+    ingredients: selectIngredients(state),
+    totalPrice: getTotalPriceFromStore(state),
+  };
+};
 
 const mapContactDataDispatchToProps = {
   submitOrder,
 };
 
 const connectContactData = connect(
-  getContactDataState,
+  mapContactDataStateToProps,
   mapContactDataDispatchToProps,
 );
 export type IContactDataProps = RouteComponentProps &

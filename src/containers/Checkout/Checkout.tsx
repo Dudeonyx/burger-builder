@@ -4,7 +4,7 @@ import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, StoreState } from '../../store/types';
 import { createSelector } from 'reselect';
 import {
   selectIngredients,
@@ -49,14 +49,11 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   };
 }
 
-const mapCheckoutStateToProps = createSelector(
-  [selectIngredients, getTotalPriceFromStore, getPurchaseableFromStore,],
-  (ingredients, totalPrice, purchaseable) => ({
-    ingredients,
-    totalPrice,
-    purchaseable,
-  }),
-);
+const mapCheckoutStateToProps = (state: StoreState) =>({
+    ingredients: selectIngredients(state),
+    totalPrice: getTotalPriceFromStore(state),
+    purchaseable: getPurchaseableFromStore(state),
+  });
 
 const connectIngredientsState = connect(
   mapCheckoutStateToProps,

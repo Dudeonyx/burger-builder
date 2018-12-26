@@ -1,6 +1,5 @@
 import React, { Component, lazy } from 'react';
 
-import { AxiosResponse } from 'axios';
 import axios from '../../axios-orders';
 import Retry from '../../components/Retry/Retry';
 import Loader from '../../components/UI/Loader/Loader';
@@ -9,18 +8,20 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { connect } from 'react-redux';
 import Modal from '../../components/UI/Modal/Modal';
 import { IBurgerBuilderState } from './types';
-import { Iingredients } from '../../types/ingredients';
 import {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
   ingredientSetHandler,
   fetchIngredientsHandler,
 } from '../../store/reducers/actions';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, StoreState } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
-import { Dispatch, bindActionCreators } from 'redux';
-import { IingredientReducerAction } from '../../store/reducers/ingredientReducer/types';
-import { getIngredientState } from '../../store/selectors/selectors';
+import {
+  selectIngredientsError,
+  selectIngredients,
+  getPurchaseableFromStore,
+  getTotalPriceFromStore,
+} from '../../store/selectors/selectors';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -62,6 +63,7 @@ class BurgerBuilder extends Component<
     if (!this.props.ingredients) {
       return;
     }
+    this.setState({ purchasing: false });
     this.props.history.push({
       pathname: '/checkout',
     });
@@ -136,6 +138,13 @@ class BurgerBuilder extends Component<
   };
 }
 
+const mapBurgerBuilderStateToProps = (state: StoreState) => ({
+  error: selectIngredientsError(state),
+  ingredients: selectIngredients(state),
+  purchaseable: getPurchaseableFromStore(state),
+  totalPrice: getTotalPriceFromStore(state),
+});
+
 const mapBurgerBuilderDispatchToProps = {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
@@ -144,7 +153,7 @@ const mapBurgerBuilderDispatchToProps = {
 };
 
 const connectBurgerBuilder = connect(
-  getIngredientState,
+  mapBurgerBuilderStateToProps,
   mapBurgerBuilderDispatchToProps,
 );
 export type IBurgerBuilderProps = RouteComponentProps &
