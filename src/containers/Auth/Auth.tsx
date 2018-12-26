@@ -3,39 +3,24 @@ import React, { Component, ChangeEvent, MouseEvent } from 'react';
 import { IInputConfig } from '../../components/UI/Input/types';
 import { updateform } from '../../components/UI/Input/InputUtilities';
 import mapToInputs from '../../components/UI/Input/mapToInputs';
-import styled from '@emotion/styled/macro';
-import { boxStyle } from '../Orders/Orders.styles';
-import css from '@emotion/css/macro';
 import { authenticate } from '../../store/reducers/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, StoreState } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
+import {
+  selectAuthAuthenticating,
+  selectAuthError,
+} from '../../store/selectors/selectors';
+import Loader from '../../components/UI/Loader/Loader';
+import { StyledAuth } from './Auth.styles';
 
-const flexColumnCenter = css`
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-`;
-const StyledAuth = styled.div`
-  ${flexColumnCenter}
-  & > div {
-    ${boxStyle};
-    min-height: 0px;
-  }
-  form {
-    width: 90%;
-    @media (min-width: 650px) {
-      width: 550px;
-    }
-  }
-`;
 export interface IAuthState {
   authFormData: {
     name: IInputConfig;
     password: IInputConfig;
     email: IInputConfig;
   };
+  isSignUp: boolean;
 }
 
 class Auth extends Component<IAuthProps, IAuthState> {
@@ -88,6 +73,7 @@ class Auth extends Component<IAuthProps, IAuthState> {
           },
         },
       },
+      isSignUp: true,
     };
   }
 
@@ -98,35 +84,59 @@ class Auth extends Component<IAuthProps, IAuthState> {
 
   public render() {
     const { name, email, password } = this.state.authFormData;
+    const authError = this.props.error ? (
+      <p className="error">{this.props.error.response.data.error.message}</p>
+    ) : null;
+
+    const form = this.props.authenticating ? (
+      <Loader />
+    ) : (
+      <>
+        {authError}
+        <p className="info">{this.state.isSignUp ? 'SIGNUP' : 'LOGIN'}</p>
+        <form>
+          {[email, password,].map(this.mapInputs)}
+          <Button btnType="Success" onClick={this.submitHandler}>
+            SUBMIT
+          </Button>
+        </form>
+        <Button btnType="Danger" onClick={this.switchAuthModeHandler}>
+          SWITCH TO {this.state.isSignUp ? 'LOGIN' : 'SIGNUP'}
+        </Button>
+      </>
+    );
     return (
       <StyledAuth>
-        <div>
-          <form>
-            {[email, password,].map(this.mapInputs)}
-            <Button btnType="Success" onClick={this.submit}>
-              SUBMIT
-            </Button>
-          </form>
-        </div>
+        <div>{form}</div>
       </StyledAuth>
     );
   }
-  private submit = (e: MouseEvent) => {
+  private switchAuthModeHandler = () => {
+    this.setState(prevState => ({ isSignUp: !prevState.isSignUp }));
+  };
+  private submitHandler = (e: MouseEvent) => {
     e.preventDefault();
     this.props.onAuth(
       this.state.authFormData.email.value,
       this.state.authFormData.password.value,
+      this.state.isSignUp,
     );
   };
   private mapInputs = mapToInputs(this.handleAuthFormChange);
 }
 
+const mapAuthStateToProps = (state: StoreState) => {
+  return {
+    authenticating: selectAuthAuthenticating(state),
+    error: selectAuthError(state),
+  };
+};
 const mapAuthDispatchToProps = {
   onAuth: authenticate,
 };
 
 const connectAuth = connect(
-  null,
+  mapAuthStateToProps,
   mapAuthDispatchToProps,
 );
 

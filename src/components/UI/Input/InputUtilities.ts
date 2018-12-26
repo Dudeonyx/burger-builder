@@ -86,7 +86,7 @@ function updateFormFieldValidationImmutably(
   newRules.valid = valid;
   newRules.touched = true;
   // tslint:disable-next-line: no-console
-  console.log('[updateValidation] Rules not isDraft');
+  // console.log('[updateValidation] Rules not isDraft');
   return newRules;
 }
 
@@ -95,7 +95,7 @@ function updateFormFieldValidationDraft(rules: IInputRules, value: string) {
   rules.valid = valid;
   rules.touched = true;
   // tslint:disable-next-line: no-console
-  console.log('[updateValidation] Rules isDraft');
+  // console.log('[updateValidation] Rules isDraft');
   return rules;
 }
 
