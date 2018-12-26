@@ -14,7 +14,6 @@ import {
   ingredientIncreaseHandler,
   ingredientDecreaseHandler,
   ingredientSetHandler,
-  ingredientErrorHandler,
   fetchIngredientsHandler,
 } from '../../store/reducers/actions';
 import { GetConnectProps } from '../../store/types';
@@ -71,7 +70,7 @@ class BurgerBuilder extends Component<
   public render() {
     let burger = this.props.error ? (
       <Retry
-        retryHandler={this.fetchIngredients}
+        retryHandler={this.props.fetchIngredientsHandler}
         mainMessage="Ingredients Failed To Load. Please "
         additionalMessage={
           <span
@@ -127,21 +126,6 @@ class BurgerBuilder extends Component<
     );
   }
 
-  private fetchIngredients = async () => {
-    // this.setState({ error: null });
-    try {
-      const response: AxiosResponse<Iingredients> = await axios.get(
-        '/ingredients.json',
-      );
-      const { data: newIngredients } = response;
-      this.props.ingredientSetHandler(newIngredients);
-    } catch (error) {
-      // tslint:disable-next-line:no-console
-      // this.setState({
-      //   error,
-      // });
-    }
-  };
   private offline = () => {
     this.props.ingredientSetHandler({
       bacon: 0,
@@ -149,26 +133,19 @@ class BurgerBuilder extends Component<
       meat: 0,
       salad: 0,
     });
-    this.props.ingredientErrorHandler(false);
   };
 }
 
-const mapDispatch = (dispatch: Dispatch<IingredientReducerAction>) => {
-  return bindActionCreators(
-    {
-      ingredientIncreaseHandler,
-      ingredientDecreaseHandler,
-      ingredientSetHandler,
-      fetchIngredientsHandler,
-      ingredientErrorHandler,
-    },
-    dispatch as Dispatch,
-  );
+const mapBurgerBuilderDispatchToProps = {
+  ingredientIncreaseHandler,
+  ingredientDecreaseHandler,
+  ingredientSetHandler,
+  fetchIngredientsHandler,
 };
 
 const connectBurgerBuilder = connect(
   getIngredientState,
-  mapDispatch,
+  mapBurgerBuilderDispatchToProps,
 );
 export type IBurgerBuilderProps = RouteComponentProps &
   GetConnectProps<typeof connectBurgerBuilder>;

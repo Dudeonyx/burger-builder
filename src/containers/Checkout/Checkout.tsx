@@ -50,9 +50,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
 }
 
 const mapCheckoutStateToProps = createSelector(
-  selectIngredients,
-  getTotalPriceFromStore,
-  getPurchaseableFromStore,
+  [selectIngredients, getTotalPriceFromStore, getPurchaseableFromStore,],
   (ingredients, totalPrice, purchaseable) => ({
     ingredients,
     totalPrice,

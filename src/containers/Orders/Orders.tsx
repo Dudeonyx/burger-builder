@@ -5,10 +5,7 @@ import Loader from '../../components/UI/Loader/Loader';
 import withErrorHandler from '../../HOCs/withErrorHandler';
 import { IOrdersState } from './types';
 import { StyledOrders } from './Orders.styles';
-import {
-  IformattedOrder,
-  IordersReducerAction,
-} from '../../store/reducers/ordersReducer/types';
+import { IformattedOrder } from '../../store/reducers/ordersReducer/types';
 import { GetConnectProps } from '../../store/types';
 import { createSelector } from 'reselect';
 import {
@@ -16,9 +13,9 @@ import {
   selectOrdersLoading,
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
 import { fetchOrders } from '../../store/reducers/actions';
 import { RouteComponentProps } from 'react-router-dom';
+
 class Orders extends Component<IOrdersProps, IOrdersState> {
   public componentDidMount = () => {
     this.fetchOrders();
@@ -63,9 +60,8 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
   };
 }
 
-export const getOrdersState = createSelector(
-  selectformattedOrders,
-  selectOrdersLoading,
+const getOrdersState = createSelector(
+  [selectformattedOrders, selectOrdersLoading,],
   (formattedOrders, loading) => {
     return {
       formattedOrders,
@@ -74,14 +70,7 @@ export const getOrdersState = createSelector(
   },
 );
 
-const mapOrdersDispatchToProps = (dispatch: Dispatch<IordersReducerAction>) => {
-  return bindActionCreators(
-    {
-      fetchOrders,
-    },
-    dispatch as any,
-  );
-};
+const mapOrdersDispatchToProps = { fetchOrders };
 
 const connectOrders = connect(
   getOrdersState,
