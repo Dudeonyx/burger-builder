@@ -4,7 +4,7 @@ import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
-import { submitOrder } from '../../../store/reducers/actions';
+import { submitBurgerOrder } from '../../../store/reducers/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps, StoreState } from '../../../store/types';
 import { RouteComponentProps } from 'react-router';
@@ -12,11 +12,11 @@ import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
 import { StyledContactData } from './ContactData.styles';
 import {
-  selectSubmitting,
+  selectBurgerOrderSubmitting,
   selectIngredients,
   getTotalPriceFromStore,
+  selectAuthIdToken,
 } from '../../../store/selectors/selectors';
-import { createSelector } from 'reselect';
 import mapToInputs from '../../../components/UI/Input/mapToInputs';
 import { updateform } from '../../../components/UI/Input/InputUtilities';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
@@ -214,7 +214,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
           <Button
             type="submit"
             children="ORDER"
-            onClick={this.submit}
+            onClick={this.submitBurger}
             btnType="Success"
           />
         </div>
@@ -243,22 +243,23 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
     this.props.history.goBack();
   };
 
-  private submit = async (e: MouseEvent<HTMLButtonElement>) => {
+  private submitBurger = async (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
       try {
         e.preventDefault();
         if (!this.props.ingredients) {
           throw new Error('Empty Ingredients object!!!');
         }
-        await this.props.submitOrder(
+        await this.props.submitBurgerOrder(
           this.state.customer,
           this.props.ingredients,
           this.props.totalPrice,
+          this.props.token,
         );
         this.props.history.push('/all-orders');
       } catch (error) {
         // tslint:disable-next-line:no-console
-        console.error('[submit(ContactData)]', error);
+        console.error('[submitBurger (ContactData)]', error);
       }
     }
   };
@@ -266,14 +267,15 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
 
 export const mapContactDataStateToProps = (state: StoreState) => {
   return {
-    submitting: selectSubmitting(state),
+    submitting: selectBurgerOrderSubmitting(state),
     ingredients: selectIngredients(state),
     totalPrice: getTotalPriceFromStore(state),
+    token: selectAuthIdToken(state),
   };
 };
 
 const mapContactDataDispatchToProps = {
-  submitOrder,
+  submitBurgerOrder,
 };
 
 const connectContactData = connect(

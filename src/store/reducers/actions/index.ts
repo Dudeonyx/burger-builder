@@ -6,6 +6,6 @@ export {
   ingredientIncreaseHandler,
 } from './ingredientsActions';
 export { fetchOrders } from './ordersActions';
-export { submitOrder } from './contactDataActions';
+export { submitBurgerOrder } from './contactDataActions';
 export { authenticate } from './AuthActions';
 export { actionTypes };
