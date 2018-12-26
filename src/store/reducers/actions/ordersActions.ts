@@ -19,27 +19,27 @@ export const setOrdersLoading = (): IordersReducerAction => {
     type: actionTypes.SET_ORDERS_LOADING,
   };
 };
-export const setFormattedOrders = (
-  formattedOrders: IformattedOrder[],
-): IordersReducerAction => {
+export const setOrdersError = (error: Error): IordersReducerAction => {
   return {
-    type: actionTypes.SET_FORMATTEDORDERS,
-    payload: {
-      formattedOrders,
-    },
+    type: actionTypes.SET_ORDERS_ERROR,
+    payload: { error },
   };
 };
-export const fetchOrders = () => {
+
+export const fetchOrders = (token: string | null) => {
   return async (dispatch: Dispatch<IordersReducerAction>) => {
     try {
       type T = string;
       dispatch(setOrdersLoading());
-      const response = await axios.get<IDbOrders>('/orders.json');
+      const response = await axios.get<IDbOrders>(
+        '/orders.json' + (token ? '?auth=' + token : ''),
+      );
       const { data } = response;
       dispatch(setOrders(data));
     } catch (error) {
+      dispatch(setOrdersError(error));
       // tslint:disable-next-line: no-console
-      console.error(error);
+      console.error('[fetchOrders Action Error]', error);
     }
   };
 };

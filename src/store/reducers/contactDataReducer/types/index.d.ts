@@ -9,7 +9,6 @@ import { IContactDataState } from '../../../../containers/Checkout/ContactData/t
 export interface IContactDataReducerState {
   error: Error | false;
   submitting: boolean;
-  presubmitOrder: IDbOrder | null;
   orders: IDbOrders;
 }
 
