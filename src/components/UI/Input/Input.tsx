@@ -37,23 +37,23 @@ const Input: FunctionComponent<IInputProps> = props => {
     case 'password':
       return (
         <StyledInput valid={valid}>
-          <label htmlFor={id}>
-            <span>{label} </span>
-            <input
-              id={id}
-              type={type}
-              name={name}
-              placeholder={placeholder}
-              {...(type === 'email' ? emailConfig : null)}
-              onChange={onChange}
-              value={value}
-              data-set={dataSet}
-              required={required}
-              minLength={validation.minLength}
-              maxLength={validation.maxLength}
-            />
-            <i />
+          <label htmlFor={id} className="txtLbl">
+            {label}
           </label>
+          <input
+            id={id}
+            type={type}
+            name={name}
+            placeholder={placeholder}
+            {...(type === 'email' ? emailConfig : null)}
+            onChange={onChange}
+            value={value}
+            data-set={dataSet}
+            required={required}
+            minLength={validation.minLength}
+            maxLength={validation.maxLength}
+          />
+          <i />
         </StyledInput>
       );
     case 'radio':

@@ -1,20 +1,20 @@
-import { IInputRules, IInputConfig, IInputSelectConfig } from './types';
+import { IInputRules, IInputConfig } from './types';
 import { isDraft } from 'immer';
 import { ChangeEvent } from 'react';
 import { verifyObjKey } from '../../../shared/verifyObjKey';
 
 export function updateform<F extends { [x: string]: IInputConfig }>(
   form: F,
-  event: ChangeEvent<HTMLInputElement>,
+  { target: { name, value } }: ChangeEvent<HTMLInputElement>,
 ) {
-  const { name, value } = event.target;
+  // const { name, value } = event.target;
   if (!verifyObjKey(form, name)) {
     // tslint:disable-next-line:no-console
     console.error(`${name} not found in Form`);
     return form;
   }
   if (isDraft(form)) {
-    return updateDraftForm<F>(form, name, value);
+    return updateFormDraft<F>(form, name, value);
   } else {
     return updateFormImmutably<F>(form, name, value);
   }
@@ -31,43 +31,30 @@ function updateFormImmutably<
     value,
   );
   const newField = updateCheckedFormItemImmutably(field, value);
-  newField.value = value;
   const newForm = {
     ...form,
-    [name]: { ...newField, validation },
+    [name]: { ...newField, value, validation },
   };
   return newForm;
 }
 
-function updateDraftForm<
+function updateFormDraft<
   F extends {
     [x: string]: IInputConfig;
   }
 >(form: F, name: string, value: string) {
   const field = form[name];
   field.value = value;
-  updateDraftFormFieldValidation(field.validation, value);
-  updateDraftCheckedFormItem(field, value);
+  updateFormFieldValidationDraft(field.validation, value);
+  updateCheckedFormItemDraft(field, value);
   return form;
-}
-
-function updateCheckedFormItem(field: IInputConfig, value: string) {
-  if (field.type === 'radio' || field.type === 'select') {
-    if (isDraft(field)) {
-      return updateDraftCheckedFormItem(field, value);
-    } else {
-      return updateCheckedFormItemImmutably(field, value);
-    }
-  } else {
-    return field;
-  }
 }
 
 function updateCheckedFormItemImmutably(
   field: Readonly<IInputConfig>,
   value: string,
 ) {
-  if (field.type === 'radio' || field.type === 'select') {
+  if (field.type === 'radio') {
     const newOptions = field.options.map(obj => {
       return obj.value === value
         ? { ...obj, checked: true }
@@ -80,24 +67,14 @@ function updateCheckedFormItemImmutably(
   return cpField;
 }
 
-function updateDraftCheckedFormItem(field: IInputConfig, value: string) {
-  if (field.type === 'radio' || field.type === 'select') {
+function updateCheckedFormItemDraft(field: IInputConfig, value: string) {
+  if (field.type === 'radio') {
     field.options.forEach(obj => {
       obj.checked = obj.value === value ? true : false;
     });
     return field;
   }
   return field;
-}
-
-function updateFormFieldValidation(rules: IInputRules, value: string) {
-  if (isDraft(rules)) {
-    return updateDraftFormFieldValidation(rules, value);
-  } else if (rules) {
-    return updateFormFieldValidationImmutably(rules, value);
-  } else {
-    return rules;
-  }
 }
 
 function updateFormFieldValidationImmutably(
@@ -113,7 +90,7 @@ function updateFormFieldValidationImmutably(
   return newRules;
 }
 
-function updateDraftFormFieldValidation(rules: IInputRules, value: string) {
+function updateFormFieldValidationDraft(rules: IInputRules, value: string) {
   const valid = checkFormFieldValidity(rules, value);
   rules.valid = valid;
   rules.touched = true;

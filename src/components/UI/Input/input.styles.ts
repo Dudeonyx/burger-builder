@@ -22,18 +22,27 @@ const validInput = ({ valid }: { valid: boolean }) => {
 };
 
 export const StyledInput = styled.div`
-  margin: 5px;
+  &&&&&& {
+    margin: 5px;
+    margin-top: 0.9rem;
+    display: flex;
+    position: relative;
+  }
   *::before,
   *::after,
   * {
     box-sizing: border-box;
   }
-  label {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
+  label.txtLbl {
+    font-size: 0.7rem;
+    position: absolute;
+    top: -0.8rem;
+    left: 0.4rem;
+    color: ${({ valid }) => (valid ? '#228c1d' : 'red')};
+    font-weight: 700;
   }
   label.radio {
+    display: flex;
     justify-content: center;
   }
   span {
