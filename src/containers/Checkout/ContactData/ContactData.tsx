@@ -1,31 +1,182 @@
 // import styled from 'styled-components/macro';
-import React, { MouseEvent, Component } from 'react';
+import React, { MouseEvent, Component, ChangeEvent } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
-import {
-  updateContactDataForm,
-  resetContactDataForm,
-  submitOrder,
-} from '../../../store/reducers/actions';
+import { submitOrder } from '../../../store/reducers/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../../store/types';
 import { RouteComponentProps } from 'react-router';
-import { IActions } from '../../../store/reducers/actions/types';
-import { Dispatch, bindActionCreators } from 'redux';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
 import { StyledContactData } from './ContactData.styles';
 import {
-  selectCustomer,
   selectSubmitting,
   selectIngredients,
   getTotalPriceFromStore,
 } from '../../../store/selectors/selectors';
 import { createSelector } from 'reselect';
 import mapToInputs from '../../../components/UI/Input/mapToInputs';
+import { updateform } from '../../../components/UI/Input/InputUtilities';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
+  public state: IContactDataState = {
+    customer: {
+      name: {
+        value: '',
+        type: 'text',
+        placeholder: 'Your Name',
+        id: 'customer_name_id',
+        name: 'name',
+        label: 'Name:',
+        dataSet: 'basicInfo',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 5,
+        },
+      },
+      phone: {
+        value: '',
+        type: 'tel',
+        placeholder: 'Your Phone no.',
+        id: 'customer_phone_id',
+        name: 'phone',
+        label: 'Phone no.:',
+        dataSet: 'basicInfo',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 5,
+          isNumeric: true,
+        },
+      },
+      email: {
+        value: '',
+        type: 'email',
+        placeholder: 'Your Email',
+        id: 'customer_email_id',
+        name: 'email',
+        label: 'Email:',
+        dataSet: 'basicInfo',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 5,
+          isEmail: true,
+        },
+      },
+      street: {
+        value: '',
+        type: 'street-address',
+        placeholder: 'Your Street',
+        id: 'customer_street_id',
+        name: 'street',
+        label: 'Street:',
+        dataSet: 'address',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 3,
+        },
+      },
+      city: {
+        value: '',
+        type: 'text',
+        placeholder: 'Your City',
+        id: 'customer_city_id',
+        name: 'city',
+        label: 'City:',
+        dataSet: 'address',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 3,
+        },
+      },
+      state: {
+        value: '',
+        type: 'text',
+        placeholder: 'Your State/Province',
+        id: 'customer_state_id',
+        name: 'state',
+        label: 'State/\nProvince:',
+        dataSet: 'address',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 3,
+        },
+      },
+      country: {
+        value: '',
+        type: 'country-name',
+        placeholder: 'Your Country',
+        id: 'customer_country_id',
+        name: 'country',
+        label: 'Country:',
+        dataSet: 'address',
+        validation: {
+          required: true,
+          valid: false,
+          touched: false,
+          minLength: 3,
+        },
+      },
+
+      deliveryMethod: {
+        id: 'customer_deliveryMethod_id',
+        label: '',
+        value: 'normal',
+        type: 'select',
+        name: 'deliveryMethod',
+        dataSet: 'deliveryMethod',
+        validation: {
+          required: true,
+          valid: true,
+          touched: true,
+        },
+        options: [
+          {
+            value: 'cheapest',
+            id: 'cheapest_id',
+            label: 'Cheapest',
+            checked: false,
+          },
+          {
+            value: 'cheap',
+            id: 'cheap_id',
+            label: 'Cheap',
+            checked: false,
+          },
+          {
+            value: 'normal',
+            id: 'normal_id',
+            label: 'Normal',
+            checked: true,
+          },
+          {
+            value: 'expensive',
+            id: 'expensive_id',
+            label: 'Expensive',
+            checked: false,
+          },
+          {
+            value: 'very_expensive',
+            id: 'very_expensive_id',
+            label: 'Very Expensive',
+            checked: false,
+          },
+        ],
+      },
+    },
+  };
   public render() {
     const {
       name,
@@ -36,7 +187,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       phone,
       state,
       street,
-    } = this.props.customer;
+    } = this.state.customer;
 
     const form = this.props.submitting ? (
       <Loader />
@@ -77,12 +228,21 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
       </StyledContactData>
     );
   }
-  private mapToInput = mapToInputs(this.props.updateContactDataForm);
-  private cancel = (e: MouseEvent<Element>) => {
+
+  private updateContactDataForm = (e: ChangeEvent<HTMLInputElement>) => {
+    const updatedCustomer = updateform(this.state.customer, e);
+    this.setState({ customer: updatedCustomer });
+  };
+
+  private mapToInput = mapToInputs(this.updateContactDataForm);
+
+  private cancel = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    this.props.resetContactDataForm();
+    // tslint:disable-next-line: no-unused-expression
+    e.currentTarget.form && e.currentTarget.form.reset();
     this.props.history.goBack();
   };
+
   private submit = async (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
       try {
@@ -91,6 +251,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
           throw new Error('Empty Ingredients object!!!');
         }
         await this.props.submitOrder(
+          this.state.customer,
           this.props.ingredients,
           this.props.totalPrice,
         );
@@ -104,13 +265,9 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
 }
 
 export const getContactDataState = createSelector(
-  selectCustomer,
-  selectSubmitting,
-  selectIngredients,
-  getTotalPriceFromStore,
-  (customer, submitting, ingredients, totalPrice) => {
+  [selectSubmitting, selectIngredients, getTotalPriceFromStore,],
+  (submitting, ingredients, totalPrice) => {
     return {
-      customer,
       submitting,
       ingredients,
       totalPrice,
@@ -118,15 +275,8 @@ export const getContactDataState = createSelector(
   },
 );
 
-const mapContactDataDispatchToProps = (dispatch: Dispatch<IActions>) => {
-  return bindActionCreators(
-    {
-      updateContactDataForm,
-      resetContactDataForm,
-      submitOrder,
-    },
-    dispatch,
-  );
+const mapContactDataDispatchToProps = {
+  submitOrder,
 };
 
 const connectContactData = connect(

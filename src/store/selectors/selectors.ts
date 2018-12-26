@@ -5,7 +5,6 @@ import { updatePurchasable } from '../../shared/updatePurchasable';
 
 export const selectIngredients = (state: IstoreState) => state.ings.ingredients;
 export const selectIngredientsError = (state: IstoreState) => state.ings.error;
-export const selectCustomer = (state: IstoreState) => state.cData.customer;
 export const selectSubmitting = (state: IstoreState) => state.cData.submitting;
 
 export const selectOrders = (state: IstoreState) => state.ords.orders;
@@ -25,22 +24,6 @@ export const getTotalPriceFromStore = createSelector(
 export const getPurchaseableFromStore = createSelector(
   selectIngredients,
   ingredients => updatePurchasable(ingredients),
-);
-export const getCustomerFromState = createSelector(
-  selectCustomer,
-  customer => customer,
-);
-export const getSubmitOrderState = createSelector(
-  selectCustomer,
-  selectIngredients,
-  getTotalPriceFromStore,
-  (customer, ingredients, totalPrice) => {
-    return {
-      customer,
-      ingredients,
-      totalPrice,
-    };
-  },
 );
 
 export const getIngredientState = createSelector(

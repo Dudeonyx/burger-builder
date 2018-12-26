@@ -1,9 +1,11 @@
-import { IContactDataReducerState, IGENERATE_PRESUBMIT_ORDER } from './types';
 import { IDbOrder } from '../ordersReducer/types';
+import { IContactDataState } from '../../../containers/Checkout/ContactData/types';
+import { Iingredients } from '../../../types/ingredients';
 
 export function generateOrder(
-  customer: IContactDataReducerState['customer'],
-  payload: IGENERATE_PRESUBMIT_ORDER['payload'],
+  customer: IContactDataState['customer'],
+  ingredients: Iingredients,
+  totalPrice: string,
 ) {
   const {
     deliveryMethod,
@@ -15,7 +17,6 @@ export function generateOrder(
     state,
     street,
   } = customer;
-  const { ingredients, totalPrice } = payload;
   const order: IDbOrder = {
     basicInfo: {
       name: name.value,

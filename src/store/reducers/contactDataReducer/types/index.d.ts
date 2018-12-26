@@ -3,35 +3,14 @@ import { Iingredients } from '../../../../types/ingredients';
 import { IInputConfig } from '../../../../components/UI/Input/types';
 import { actionTypes } from '../../actions';
 import { ChangeEvent } from 'react';
+import { IContactDataState } from '../../../../containers/Checkout/ContactData/types';
 
 // tslint:disable-next-line:no-empty-interface
 export interface IContactDataReducerState {
-  customer: {
-    name: IInputConfig;
-    phone: IInputConfig;
-    email: IInputConfig;
-    street: IInputConfig;
-    city: IInputConfig;
-    state: IInputConfig;
-    country: IInputConfig;
-    deliveryMethod: IInputConfig;
-  };
-  presubmitOrder: IDbOrder | null;
-  orders: IDbOrders;
   error: Error | false;
   submitting: boolean;
-}
-type CustomerKeys = keyof IContactDataReducerState['customer'];
-
-export interface IUPDATE_CONTACT_FORM {
-  type: typeof actionTypes.UPDATE_CONTACT_FORM;
-  payload: {
-    event: ChangeEvent<HTMLInputElement>;
-  };
-}
-
-export interface IRESET_CONTACT_FORM {
-  type: typeof actionTypes.RESET_CONTACT_FORM;
+  presubmitOrder: IDbOrder | null;
+  orders: IDbOrders;
 }
 
 export interface IORDER_SUCCESSFUL {
@@ -50,17 +29,8 @@ export interface IORDER_FAILED {
 export interface ISET_ORDER_SUBMITTING {
   type: typeof actionTypes.SET_ORDER_SUBMITTING;
 }
-export interface IGENERATE_PRESUBMIT_ORDER {
-  type: typeof actionTypes.GENERATE_PRESUBMIT_ORDER;
-  payload: {
-    ingredients: Iingredients;
-    totalPrice: string;
-  };
-}
+
 export type IContactDataReducerActions =
-  | IUPDATE_CONTACT_FORM
-  | IRESET_CONTACT_FORM
   | IORDER_SUCCESSFUL
   | IORDER_FAILED
-  | ISET_ORDER_SUBMITTING
-  | IGENERATE_PRESUBMIT_ORDER;
+  | ISET_ORDER_SUBMITTING;
