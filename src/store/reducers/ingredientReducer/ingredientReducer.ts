@@ -1,3 +1,4 @@
+import { setIngredientsDraft } from './utilities';
 import { reShapeIngredients } from './utilities';
 import produce from 'immer';
 
@@ -19,10 +20,7 @@ export const ingredientReducer = produce(
         decrementKeyInObj(draft.ingredients, action.payload.igkey);
         break;
       case actionTypes.SET_INGREDIENTS:
-        draft.error = false;
-        const { ingredients } = action.payload;
-        const reShapedIngredients = reShapeIngredients(ingredients);
-        draft.ingredients = reShapedIngredients;
+        setIngredientsDraft(draft, action);
         break;
       case actionTypes.SET_INGREDIENTS_ERROR:
         draft.error = action.payload.error;
