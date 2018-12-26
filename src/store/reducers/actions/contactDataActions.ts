@@ -3,7 +3,7 @@ import { Iingredients } from '../../../types/ingredients';
 import { actionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IActions } from './types';
-import { IstoreState } from '../../types';
+import { StoreState } from '../../types';
 import { IDbOrder } from '../ordersReducer/types';
 import { generateOrder } from '../contactDataReducer/utilities';
 import { IContactDataState } from '../../../containers/Checkout/ContactData/types';
@@ -34,7 +34,7 @@ export const submitOrder = (
   ingredients: Iingredients,
   totalPrice: string,
 ): Promise<VoidFunction> => {
-  return (async (dispatch: Dispatch<IActions>, getState: () => IstoreState) => {
+  return (async (dispatch: Dispatch<IActions>) => {
     try {
       const order = generateOrder(customer, ingredients, totalPrice);
       dispatch(setOrderSubmitting());
@@ -50,7 +50,7 @@ export const submitOrder = (
       dispatch(orderSuccessful(name, order));
     } catch (error) {
       // tslint:disable-next-line:no-console
-      console.error(error);
+      console.error('[submitOrder Action Error]', error);
       dispatch(orderFailed(error));
     }
   }) as any;

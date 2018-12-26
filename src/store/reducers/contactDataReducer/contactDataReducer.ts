@@ -7,7 +7,6 @@ import { updateform } from '../../../components/UI/Input/InputUtilities';
 const initialState: IContactDataReducerState = {
   error: false,
   submitting: false,
-  presubmitOrder: null,
   orders: {},
 };
 
@@ -17,16 +16,18 @@ export const contactDataReducer = produce(
       case actionTypes.ORDER_SUCCESSFUL:
         draft.orders[action.payload.name] = action.payload.order;
         draft.submitting = false;
+        draft.error = false;
         break;
       case actionTypes.ORDER_FAILED:
         draft.error = action.payload.error;
         draft.submitting = false;
         break;
-      case actionTypes.SET_ORDER_SUBMITTING:
+        case actionTypes.SET_ORDER_SUBMITTING:
+        draft.error = false;
         draft.submitting = true;
         break;
       default:
-        const ____: never = action;
+        const _: never = action;
         break;
     }
   },
