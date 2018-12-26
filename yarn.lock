@@ -10136,6 +10136,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+re-reselect@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/re-reselect/-/re-reselect-2.2.0.tgz#5e175d032bcd67c7c6632bf76b3e9f8386b8f24f"
+  integrity sha512-Ugknx2fT+CFquFT0VdFTlrkyFW5NyIYsPFe9xJlP/xEjkygl2t3oBBBu2gslCIYIntzbCR/OALeJ8Tt/qZd4Gg==
+
 react-addons-create-fragment@^15.5.3:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-addons-create-fragment/-/react-addons-create-fragment-15.6.2.tgz#a394de7c2c7becd6b5475ba1b97ac472ce7c74f8"

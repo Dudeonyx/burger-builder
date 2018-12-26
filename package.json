@@ -13,6 +13,7 @@
     "immer": "^1.9.3",
     "primeicons": "^1.0.0",
     "primereact": "^3.0.0-beta.1",
+    "re-reselect": "^2.2.0",
     "react": "^16.7.0",
     "react-classer": "^0.1.0",
     "react-dom": "^16.7.0",

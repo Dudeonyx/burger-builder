@@ -1,14 +1,35 @@
-import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
-import React, { Component, ChangeEvent } from 'react';
+import React, { Component, ChangeEvent, MouseEvent } from 'react';
 import { IInputConfig } from '../../components/UI/Input/types';
-import { verifyObjKey } from '../../shared/verifyObjKey';
 import { updateform } from '../../components/UI/Input/InputUtilities';
 import mapToInputs from '../../components/UI/Input/mapToInputs';
+import styled from '@emotion/styled/macro';
+import { boxStyle } from '../Orders/Orders.styles';
+import css from '@emotion/css/macro';
+import { authenticate } from '../../store/reducers/actions';
+import { connect } from 'react-redux';
+import { GetConnectProps } from '../../store/types';
+import { RouteComponentProps } from 'react-router';
 
-// tslint:disable-next-line: no-empty-interface
-export interface IAuthProps {}
-
+const flexColumnCenter = css`
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+`;
+const StyledAuth = styled.div`
+  ${flexColumnCenter}
+  & > div {
+    ${boxStyle};
+    min-height: 0px;
+  }
+  form {
+    width: 90%;
+    @media (min-width: 650px) {
+      width: 550px;
+    }
+  }
+`;
 export interface IAuthState {
   authFormData: {
     name: IInputConfig;
@@ -17,7 +38,7 @@ export interface IAuthState {
   };
 }
 
-export default class Auth extends Component<IAuthProps, IAuthState> {
+class Auth extends Component<IAuthProps, IAuthState> {
   constructor(props: IAuthProps) {
     super(props);
 
@@ -76,18 +97,39 @@ export default class Auth extends Component<IAuthProps, IAuthState> {
   };
 
   public render() {
+    const { name, email, password } = this.state.authFormData;
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <form style={{ width: '500px' }}>
-          {Object.values(this.state.authFormData).map(this.mapInputs)}
-          <Button btnType="Success" onClick={() => ''}>
-            {' '}
-            SUBMIT
-          </Button>
-        </form>
-      </div>
+      <StyledAuth>
+        <div>
+          <form>
+            {[email, password,].map(this.mapInputs)}
+            <Button btnType="Success" onClick={this.submit}>
+              SUBMIT
+            </Button>
+          </form>
+        </div>
+      </StyledAuth>
     );
   }
-
+  private submit = (e: MouseEvent) => {
+    e.preventDefault();
+    this.props.onAuth(
+      this.state.authFormData.email.value,
+      this.state.authFormData.password.value,
+    );
+  };
   private mapInputs = mapToInputs(this.handleAuthFormChange);
 }
+
+const mapAuthDispatchToProps = {
+  onAuth: authenticate,
+};
+
+const connectAuth = connect(
+  null,
+  mapAuthDispatchToProps,
+);
+
+type IAuthProps = GetConnectProps<typeof connectAuth> & RouteComponentProps;
+
+export default connectAuth(Auth);
