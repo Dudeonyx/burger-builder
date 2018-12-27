@@ -23,3 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 debug.log
 src/store/reducers/actions/API_KEY.ts
+src/shared/API_KEY.ts

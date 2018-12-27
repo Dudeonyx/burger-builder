@@ -2,7 +2,7 @@ import { actionTypes } from './index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import { AuthAction, IAuthResponse } from '../authReducer/types';
-import { API_KEY } from './API_KEY';
+import { API_KEY } from '../../../shared/API_KEY';
 
 export const authStart = (): AuthAction => {
   return {
