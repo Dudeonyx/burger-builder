@@ -2,6 +2,7 @@ import { actionTypes } from './index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import { AuthAction, IAuthResponse } from '../authReducer/types';
+import { API_KEY } from './API_KEY';
 
 export const authStart = (): AuthAction => {
   return {
@@ -45,7 +46,6 @@ export const authTimeout = (expiresIn: string) => {
 };
 const baseAuthUrl =
   'https://www.googleapis.com/identitytoolkit/v3/relyingparty/';
-const API_KEY = 'AIzaSyBwcMch0YFm-eOcVzSNj8ecthH2t4_72FA';
 const loginPath = 'verifyPassword?key=';
 const signUpPath = 'signupNewUser?key=';
 export const authenticate = (

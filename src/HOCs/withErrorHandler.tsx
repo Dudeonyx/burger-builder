@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { Component, ComponentType } from 'react';
 import Modal from '../components/UI/Modal/Modal';
+import { generateErrorMessage } from '../store/reducers/ordersReducer/utilities';
 
 export interface IWithErrorHandlerState {
   error: Error | null;
@@ -60,8 +61,12 @@ function withErrorHandler<P extends {}>(
       return (
         <>
           {this.state.error ? (
-            <Modal show={!!this.state.error} hider={this.errorConfirmed}>
-              {this.state.error.message}
+            <Modal
+              show={!!this.state.error}
+              hider={this.errorConfirmed}
+              zIndex={800}
+            >
+              {generateErrorMessage(this.state.error)}
             </Modal>
           ) : null}
           <WrappedComponent {...this.props} />

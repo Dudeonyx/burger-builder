@@ -16,6 +16,7 @@ import {
   selectIngredients,
   getTotalPriceFromStore,
   selectAuthIdToken,
+  selectBurgerOrderError,
 } from '../../../store/selectors/selectors';
 import mapToInputs from '../../../components/UI/Input/mapToInputs';
 import { updateform } from '../../../components/UI/Input/InputUtilities';
@@ -256,6 +257,9 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
           this.props.totalPrice,
           this.props.token,
         );
+        if (this.props.error) {
+          throw this.props.error;
+        }
         this.props.history.push('/all-orders');
       } catch (error) {
         // tslint:disable-next-line:no-console
@@ -271,6 +275,7 @@ export const mapContactDataStateToProps = (state: StoreState) => {
     ingredients: selectIngredients(state),
     totalPrice: getTotalPriceFromStore(state),
     token: selectAuthIdToken(state),
+    error: selectBurgerOrderError(state),
   };
 };
 

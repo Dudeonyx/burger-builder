@@ -2,10 +2,26 @@ import styled from '@emotion/styled/macro';
 import React, { FunctionComponent } from 'react';
 import Backdrop from '../Backdrop/Backdrop';
 import { IStyledModal, IModalProps } from './types';
+import css from '@emotion/css/macro';
+
+const showHandler = ({ show }: IStyledModal) =>
+  show
+    ? css`
+        max-width: 100%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        visibility: unset;
+      `
+    : css`
+        max-width: 0%;
+        transform: translate(-50%, -150vh);
+        opacity: 0;
+        visibility: hidden;
+      `;
 
 const StyledModal = styled.div`
   position: fixed;
-  z-index: 500;
+  z-index: ${({ zIndex }) => zIndex || 500};
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -19,11 +35,7 @@ const StyledModal = styled.div`
   left: 50%;
   box-sizing: border-box;
   transition: all 0.3s ease-in-out;
-  max-width: ${(props: IStyledModal) => (props.show ? '100%' : '0%')};
-  transform: ${({ show }) =>
-    show ? 'translate(-50%, -50%)' : 'translate(-50%, -150vh)'};
-  opacity: ${({ show }) => (show ? 1 : 0)};
-  visibility: ${({ show }) => (show ? 'unset' : 'hidden')};
+  ${showHandler};
   background-color: ${({ bgColor }) => bgColor};
 
   @media (min-width: ${({ minWidth }) => minWidth || 550}px) {
@@ -48,12 +60,22 @@ const Modal: FunctionComponent<IModalProps> = ({
   show = false,
   hider,
   bgColor,
+  zIndex,
   minWidth,
 }) => {
   return (
     <>
-      <Backdrop show={show} hider={hider} />
-      <StyledModal show={show} bgColor={bgColor} minWidth={minWidth}>
+      <Backdrop
+        show={show}
+        hider={hider}
+        zIndex={zIndex ? zIndex - 100 : undefined}
+      />
+      <StyledModal
+        show={show}
+        bgColor={bgColor}
+        minWidth={minWidth}
+        zIndex={zIndex}
+      >
         {children}
       </StyledModal>
     </>

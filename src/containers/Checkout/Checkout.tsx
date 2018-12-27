@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, lazy } from 'react';
 import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
-import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
 import { GetConnectProps, StoreState } from '../../store/types';
-import { createSelector } from 'reselect';
 import {
   selectIngredients,
   getTotalPriceFromStore,
   getPurchaseableFromStore,
 } from '../../store/selectors/selectors';
+import { suspenseNode2 } from '../../HOCs/suspensed';
 
+const ContactData = lazy(() =>
+  import(/* webpackChunkName: "ContactData", webpackPrefetch: true */ './ContactData/ContactData'),
+);
+
+const SContactData = suspenseNode2(ContactData);
 class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   public render() {
     return (
@@ -20,7 +24,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
           <>
             <Route
               path={this.props.match.path + '/contact-data'}
-              component={ContactData}
+              render={p => SContactData(p)}
             />
             <CheckoutSummary
               ingredients={this.props.ingredients}
@@ -43,17 +47,17 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   private checkoutContinue = () => {
     setTimeout(
       () => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
-      2000,
+      8000,
     );
     this.props.history.push(this.props.match.path + '/contact-data');
   };
 }
 
-const mapCheckoutStateToProps = (state: StoreState) =>({
-    ingredients: selectIngredients(state),
-    totalPrice: getTotalPriceFromStore(state),
-    purchaseable: getPurchaseableFromStore(state),
-  });
+const mapCheckoutStateToProps = (state: StoreState) => ({
+  ingredients: selectIngredients(state),
+  totalPrice: getTotalPriceFromStore(state),
+  purchaseable: getPurchaseableFromStore(state),
+});
 
 const connectIngredientsState = connect(
   mapCheckoutStateToProps,

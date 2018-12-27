@@ -56,7 +56,7 @@ export const submitBurgerOrder = (
       dispatch(burgerOrderSuccessful(name, order));
     } catch (error) {
       // tslint:disable-next-line:no-console
-      console.error('[submitOrder Action Error]', error);
+      console.error('[submitBurgerOrder Action Error]', error);
       dispatch(burgerOrderFailed(error));
     }
   }) as any;

@@ -1,27 +1,25 @@
 import { MouseEventHandler } from 'react';
-/** @interface */
-export interface IModalProps {
+export interface IStyledModal {
+  bgColor?: string;
   /** A boolean indicating visibility of the modal
    * @default false
    */
   show: boolean;
+  /**
+   * @type {number}
+   * @memberof IStyledModal
+   */
+  minWidth?: number;
+  /**
+   * @type {number}
+   * @memberof IStyledModal
+   */
+  zIndex?: number;
+}
+/** @interface */
+export interface IModalProps extends IStyledModal {
   /** An event handler that sets "show" to false
    * @default "() => {}"
    */
   hider: MouseEventHandler;
-  /**
-   * @type {string}
-   * @memberof IModal
-   */
-  bgColor?: string;
-  /**
-   * @type {number}
-   * @memberof IModal
-   */
-  minWidth?: number;
-}
-export interface IStyledModal {
-  bgColor?: string;
-  show: boolean;
-  minWidth?: number;
 }
