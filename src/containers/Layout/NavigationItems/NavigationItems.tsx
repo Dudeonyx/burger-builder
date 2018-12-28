@@ -2,17 +2,26 @@ import React, { FunctionComponent } from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import styles from './NavigationItems.module.css';
 
-const navItems = [
-  { url: '/', name: 'BurgerBuilder', exact: true },
-  { url: '/all-orders', name: 'My Orders', exact: true },
-  { url: '/login', name: 'Login/Sign Up', exact: true },
-  // { url: '/', name: 'About Us' },
-];
-// export interface INavigationItems {}
-const NavigationItems: FunctionComponent<{}> = () => {
-  const navElements = navItems.map(({ url, name, exact }) => (
-    <NavigationItem key={name} link={url} linkName={name} exact={exact} />
-  ));
+const NavigationItems: FunctionComponent<{ isAuth: boolean }> = ({
+  isAuth,
+}) => {
+  const navElements = (
+    <>
+      <NavigationItem link="/" linkName="BurgerBuilder" exact={true} />
+      {isAuth ? (
+        <>
+          <NavigationItem
+            link="/all-orders"
+            linkName="My Orders"
+            exact={true}
+          />
+          <NavigationItem link="/logout" linkName="Logout" exact={true} />
+        </>
+      ) : (
+        <NavigationItem link="/login" linkName="Login/SignUp" exact={true} />
+      )}
+    </>
+  );
   return <ul className={styles.NavigationItems}>{navElements}</ul>;
 };
 

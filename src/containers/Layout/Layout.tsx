@@ -1,6 +1,12 @@
 import React, { lazy, PureComponent, Suspense } from 'react';
 import Toolbar from './Toolbar/Toolbar';
 import styles from './Layout.module.css';
+import {
+  selectAuthIdToken,
+  getAuthenticated,
+} from '../../store/selectors/selectors';
+import { connect } from 'react-redux';
+import { GetConnectProps, StoreState } from '../../store/types';
 
 const SideDrawer = lazy(() =>
   import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
@@ -21,12 +27,12 @@ interface ILayoutState {
  * @class Layout
  * @extends {Component<{ children: JSX.Element }, ILayoutState>}
  */
-class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
+class Layout extends PureComponent<LayoutProps, ILayoutState> {
   /**
    * @implements {ILayoutState}
    * @memberof Layout
    */
-  public readonly state = {
+  public readonly state: ILayoutState = {
     showSideDrawer: false,
   };
 
@@ -48,9 +54,13 @@ class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
   public render() {
     return (
       <>
-        <Toolbar drawerToggler={this.toggleSideDrawerHandler} />
+        <Toolbar
+          drawerToggler={this.toggleSideDrawerHandler}
+          isAuth={this.props.isAuthenticated}
+        />
         <Suspense fallback={null}>
           <SideDrawer
+            isAuth={this.props.isAuthenticated}
             open={this.state.showSideDrawer}
             hider={this.hideSideDrawerHandler}
           />
@@ -61,4 +71,17 @@ class Layout extends PureComponent<{ children: JSX.Element }, ILayoutState> {
   }
 }
 
-export default Layout;
+const mapLayoutStateToProps = (state: StoreState) => {
+  return {
+    isAuthenticated: getAuthenticated(state),
+  };
+};
+
+const connectLayout = connect(
+  mapLayoutStateToProps,
+  null,
+);
+
+type LayoutProps = GetConnectProps<typeof connectLayout>;
+
+export default connectLayout(Layout);

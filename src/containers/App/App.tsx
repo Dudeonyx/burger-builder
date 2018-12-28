@@ -21,6 +21,8 @@ import '../../components/UI/Button/Button';
 import 'regenerator-runtime';
 import '../../components/UI/Modal/Modal';
 import Auth from '../Auth/Auth';
+import Logout from '../Auth/Logout/Logout';
+import $404 from '../404/404';
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
@@ -37,6 +39,8 @@ const App = () => {
           <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
           <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
           <Route path="/login" exact={false} component={Auth} />
+          <Route path="/logout" exact={false} component={Logout} />
+          <Route path="/" exact={false} component={$404} />
         </Switch>
       </ErrorBoundary>
     </Layout>

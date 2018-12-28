@@ -1,8 +1,6 @@
 import React, {
   FunctionComponent,
-  lazy,
   MouseEventHandler,
-  Suspense,
 } from 'react';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
@@ -12,8 +10,12 @@ import Logo from '../../../components/UI/Logo/Logo';
 export interface ISideDrawerProps {
   open: boolean;
   hider: MouseEventHandler;
+  isAuth: boolean;
 }
 
+const setTranslate = ({ open }: {
+  open: boolean;
+}) => open ? 'translateX(0)' : 'translateX(-100%)';
 const StyledSideDrawer = styled.div`
   & {
     position: fixed;
@@ -26,8 +28,7 @@ const StyledSideDrawer = styled.div`
     z-index: 200;
     height: 100%;
     width: 70%;
-    transform: ${(props: { open: boolean }) =>
-      props.open ? 'translateX(0)' : 'translateX(-100%)'};
+    transform: ${setTranslate};
   }
 
   @media (min-width: 500px) {
@@ -37,14 +38,14 @@ const StyledSideDrawer = styled.div`
   }
 `;
 
-const SideDrawer: FunctionComponent<ISideDrawerProps> = ({ open, hider }) => {
+const SideDrawer: FunctionComponent<ISideDrawerProps> = ({ open, hider,isAuth }) => {
   return (
     <>
       <Backdrop show={open} hider={hider} />
       <StyledSideDrawer open={open} onClick={hider}>
         <Logo height="11%" link="##" HQ={true} />
         <nav>
-          <NavigationItems />
+          <NavigationItems isAuth={isAuth} />
         </nav>
       </StyledSideDrawer>
     </>

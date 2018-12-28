@@ -35,7 +35,7 @@ const NavigationItem: FunctionComponent<INavigationItemProps> = ({
   linkName,
 }: INavigationItemProps) => (
   <li className={styles.NavigationItem}>
-    <NavLink to={link} exact={exact} activeClassName={styles.active}>
+    <NavLink to={link} exact={exact} activeClassName={styles.active} >
       <span>{linkName}</span>
     </NavLink>
   </li>
