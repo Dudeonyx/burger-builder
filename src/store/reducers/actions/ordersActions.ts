@@ -32,7 +32,7 @@ export const fetchOrders = (token: string | null) => {
       type T = string;
       dispatch(setOrdersLoading());
       const response = await axios.get<IDbOrders>(
-        '/orders.json' + (token ? '?auth=' + token : ''),
+        '/orders.json' + (token != null ? '?auth=' + token : ''),
       );
       const { data } = response;
       dispatch(setOrders(data));

@@ -12,7 +12,7 @@ export interface IAuthResponse {
 }
 export interface IauthReducerState {
   authenticating: boolean;
-  error: Error & { [x: string]: any } | false;
+  error: Error & { [x: string]: any } | null;
   displayName: string | null;
   idToken: string | null;
   userId: string | null;
@@ -32,7 +32,7 @@ interface IAuthSuccess {
 interface IAuthFail {
   type: typeof actionTypes.AUTH_FAIL;
   payload: {
-    error: Error & object;
+    error: Error;
   };
 }
 interface IAuthLogout {

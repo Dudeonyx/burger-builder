@@ -4,7 +4,7 @@ import produce from 'immer';
 
 const initialState: IauthReducerState = {
   authenticating: false,
-  error: false,
+  error: null,
   idToken: null,
   userId: null,
   displayName: null,
@@ -14,11 +14,11 @@ const authReducer = produce((draft, action: AuthAction) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
       draft.authenticating = true;
-      draft.error = false;
+      draft.error = null;
       break;
     case actionTypes.AUTH_SUCCESS:
       draft.authenticating = false;
-      draft.error = false;
+      draft.error = null;
       draft.userId = action.payload.localId;
       draft.idToken = action.payload.idToken;
       break;
