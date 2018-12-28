@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import React, { Component, ComponentType } from 'react';
 import Modal from '../components/UI/Modal/Modal';
-import { generateErrorMessage } from '../store/reducers/ordersReducer/utilities';
+import { generateErrorMessage } from '../shared/generateErrorMessage';
 
 export interface IWithErrorHandlerState {
   error: Error | null;

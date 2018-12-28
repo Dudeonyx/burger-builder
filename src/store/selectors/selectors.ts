@@ -2,10 +2,8 @@ import { StoreState } from '../types';
 import { createSelector } from 'reselect';
 import { getTotalPrice } from '../../shared/getTotalPrice';
 import { updatePurchasable } from '../../shared/updatePurchasable';
-import {
-  generateErrorMessage,
-  formatOrders,
-} from '../reducers/ordersReducer/utilities';
+import { formatOrders } from '../reducers/ordersReducer/utilities';
+import { generateErrorMessage } from '../../shared/generateErrorMessage';
 
 export const selectIngredients = (state: StoreState) => state.ings.ingredients;
 export const selectIngredientsError = (state: StoreState) => state.ings.error;
