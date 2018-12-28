@@ -1,7 +1,4 @@
-import React, {
-  FunctionComponent,
-  MouseEventHandler,
-} from 'react';
+import React, { FunctionComponent, MouseEventHandler } from 'react';
 import Backdrop from '../../../components/UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import styled from '@emotion/styled/macro';
@@ -11,11 +8,14 @@ export interface ISideDrawerProps {
   open: boolean;
   hider: MouseEventHandler;
   isAuth: boolean;
+  pathName: string;
 }
-
-const setTranslate = ({ open }: {
+interface IStyledSideDrawerProps {
   open: boolean;
-}) => open ? 'translateX(0)' : 'translateX(-100%)';
+}
+const setTranslate = ({ open }: IStyledSideDrawerProps) => {
+  return open ? 'translateX(0)' : 'translateX(-100%)';
+};
 const StyledSideDrawer = styled.div`
   & {
     position: fixed;
@@ -38,14 +38,19 @@ const StyledSideDrawer = styled.div`
   }
 `;
 
-const SideDrawer: FunctionComponent<ISideDrawerProps> = ({ open, hider,isAuth }) => {
+const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
+  open,
+  hider,
+  isAuth,
+  pathName,
+}) => {
   return (
     <>
       <Backdrop show={open} hider={hider} />
       <StyledSideDrawer open={open} onClick={hider}>
         <Logo height="11%" link="##" HQ={true} />
         <nav>
-          <NavigationItems isAuth={isAuth} />
+          <NavigationItems isAuth={isAuth} pathName={pathName} />
         </nav>
       </StyledSideDrawer>
     </>

@@ -2,9 +2,12 @@ import React, { FunctionComponent } from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import styles from './NavigationItems.module.css';
 
-const NavigationItems: FunctionComponent<{ isAuth: boolean }> = ({
-  isAuth,
-}) => {
+const NavigationItems: FunctionComponent<{
+  isAuth: boolean;
+  pathName: string;
+}> = ({ isAuth, pathName }) => {
+  const path = pathName ? pathName.slice(1) : '';
+  const redirect = '?redirect=' + path;
   const navElements = (
     <>
       <NavigationItem link="/" linkName="BurgerBuilder" exact={true} />
@@ -18,7 +21,11 @@ const NavigationItems: FunctionComponent<{ isAuth: boolean }> = ({
           <NavigationItem link="/logout" linkName="Logout" exact={true} />
         </>
       ) : (
-        <NavigationItem link="/login" linkName="Login/SignUp" exact={true} />
+        <NavigationItem
+          link={'/login' + (!path.startsWith('login') ? redirect : '')}
+          linkName="Login/SignUp"
+          exact={true}
+        />
       )}
     </>
   );

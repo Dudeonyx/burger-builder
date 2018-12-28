@@ -7,6 +7,7 @@ import {
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
 import { GetConnectProps, StoreState } from '../../store/types';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 const SideDrawer = lazy(() =>
   import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
@@ -57,12 +58,14 @@ class Layout extends PureComponent<LayoutProps, ILayoutState> {
         <Toolbar
           drawerToggler={this.toggleSideDrawerHandler}
           isAuth={this.props.isAuthenticated}
+          pathName={this.props.location.pathname}
         />
         <Suspense fallback={null}>
           <SideDrawer
             isAuth={this.props.isAuthenticated}
             open={this.state.showSideDrawer}
             hider={this.hideSideDrawerHandler}
+            pathName={this.props.location.pathname}
           />
         </Suspense>
         <main className={styles.Main}>{this.props.children}</main>
@@ -79,9 +82,9 @@ const mapLayoutStateToProps = (state: StoreState) => {
 
 const connectLayout = connect(
   mapLayoutStateToProps,
-  null,
+  {},
 );
 
-type LayoutProps = GetConnectProps<typeof connectLayout>;
+type LayoutProps = GetConnectProps<typeof connectLayout> & RouteComponentProps;
 
-export default connectLayout(Layout);
+export default connectLayout(withRouter(Layout));

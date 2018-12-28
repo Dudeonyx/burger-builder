@@ -16,14 +16,19 @@ import Logo from '../../../components/UI/Logo/Logo';
 export interface IToolbarProps {
   drawerToggler: MouseEventHandler;
   isAuth: boolean;
+  pathName: string;
 }
-const Toolbar: FunctionComponent<IToolbarProps> = ({ drawerToggler,isAuth },) => {
+const Toolbar: FunctionComponent<IToolbarProps> = ({
+  drawerToggler,
+  isAuth,
+  pathName,
+}) => {
   return (
     <header className={styles.Toolbar}>
       <DrawerToggle clicked={drawerToggler} />
       <Logo link="/" HQ={true} />
       <nav className={styles.DesktopOnly}>
-        <NavigationItems isAuth={isAuth}/>
+        <NavigationItems isAuth={isAuth} pathName={pathName} />
       </nav>
     </header>
   );

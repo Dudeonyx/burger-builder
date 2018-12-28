@@ -130,9 +130,9 @@ class Auth extends Component<IAuthProps, IAuthState> {
     //   ? this.props.history.goBack()
     const query = new URLSearchParams(this.props.location.search);
     const path = query.get('redirect');
-    this.props.purchasable
-      ? this.props.history.push('/' + (path != null ? path : ''))
-      : this.props.history.push('/');
+    // this.props.purchasable ?
+    this.props.history.push('/' + (path != null ? path : ''));
+    // : this.props.history.push('/');
   };
   private mapInputs = mapToInputs(this.handleAuthFormChange);
 }
