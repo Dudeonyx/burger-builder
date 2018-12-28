@@ -10,6 +10,8 @@ import { RouteComponentProps } from 'react-router';
 import {
   selectAuthAuthenticating,
   selectAuthError,
+  getAuthErrorMessage,
+  getPurchaseableFromStore,
 } from '../../store/selectors/selectors';
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
@@ -83,9 +85,9 @@ class Auth extends Component<IAuthProps, IAuthState> {
   };
 
   public render() {
-    const { name, email, password } = this.state.authFormData;
+    const { email, password } = this.state.authFormData;
     const authError = this.props.error ? (
-      <p className="error">{this.props.error.response.data.error.message}</p>
+      <p className="error">{this.props.errorMessage}</p>
     ) : null;
 
     const form = this.props.authenticating ? (
@@ -114,13 +116,23 @@ class Auth extends Component<IAuthProps, IAuthState> {
   private switchAuthModeHandler = () => {
     this.setState(prevState => ({ isSignUp: !prevState.isSignUp }));
   };
-  private submitHandler = (e: MouseEvent) => {
+  private submitHandler = async (e: MouseEvent) => {
     e.preventDefault();
-    this.props.onAuth(
+    await this.props.onAuth(
       this.state.authFormData.email.value,
       this.state.authFormData.password.value,
       this.state.isSignUp,
     );
+    if (this.props.error) {
+      return;
+    }
+    // this.props.history.length > 0
+    //   ? this.props.history.goBack()
+    const query = new URLSearchParams(this.props.location.search);
+    const path = query.get('redirect');
+    this.props.purchasable
+      ? this.props.history.push('/' + (path != null ? path : ''))
+      : this.props.history.push('/');
   };
   private mapInputs = mapToInputs(this.handleAuthFormChange);
 }
@@ -129,6 +141,8 @@ const mapAuthStateToProps = (state: StoreState) => {
   return {
     authenticating: selectAuthAuthenticating(state),
     error: selectAuthError(state),
+    errorMessage: getAuthErrorMessage(state),
+    purchasable: getPurchaseableFromStore(state),
   };
 };
 const mapAuthDispatchToProps = {

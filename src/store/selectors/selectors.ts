@@ -41,3 +41,13 @@ export const getOrdersErrorMessage = createSelector(
   selectOrdersError,
   error => generateErrorMessage(error),
 );
+
+export const getAuthenticated = createSelector(
+  selectAuthIdToken,
+  token => !!token,
+);
+
+export const getAuthErrorMessage = createSelector(
+  selectAuthError,
+  error => generateErrorMessage(error),
+);

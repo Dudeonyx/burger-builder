@@ -21,6 +21,7 @@ import {
   selectIngredients,
   getPurchaseableFromStore,
   getTotalPriceFromStore,
+  getAuthenticated,
 } from '../../store/selectors/selectors';
 
 const BurgerDisplay = lazy(() =>
@@ -32,6 +33,7 @@ const OrderSummary = lazy(() =>
   import(/* webpackChunkName: "OrderSummary", webpackPrefetch: true */ '../../components/OrderSummary/OrderSummary'),
 );
 
+const offlineStyle = { color: 'blue', cursor: 'pointer' };
 /**
  * @class BurgerBuilder
  * @extends {Component<IconnectIngredientsProps<RouteComponentProps>, IBurgerBuilderState>}
@@ -64,9 +66,13 @@ class BurgerBuilder extends Component<
       return;
     }
     this.setState({ purchasing: false });
-    this.props.history.push({
-      pathname: '/checkout',
-    });
+    if (this.props.isAuth) {
+      this.props.history.push({
+        pathname: '/checkout',
+      });
+    } else {
+      this.props.history.push('/login?redirect=checkout');
+    }
   };
 
   public render() {
@@ -75,10 +81,7 @@ class BurgerBuilder extends Component<
         retryHandler={this.props.fetchIngredientsHandler}
         mainMessage="Ingredients Failed To Load. Please "
         additionalMessage={
-          <span
-            style={{ color: 'blue', cursor: 'pointer' }}
-            onClick={this.offline}
-          >
+          <span style={offlineStyle} onClick={this.offline}>
             work offline for now?
           </span>
         }
@@ -113,6 +116,7 @@ class BurgerBuilder extends Component<
             totalCost={this.props.totalPrice}
             purchaseCancel={this.purchaseCancelHandler}
             purchaseContinue={this.purchaseContinueHandler}
+            isAuth={this.props.isAuth}
           />
         </React.Suspense>
       );
@@ -143,6 +147,7 @@ const mapBurgerBuilderStateToProps = (state: StoreState) => ({
   ingredients: selectIngredients(state),
   purchaseable: getPurchaseableFromStore(state),
   totalPrice: getTotalPriceFromStore(state),
+  isAuth: getAuthenticated(state),
 });
 
 const mapBurgerBuilderDispatchToProps = {

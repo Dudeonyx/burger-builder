@@ -6,6 +6,7 @@ import { IOrderIngredientsPrice } from '../OrderText/types';
 export interface IOrderSummary extends IOrderIngredientsPrice {
   purchaseCancel: MouseEventHandler;
   purchaseContinue: MouseEventHandler;
+  isAuth: boolean;
 }
 
 const OrderSummary: FunctionComponent<IOrderSummary> = ({
@@ -13,6 +14,7 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({
   ingredients,
   purchaseCancel,
   purchaseContinue,
+  isAuth,
 }) => {
   const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
     <li style={{ textTransform: 'capitalize' }} key={igKey}>
@@ -33,7 +35,7 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({
           CANCEL
         </Button>
         <Button onClick={purchaseContinue} btnType="Success">
-          ORDER
+          {isAuth ? 'ORDER' : 'LOGIN TO CONTINUE'}
         </Button>
       </div>
     </>
