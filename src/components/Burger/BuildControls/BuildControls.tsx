@@ -1,8 +1,7 @@
 import React, { FunctionComponent, memo } from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import styles from './BuildControls.module.css';
-import { IingredientsKeys } from '../../../types/ingredients';
-import { IbuildControlsProps, TdisabledCheck, Tcontrols } from './types/index';
+import { IbuildControlsProps, Tcontrols } from './types/index';
 
 export const controls: Tcontrols = [
   { label: 'Salad', type: 'salad' },
@@ -18,18 +17,6 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
   purchaseable,
   purchaseStart,
 }) => {
-  const disabledCheck: TdisabledCheck = {
-    bacon: false,
-    cheese: false,
-    meat: false,
-    salad: false,
-  };
-  (Object.entries(ingredients) as Array<[IingredientsKeys, number]>).forEach(
-    ([key, value,]) => {
-      disabledCheck[key] = value <= 0;
-    },
-  );
-
   return (
     <div className={styles.BuildControls}>
       <p>
@@ -41,7 +28,7 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
           label={ctrl.label}
           added={() => increase(ctrl.type)}
           removed={() => decrease(ctrl.type)}
-          disabled={disabledCheck[ctrl.type]}
+          disabled={ingredients[ctrl.type] <= 0}
         />
       ))}
       <button

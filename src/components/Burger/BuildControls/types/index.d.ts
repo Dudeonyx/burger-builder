@@ -7,6 +7,7 @@ export interface IbuildControlsProps {
   decrease: (e: IingredientsKeys) => void;
   purchaseStart: MouseEventHandler;
   purchaseable: boolean;
+  // isAuth: boolean;
 }
 export type TdisabledCheck = { [x in IingredientsKeys]: boolean };
 export type Tcontrols = Array<{
