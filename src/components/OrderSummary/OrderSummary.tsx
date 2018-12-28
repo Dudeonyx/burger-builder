@@ -35,7 +35,7 @@ const OrderSummary: FunctionComponent<IOrderSummary> = ({
           CANCEL
         </Button>
         <Button onClick={purchaseContinue} btnType="Success">
-          {isAuth ? 'ORDER' : 'LOGIN TO CONTINUE'}
+          {isAuth ? 'ORDER' : 'SIGN UP/IN TO CONTINUE'}
         </Button>
       </div>
     </>
