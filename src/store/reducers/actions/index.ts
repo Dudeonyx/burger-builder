@@ -7,5 +7,9 @@ export {
 } from './ingredientsActions';
 export { fetchOrders } from './ordersActions';
 export { submitBurgerOrder } from './contactDataActions';
-export { authenticate } from './AuthActions';
+export {
+  authenticate,
+  checkPriorAuth,
+  setAuthRedirectUrl,
+} from './AuthActions';
 export { actionTypes };

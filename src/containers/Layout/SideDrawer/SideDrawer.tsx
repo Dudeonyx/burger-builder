@@ -8,7 +8,6 @@ export interface ISideDrawerProps {
   open: boolean;
   hider: MouseEventHandler;
   isAuth: boolean;
-  pathName: string;
 }
 interface IStyledSideDrawerProps {
   open: boolean;
@@ -42,7 +41,6 @@ const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
   open,
   hider,
   isAuth,
-  pathName,
 }) => {
   return (
     <>
@@ -50,7 +48,7 @@ const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
       <StyledSideDrawer open={open} onClick={hider}>
         <Logo height="11%" link="##" HQ={true} />
         <nav>
-          <NavigationItems isAuth={isAuth} pathName={pathName} />
+          <NavigationItems isAuth={isAuth} />
         </nav>
       </StyledSideDrawer>
     </>

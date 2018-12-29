@@ -1,3 +1,5 @@
+import { getTotalPrice } from './getTotalPrice';
+
 export function generateErrorMessage(
   error:
     | (Error & {
@@ -36,3 +38,5 @@ export function generateErrorMessage(
       return defaultMessage;
   }
 }
+
+// getTotalPrice({});

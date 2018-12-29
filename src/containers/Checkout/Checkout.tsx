@@ -8,8 +8,10 @@ import {
   selectIngredients,
   getTotalPriceFromStore,
   getPurchaseableFromStore,
+  getAuthenticated,
 } from '../../store/selectors/selectors';
 import { suspenseNode2 } from '../../HOCs/suspensed';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
 
 const ContactData = lazy(() =>
   import(/* webpackChunkName: "ContactData", webpackPrefetch: true */ './ContactData/ContactData'),
@@ -20,7 +22,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   public render() {
     return (
       <div>
-        {this.props.ingredients && this.props.totalPrice ? (
+        {this.props.ingredients && this.props.isAuth ? (
           <>
             <Route
               path={this.props.match.path + '/contact-data'}
@@ -57,11 +59,14 @@ const mapCheckoutStateToProps = (state: StoreState) => ({
   ingredients: selectIngredients(state),
   totalPrice: getTotalPriceFromStore(state),
   purchaseable: getPurchaseableFromStore(state),
+  isAuth: getAuthenticated(state),
 });
+
+const mapCheckoutDispatchToProps = { setAuthRedirectUrl };
 
 const connectIngredientsState = connect(
   mapCheckoutStateToProps,
-  null,
+  mapCheckoutDispatchToProps,
 );
 
 export type ICheckoutProps = RouteComponentProps &

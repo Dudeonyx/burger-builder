@@ -8,6 +8,7 @@ const initialState: IauthReducerState = {
   idToken: null,
   userId: null,
   displayName: null,
+  authRedirectUrl: '/',
 };
 
 const authReducer = produce((draft, action: AuthAction) => {
@@ -24,12 +25,15 @@ const authReducer = produce((draft, action: AuthAction) => {
       break;
     case actionTypes.AUTH_FAIL:
       draft.authenticating = false;
-      draft.error = action.payload.error;
+      draft.error = action.error;
       break;
     case actionTypes.AUTH_LOGOUT:
       draft.idToken = null;
       draft.userId = null;
       draft.displayName = null;
+      break;
+    case actionTypes.SET_AUTH_REDIRECT_URL:
+      draft.authRedirectUrl = action.url;
       break;
     default:
       const _: never = action;

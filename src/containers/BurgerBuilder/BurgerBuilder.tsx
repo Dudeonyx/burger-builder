@@ -23,6 +23,7 @@ import {
   getTotalPriceFromStore,
   getAuthenticated,
 } from '../../store/selectors/selectors';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -47,6 +48,7 @@ class BurgerBuilder extends Component<
   };
 
   public async componentDidMount() {
+    this.props.setAuthRedirectUrl('/');
     this.props.ingredientSetHandler(null);
     this.props.fetchIngredientsHandler();
     setTimeout(() => {
@@ -71,7 +73,8 @@ class BurgerBuilder extends Component<
         pathname: '/checkout',
       });
     } else {
-      this.props.history.push('/login?redirect=checkout');
+      this.props.setAuthRedirectUrl('/checkout');
+      this.props.history.push('/login');
     }
   };
 
@@ -155,6 +158,7 @@ const mapBurgerBuilderDispatchToProps = {
   ingredientDecreaseHandler,
   ingredientSetHandler,
   fetchIngredientsHandler,
+  setAuthRedirectUrl,
 };
 
 const connectBurgerBuilder = connect(

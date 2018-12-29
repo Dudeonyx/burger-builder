@@ -16,10 +16,10 @@ export interface IauthReducerState {
   displayName: string | null;
   idToken: string | null;
   userId: string | null;
+  authRedirectUrl: string;
 }
 interface IAuthStart {
   type: typeof actionTypes.AUTH_START;
-  payload?: null;
 }
 interface IAuthSuccess {
   type: typeof actionTypes.AUTH_SUCCESS;
@@ -31,13 +31,14 @@ interface IAuthSuccess {
 }
 interface IAuthFail {
   type: typeof actionTypes.AUTH_FAIL;
-  payload: {
     error: Error;
-  };
 }
 interface IAuthLogout {
   type: typeof actionTypes.AUTH_LOGOUT;
-  payload?: null;
+}
+interface IAuthRedirectUrl {
+  type: typeof actionTypes.SET_AUTH_REDIRECT_URL;
+  url: string;
 }
 
-export type AuthAction = IAuthStart | IAuthSuccess | IAuthFail | IAuthLogout;
+export type AuthAction = IAuthStart | IAuthSuccess | IAuthFail | IAuthLogout|IAuthRedirectUrl;

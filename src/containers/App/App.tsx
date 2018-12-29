@@ -1,5 +1,11 @@
-import React, { lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { lazy, Component } from 'react';
+import {
+  Route,
+  Switch,
+  withRouter,
+  RouteComponentProps,
+  Redirect,
+} from 'react-router-dom';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
 import { suspenseNode2 } from '../../HOCs/suspensed';
@@ -13,8 +19,6 @@ const BurgerBuilder = lazy(() =>
   import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
 import '../../components/UI/Loader/Loader';
-import '../../shared/getTotalPrice';
-import '../../shared/updatePurchasable';
 import '../../axios-orders';
 import '../../HOCs/withErrorHandler';
 import '../../components/UI/Button/Button';
@@ -23,6 +27,11 @@ import '../../components/UI/Modal/Modal';
 import Auth from '../Auth/Auth';
 import Logout from '../Auth/Logout/Logout';
 import $404 from '../404/404';
+import { checkPriorAuth } from '../../store/reducers/actions';
+import { connect } from 'react-redux';
+import { GetConnectProps, StoreState } from '../../store/types';
+import { getAuthenticated } from '../../store/selectors/selectors';
+import { store } from '../../store/store';
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
@@ -30,21 +39,48 @@ const SCheckout = suspenseNode2(Checkout);
 
 // const Page = lazy(() => import(/* webpackChunkName: "Page" */ '../Page/Page'));
 
-const App = () => {
-  return (
-    <Layout>
-      <ErrorBoundary>
-        <Switch>
-          <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
-          <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
-          <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
-          <Route path="/login" exact={false} component={Auth} />
-          <Route path="/logout" exact={false} component={Logout} />
-          <Route path="/" exact={false} component={$404} />
-        </Switch>
-      </ErrorBoundary>
-    </Layout>
-  );
-};
+store.dispatch(checkPriorAuth() as any);
+class App extends Component<AppProps> {
+  // public componentDidMount = () => {
+  //   this.props.checkPriorAuth();
+  // };
 
-export default App;
+  public render() {
+    const protectedRoutes = this.props.isAuth ? (
+      <Switch>
+        <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+        <Route path="/login" exact={false} component={Auth} />
+        <Route path="/logout" exact={false} component={Logout} />
+        <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
+        <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
+        <Route component={$404} />
+      </Switch>
+    ) : (
+      <Switch>
+        <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+        <Route path="/login" exact={false} component={Auth} />
+        <Route path="/logout" exact={false} component={Logout} />
+        <Redirect from="/all-orders" to="/" />
+        <Redirect from="/checkout" to="/" />
+        <Route component={$404} />
+      </Switch>
+    );
+    return (
+      <Layout>
+        <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
+      </Layout>
+    );
+  }
+}
+
+const mapAppStateToProps = (state: StoreState) => ({
+  isAuth: getAuthenticated(state),
+});
+
+// const mapAppDispatchToProps = {
+//   checkPriorAuth,
+// };
+const connectApp = connect(mapAppStateToProps);
+type AppProps = GetConnectProps<typeof connectApp> & RouteComponentProps;
+
+export default withRouter(connectApp(App));

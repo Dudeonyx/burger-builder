@@ -12,9 +12,11 @@ import {
   selectAuthError,
   getAuthErrorMessage,
   getPurchaseableFromStore,
+  selectAuthRedirectUrl,
 } from '../../store/selectors/selectors';
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
 
 export interface IAuthState {
   authFormData: {
@@ -23,6 +25,7 @@ export interface IAuthState {
     email: IInputConfig;
   };
   isSignUp: boolean;
+  readonly redirectUrl: string;
 }
 
 class Auth extends Component<IAuthProps, IAuthState> {
@@ -76,8 +79,13 @@ class Auth extends Component<IAuthProps, IAuthState> {
         },
       },
       isSignUp: true,
+      redirectUrl: this.props.redirectUrl,
     };
   }
+  public componentDidMount = () => {
+    this.props.setAuthRedirectUrl('/')
+  }
+  
 
   private handleAuthFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newAuthFormData = updateform(this.state.authFormData, e);
@@ -126,12 +134,9 @@ class Auth extends Component<IAuthProps, IAuthState> {
     if (this.props.error) {
       return;
     }
-    // this.props.history.length > 0
-    //   ? this.props.history.goBack()
-    const query = new URLSearchParams(this.props.location.search);
-    const path = query.get('redirect');
+ 
     // this.props.purchasable ?
-    this.props.history.push('/' + (path != null ? path : ''));
+    this.props.history.push(this.state.redirectUrl);
     // : this.props.history.push('/');
   };
   private mapInputs = mapToInputs(this.handleAuthFormChange);
@@ -143,10 +148,12 @@ const mapAuthStateToProps = (state: StoreState) => {
     error: selectAuthError(state),
     errorMessage: getAuthErrorMessage(state),
     purchasable: getPurchaseableFromStore(state),
+    redirectUrl: selectAuthRedirectUrl(state),
   };
 };
 const mapAuthDispatchToProps = {
   onAuth: authenticate,
+  setAuthRedirectUrl,
 };
 
 const connectAuth = connect(

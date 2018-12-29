@@ -58,14 +58,12 @@ class Layout extends PureComponent<LayoutProps, ILayoutState> {
         <Toolbar
           drawerToggler={this.toggleSideDrawerHandler}
           isAuth={this.props.isAuthenticated}
-          pathName={this.props.location.pathname}
         />
         <Suspense fallback={null}>
           <SideDrawer
             isAuth={this.props.isAuthenticated}
             open={this.state.showSideDrawer}
             hider={this.hideSideDrawerHandler}
-            pathName={this.props.location.pathname}
           />
         </Suspense>
         <main className={styles.Main}>{this.props.children}</main>
@@ -85,6 +83,6 @@ const connectLayout = connect(
   {},
 );
 
-type LayoutProps = GetConnectProps<typeof connectLayout> & RouteComponentProps;
+type LayoutProps = GetConnectProps<typeof connectLayout> ;
 
-export default connectLayout(withRouter(Layout));
+export default connectLayout(Layout);

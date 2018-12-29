@@ -19,6 +19,7 @@ export const selectAuthError = (state: StoreState) => state.auth.error;
 export const selectAuthAuthenticating = (state: StoreState) => {
   return state.auth.authenticating;
 };
+export const selectAuthRedirectUrl = (state: StoreState) => state.auth.authRedirectUrl;
 
 export const getTotalPriceFromStore = createSelector(
   selectIngredients,
