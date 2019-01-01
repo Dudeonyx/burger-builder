@@ -6,7 +6,7 @@ import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
 import { submitBurgerOrder } from '../../../store/reducers/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps, StoreState } from '../../../store/types';
+import { GetConnectProps } from '../../../store/types';
 import { RouteComponentProps } from 'react-router';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
@@ -20,6 +20,7 @@ import {
 } from '../../../store/selectors/selectors';
 import mapToInputs from '../../../components/UI/Input/mapToInputs';
 import { updateform } from '../../../components/UI/Input/InputUtilities';
+import { IStore } from '../../../store/store';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public state: IContactDataState = {
     customer: {
@@ -269,7 +270,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   };
 }
 
-export const mapContactDataStateToProps = (state: StoreState) => {
+export const mapContactDataStateToProps = (state: IStore) => {
   return {
     submitting: selectBurgerOrderSubmitting(state),
     ingredients: selectIngredients(state),

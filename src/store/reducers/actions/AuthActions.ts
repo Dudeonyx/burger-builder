@@ -1,66 +1,27 @@
 import { actionTypes } from './index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
-import {
-  IAuthResponse,
-  IAuthRedirectUrl,
-  IAuthFail,
-  IAuthLogout,
-  IAuthSuccess,
-  IAuthStart,
-} from '../authReducer/types';
+import { IAuthResponse, IAuthRedirectUrl } from '../authReducer/types';
 import { API_KEY } from '../../../shared/API_KEY';
+import { actions } from '../authReducer/authReducer';
 
-export const authStart = (): IAuthStart => {
-  return {
-    type: actionTypes.AUTH_START,
-  };
-};
+const {
+  authLogout,
+  authStart,
+  authSuccess,
+  authFail,
+  setAuthRedirectUrl,
+} = actions;
 
-export const authSuccess = ({
-  displayName = '',
-  idToken,
-  localId,
-}: {
-  idToken: string;
-  localId: string;
-  displayName?: string;
-}): IAuthSuccess => {
-  return {
-    type: actionTypes.AUTH_SUCCESS,
-    payload: {
-      displayName,
-      idToken,
-      localId,
-    },
-  };
-};
-export const authFail = (error: Error): IAuthFail => {
-  return {
-    type: actionTypes.AUTH_FAIL,
-    error,
-  };
-};
-export const authLogout = (): IAuthLogout => {
-  localStorage.removeItem('expiryDate');
-  localStorage.removeItem('idToken');
-  localStorage.removeItem('localId');
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
-export const authTimeout = (expiresIn: string | number) => {
+export { setAuthRedirectUrl, authLogout };
+
+const authTimeout = (expiresIn: string | number) => {
   return (dispatch: Dispatch) => {
     setTimeout(() => {
       dispatch(authLogout());
     }, +expiresIn * 1000);
   };
 };
-
-export const setAuthRedirectUrl = (url: string): IAuthRedirectUrl => ({
-  type: actionTypes.SET_AUTH_REDIRECT_URL,
-  url,
-});
 
 const baseAuthUrl =
   'https://www.googleapis.com/identitytoolkit/v3/relyingparty/';

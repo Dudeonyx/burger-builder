@@ -3,7 +3,7 @@ import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import { connect } from 'react-redux';
 import { ICheckoutState } from './types';
-import { GetConnectProps, StoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import {
   selectIngredients,
   getTotalPriceFromStore,
@@ -11,7 +11,8 @@ import {
   getAuthenticated,
 } from '../../store/selectors/selectors';
 import { suspenseNode2 } from '../../HOCs/suspensed';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/';
+import { IStore } from '../../store/store';
 
 const ContactData = lazy(() =>
   import(/* webpackChunkName: "ContactData", webpackPrefetch: true */ './ContactData/ContactData'),
@@ -55,7 +56,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   };
 }
 
-const mapCheckoutStateToProps = (state: StoreState) => ({
+const mapCheckoutStateToProps = (state: IStore) => ({
   ingredients: selectIngredients(state),
   totalPrice: getTotalPriceFromStore(state),
   purchaseable: getPurchaseableFromStore(state),

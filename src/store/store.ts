@@ -4,13 +4,21 @@ import { contactDataReducer } from './reducers/contactDataReducer/contactDataRed
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
-import authReducer from './reducers/authReducer/authReducer';
+import authReducer, { rAuthReducer } from './reducers/authReducer/authReducer';
 
-const rootReducer = combineReducers({
+export interface IStore {
+  ings: ReturnType<typeof ingredientReducer>;
+  cData: ReturnType<typeof contactDataReducer>;
+  ords: ReturnType<typeof ordersReducer>;
+  auth: ReturnType<typeof authReducer>;
+  // rAuth: ReturnType<typeof rAuthReducer>;
+}
+const rootReducer = combineReducers<IStore>({
   ings: ingredientReducer,
   cData: contactDataReducer,
   ords: ordersReducer,
   auth: authReducer,
+  // rAuth: rAuthReducer,
 });
 
 const logger = (myStore: { getState: () => any }) => {

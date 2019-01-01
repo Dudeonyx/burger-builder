@@ -6,8 +6,7 @@ import withErrorHandler from '../../HOCs/withErrorHandler';
 import { IOrdersState } from './types';
 import { StyledOrders } from './Orders.styles';
 import { IformattedOrder } from '../../store/reducers/ordersReducer/types';
-import { GetConnectProps, StoreState } from '../../store/types';
-import { createSelector } from 'reselect';
+import { GetConnectProps } from '../../store/types';
 import {
   getFormattedOrders,
   selectOrdersLoading,
@@ -18,6 +17,7 @@ import {
 import { connect } from 'react-redux';
 import { fetchOrders } from '../../store/reducers/actions';
 import { RouteComponentProps } from 'react-router-dom';
+import { IStore } from '../../store/store';
 
 class Orders extends Component<IOrdersProps, IOrdersState> {
   public componentDidMount = () => {
@@ -71,7 +71,7 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
   };
 }
 
-const mapOrderStateToProps = (state: StoreState) => {
+const mapOrderStateToProps = (state: IStore) => {
   return {
     formattedOrders: getFormattedOrders(state),
     loading: selectOrdersLoading(state),

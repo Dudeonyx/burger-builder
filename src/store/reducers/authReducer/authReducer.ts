@@ -1,6 +1,8 @@
 import { actionTypes } from '../actions';
 import { AuthAction, IauthReducerState } from './types';
 import produce from 'immer';
+import robodux from 'robodux-alt';
+import { IStore } from '../../store';
 
 const initialState: IauthReducerState = {
   authenticating: false,
@@ -10,6 +12,45 @@ const initialState: IauthReducerState = {
   displayName: null,
   authRedirectUrl: '/',
 };
+interface IRAuthActions {
+  authStart: never;
+  authSuccess: { localId: string; idToken: string };
+  authFail: Error & { [x: string]: any };
+  authLogout: never;
+  setAuthRedirectUrl: string;
+}
+const authRobodux = robodux<IRAuthActions, IauthReducerState, IStore>({
+  slice: 'auth',
+  actions: {
+    authStart: state => {
+      state.authenticating = true;
+      state.error = null;
+    },
+    authSuccess: (state, payload) => {
+      state.authenticating = false;
+      state.error = null;
+      state.userId = payload.localId;
+      state.idToken = payload.idToken;
+    },
+    authFail: (state, payload) => {
+      state.authenticating = false;
+      state.error = payload;
+    },
+    authLogout: state => {
+      state.idToken = null;
+      state.userId = null;
+      state.displayName = null;
+    },
+    setAuthRedirectUrl: (state, payload) => {
+      state.authRedirectUrl = payload;
+    },
+  },
+  initialState,
+});
+authRobodux.selectors.getAuth;
+// tslint:disable-next-line: no-console
+console.log({ authRobodux });
+export const { actions, reducer: rAuthReducer } = authRobodux;
 
 const authReducer = produce((draft, action: AuthAction) => {
   switch (action.type) {
@@ -41,4 +82,4 @@ const authReducer = produce((draft, action: AuthAction) => {
   }
 }, initialState);
 
-export default authReducer;
+export default rAuthReducer;

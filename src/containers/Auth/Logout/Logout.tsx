@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import { authLogout } from '../../../store/reducers/actions/AuthActions';
+import { authLogout } from '../../../store/reducers/actions/';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../../store/types';
 

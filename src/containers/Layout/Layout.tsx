@@ -6,8 +6,8 @@ import {
   getAuthenticated,
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
-import { GetConnectProps, StoreState } from '../../store/types';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { GetConnectProps } from '../../store/types';
+import { IStore } from '../../store/store';
 
 const SideDrawer = lazy(() =>
   import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
@@ -72,7 +72,7 @@ class Layout extends PureComponent<LayoutProps, ILayoutState> {
   }
 }
 
-const mapLayoutStateToProps = (state: StoreState) => {
+const mapLayoutStateToProps = (state: IStore) => {
   return {
     isAuthenticated: getAuthenticated(state),
   };
@@ -83,6 +83,6 @@ const connectLayout = connect(
   {},
 );
 
-type LayoutProps = GetConnectProps<typeof connectLayout> ;
+type LayoutProps = GetConnectProps<typeof connectLayout>;
 
 export default connectLayout(Layout);

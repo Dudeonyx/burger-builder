@@ -14,7 +14,7 @@ import {
   ingredientSetHandler,
   fetchIngredientsHandler,
 } from '../../store/reducers/actions';
-import { GetConnectProps, StoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
 import {
   selectIngredientsError,
@@ -23,7 +23,8 @@ import {
   getTotalPriceFromStore,
   getAuthenticated,
 } from '../../store/selectors/selectors';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/';
+import { IStore } from '../../store/store';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -145,7 +146,7 @@ class BurgerBuilder extends Component<
   };
 }
 
-const mapBurgerBuilderStateToProps = (state: StoreState) => ({
+const mapBurgerBuilderStateToProps = (state: IStore) => ({
   error: selectIngredientsError(state),
   ingredients: selectIngredients(state),
   purchaseable: getPurchaseableFromStore(state),

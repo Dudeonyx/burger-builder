@@ -29,9 +29,9 @@ import Logout from '../Auth/Logout/Logout';
 import $404 from '../404/404';
 import { checkPriorAuth } from '../../store/reducers/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps, StoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import { getAuthenticated } from '../../store/selectors/selectors';
-import { store } from '../../store/store';
+import { store, IStore } from '../../store/store';
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
@@ -73,7 +73,7 @@ class App extends Component<AppProps> {
   }
 }
 
-const mapAppStateToProps = (state: StoreState) => ({
+const mapAppStateToProps = (state: IStore) => ({
   isAuth: getAuthenticated(state),
 });
 

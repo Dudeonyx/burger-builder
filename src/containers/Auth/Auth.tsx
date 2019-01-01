@@ -5,7 +5,7 @@ import { updateform } from '../../components/UI/Input/InputUtilities';
 import mapToInputs from '../../components/UI/Input/mapToInputs';
 import { authenticate } from '../../store/reducers/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps, StoreState } from '../../store/types';
+import { GetConnectProps } from '../../store/types';
 import { RouteComponentProps } from 'react-router';
 import {
   selectAuthAuthenticating,
@@ -16,7 +16,8 @@ import {
 } from '../../store/selectors/selectors';
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/AuthActions';
+import { setAuthRedirectUrl } from '../../store/reducers/actions/';
+import { IStore } from '../../store/store';
 
 export interface IAuthState {
   authFormData: {
@@ -83,9 +84,8 @@ class Auth extends Component<IAuthProps, IAuthState> {
     };
   }
   public componentDidMount = () => {
-    this.props.setAuthRedirectUrl('/')
-  }
-  
+    this.props.setAuthRedirectUrl('/');
+  };
 
   private handleAuthFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newAuthFormData = updateform(this.state.authFormData, e);
@@ -134,7 +134,7 @@ class Auth extends Component<IAuthProps, IAuthState> {
     if (this.props.error) {
       return;
     }
- 
+
     // this.props.purchasable ?
     this.props.history.push(this.state.redirectUrl);
     // : this.props.history.push('/');
@@ -142,7 +142,7 @@ class Auth extends Component<IAuthProps, IAuthState> {
   private mapInputs = mapToInputs(this.handleAuthFormChange);
 }
 
-const mapAuthStateToProps = (state: StoreState) => {
+const mapAuthStateToProps = (state: IStore) => {
   return {
     authenticating: selectAuthAuthenticating(state),
     error: selectAuthError(state),

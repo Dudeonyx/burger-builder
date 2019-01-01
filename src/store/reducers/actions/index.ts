@@ -11,5 +11,6 @@ export {
   authenticate,
   checkPriorAuth,
   setAuthRedirectUrl,
+  authLogout,
 } from './AuthActions';
 export { actionTypes };
