@@ -1,34 +1,32 @@
 import { setIngredientsDraft } from './utilities';
-import { reShapeIngredients } from './utilities';
-import produce from 'immer';
-
-import { IingredientReducerState, IingredientReducerAction } from './types';
-import { actionTypes } from '../actions';
+import { IingredientReducerState } from './types';
 import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
+import robodux from 'robodux-alt';
+import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
   error: false,
 };
-export const ingredientReducer = produce(
-  (draft, action: IingredientReducerAction) => {
-    switch (action.type) {
-      case actionTypes.INCREASE_INGREDIENT:
-        incrementKeyInObj(draft.ingredients, action.payload.igkey);
-        break;
-      case actionTypes.DECREASE_INGREDIENT:
-        decrementKeyInObj(draft.ingredients, action.payload.igkey);
-        break;
-      case actionTypes.SET_INGREDIENTS:
-        setIngredientsDraft(draft, action);
-        break;
-      case actionTypes.SET_INGREDIENTS_ERROR:
-        draft.error = action.payload.error;
-        break;
-      default:
-        const _: never = action;
-        break;
-    }
+
+export const {
+  reducer: ingredientReducer,
+  actions: ingredientActions,
+} = robodux({
+  actions: {
+    increaseIngredient: (state, igkey: IingredientsKeys) => {
+      incrementKeyInObj(state.ingredients, igkey);
+    },
+    decreaseIngredient: (state, igkey: IingredientsKeys) => {
+      decrementKeyInObj(state.ingredients, igkey);
+    },
+    setIngredients: (state, ingredients: Iingredients | null) => {
+      setIngredientsDraft(state, ingredients);
+    },
+    setIngredientsError: (state, error: boolean) => {
+      state.error = error;
+    },
   },
   initialState,
-);
+  slice: 'ings',
+});

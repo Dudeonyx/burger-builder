@@ -1,6 +1,7 @@
-import { IordersReducerState, IordersReducerAction } from './types';
+import { IordersReducerState, IordersReducerAction, IDbOrders } from './types';
 import produce from 'immer';
 import { actionTypes } from '../actions';
+import robodux from 'robodux-alt';
 
 const initialState: IordersReducerState = {
   orders: null,
@@ -8,7 +9,30 @@ const initialState: IordersReducerState = {
   error: null,
 };
 
-export const ordersReducer = produce((draft, action: IordersReducerAction) => {
+const ordersRobodux = robodux({
+  slice: 'ords',
+  initialState,
+  actions: {
+    setOrders: (state, orders: IDbOrders) => {
+      state.error = null;
+      state.orders = orders;
+      state.loading = false;
+    },
+    setOrdersError: (state, error: Error) => {
+      state.error = error;
+      state.loading = false;
+    },
+    setOrdersLoading: (state, n: never) => {
+      state.loading = true;
+      state.error = null;
+    },
+  },
+});
+
+export const { reducer: ordersReducer, actions: ordersActions } = ordersRobodux;
+export default ordersReducer;
+
+/* export const ordersReducer = produce((draft, action: IordersReducerAction) => {
   switch (action.type) {
     case actionTypes.SET_ORDERS_ERROR:
       draft.error = action.payload.error;
@@ -28,4 +52,4 @@ export const ordersReducer = produce((draft, action: IordersReducerAction) => {
       const _: never = action;
       break;
   }
-}, initialState);
+}, initialState); */

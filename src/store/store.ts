@@ -4,7 +4,7 @@ import { contactDataReducer } from './reducers/contactDataReducer/contactDataRed
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
-import authReducer, { rAuthReducer } from './reducers/authReducer/authReducer';
+import authReducer from './reducers/authReducer/authReducer';
 
 export interface IStore {
   ings: ReturnType<typeof ingredientReducer>;

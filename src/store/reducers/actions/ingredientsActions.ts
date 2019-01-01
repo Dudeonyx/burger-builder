@@ -1,52 +1,25 @@
 import { Dispatch } from 'redux';
-import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
-import { IingredientReducerAction } from '../ingredientReducer/types';
-import { actionTypes } from './index';
+import { Iingredients } from '../../../types/ingredients';
 import axios from '../../../axios-orders';
+import { ingredientActions } from '../ingredientReducer/ingredientReducer';
 
-export const ingredientIncreaseHandler = (
-  igkey: IingredientsKeys,
-): IingredientReducerAction => {
-  return {
-    type: actionTypes.INCREASE_INGREDIENT,
-    payload: { igkey },
-  };
-};
-export const ingredientDecreaseHandler = (
-  igkey: IingredientsKeys,
-): IingredientReducerAction => {
-  return {
-    type: actionTypes.DECREASE_INGREDIENT,
-    payload: { igkey },
-  };
-};
-export const ingredientSetHandler = (
-  ingredients: Iingredients | null,
-): IingredientReducerAction => {
-  return {
-    type: actionTypes.SET_INGREDIENTS,
-    payload: { ingredients },
-  };
-};
-export const ingredientErrorHandler = (
-  error: boolean = true,
-): IingredientReducerAction => {
-  return {
-    type: actionTypes.SET_INGREDIENTS_ERROR,
-    payload: { error },
-  };
-};
-
+const {
+  decreaseIngredient,
+  increaseIngredient,
+  setIngredients,
+  setIngredientsError,
+} = ingredientActions;
+export { decreaseIngredient, increaseIngredient, setIngredients };
 export const fetchIngredientsHandler = (): Promise<VoidFunction> => {
-  return (async (dispatch: Dispatch<IingredientReducerAction>) => {
+  return (async (dispatch: Dispatch) => {
     // this.setState({ error: null });
-    dispatch(ingredientErrorHandler(false));
+    dispatch(setIngredientsError(false));
     try {
       const response = await axios.get<Iingredients>('/ingredients.json');
       const { data: newIngredients } = response;
-      dispatch(ingredientSetHandler(newIngredients));
+      dispatch(setIngredients(newIngredients));
     } catch (error) {
-      dispatch(ingredientErrorHandler(true));
+      dispatch(setIngredientsError(true));
     }
   }) as any;
 };

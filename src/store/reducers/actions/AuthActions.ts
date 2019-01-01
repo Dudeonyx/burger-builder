@@ -1,9 +1,9 @@
 import { actionTypes } from './index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
-import { IAuthResponse, IAuthRedirectUrl } from '../authReducer/types';
+import { IAuthResponse } from '../authReducer/types';
 import { API_KEY } from '../../../shared/API_KEY';
-import { actions } from '../authReducer/authReducer';
+import { authActions } from '../authReducer/authReducer';
 
 const {
   authLogout,
@@ -11,7 +11,7 @@ const {
   authSuccess,
   authFail,
   setAuthRedirectUrl,
-} = actions;
+} = authActions;
 
 export { setAuthRedirectUrl, authLogout };
 

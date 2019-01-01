@@ -1,33 +1,13 @@
 import { Dispatch } from 'redux';
 import { actionTypes } from './index';
 import axios from '../../../axios-orders';
-import {
-  IordersReducerAction,
-  IDbOrders,
-  IformattedOrder,
-} from '../ordersReducer/types';
-export const setOrders = (orders: IDbOrders): IordersReducerAction => {
-  return {
-    type: actionTypes.SET_ORDERS,
-    payload: {
-      orders,
-    },
-  };
-};
-export const setOrdersLoading = (): IordersReducerAction => {
-  return {
-    type: actionTypes.SET_ORDERS_LOADING,
-  };
-};
-export const setOrdersError = (error: Error): IordersReducerAction => {
-  return {
-    type: actionTypes.SET_ORDERS_ERROR,
-    payload: { error },
-  };
-};
+import { IDbOrders } from '../ordersReducer/types';
+import { ordersActions } from '../ordersReducer/ordersReducer';
+
+const { setOrders, setOrdersError, setOrdersLoading } = ordersActions;
 
 export const fetchOrders = (token: string | null) => {
-  return async (dispatch: Dispatch<IordersReducerAction>) => {
+  return async (dispatch: Dispatch) => {
     try {
       type T = string;
       dispatch(setOrdersLoading());

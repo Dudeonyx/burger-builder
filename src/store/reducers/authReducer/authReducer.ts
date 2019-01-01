@@ -1,6 +1,4 @@
-import { actionTypes } from '../actions';
-import { AuthAction, IauthReducerState } from './types';
-import produce from 'immer';
+import { IauthReducerState } from './types';
 import robodux from 'robodux-alt';
 import { IStore } from '../../store';
 
@@ -15,11 +13,11 @@ const initialState: IauthReducerState = {
 interface IRAuthActions {
   authStart: never;
   authSuccess: { localId: string; idToken: string };
-  authFail: Error & { [x: string]: any };
+  authFail: Error;
   authLogout: never;
   setAuthRedirectUrl: string;
 }
-const authRobodux = robodux<IRAuthActions, IauthReducerState, IStore>({
+const authRobodux = robodux<IauthReducerState, IRAuthActions, IStore>({
   slice: 'auth',
   actions: {
     authStart: state => {
@@ -47,39 +45,7 @@ const authRobodux = robodux<IRAuthActions, IauthReducerState, IStore>({
   },
   initialState,
 });
-authRobodux.selectors.getAuth;
-// tslint:disable-next-line: no-console
-console.log({ authRobodux });
-export const { actions, reducer: rAuthReducer } = authRobodux;
 
-const authReducer = produce((draft, action: AuthAction) => {
-  switch (action.type) {
-    case actionTypes.AUTH_START:
-      draft.authenticating = true;
-      draft.error = null;
-      break;
-    case actionTypes.AUTH_SUCCESS:
-      draft.authenticating = false;
-      draft.error = null;
-      draft.userId = action.payload.localId;
-      draft.idToken = action.payload.idToken;
-      break;
-    case actionTypes.AUTH_FAIL:
-      draft.authenticating = false;
-      draft.error = action.error;
-      break;
-    case actionTypes.AUTH_LOGOUT:
-      draft.idToken = null;
-      draft.userId = null;
-      draft.displayName = null;
-      break;
-    case actionTypes.SET_AUTH_REDIRECT_URL:
-      draft.authRedirectUrl = action.url;
-      break;
-    default:
-      const _: never = action;
-      break;
-  }
-}, initialState);
+export const { reducer: authReducer, actions: authActions } = authRobodux;
 
-export default rAuthReducer;
+export default authReducer;

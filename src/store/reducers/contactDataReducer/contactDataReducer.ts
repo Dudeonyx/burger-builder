@@ -1,32 +1,40 @@
 import produce from 'immer';
-import { IContactDataReducerState, IContactDataReducerActions } from './types';
-import { actionTypes } from '../actions';
+import { IContactDataReducerState } from './types';
+import robodux from 'robodux-alt';
+import { IDbOrder } from '../ordersReducer/types';
+
 const initialState: IContactDataReducerState = {
   error: false,
   submitting: false,
   orders: {},
 };
 
-export const contactDataReducer = produce(
-  (draft, action: IContactDataReducerActions) => {
-    switch (action.type) {
-      case actionTypes.BURGER_ORDER_SUCCESSFUL:
-        draft.orders[action.payload.name] = action.payload.order;
-        draft.submitting = false;
-        draft.error = false;
-        break;
-      case actionTypes.BURGER_ORDER_FAILED:
-        draft.error = action.payload.error;
-        draft.submitting = false;
-        break;
-      case actionTypes.SET_BURGER_ORDER_SUBMITTING:
-        draft.error = false;
-        draft.submitting = true;
-        break;
-      default:
-        const _: never = action;
-        break;
-    }
+export const {
+  actions: contactDataActions,
+  reducer: contactDataReducer,
+  selectors: { getCData },
+} = robodux({
+  actions: {
+    burgerOrderSuccessful: (
+      state,
+      payload: {
+        name: string;
+        order: IDbOrder;
+      },
+    ) => {
+      state.orders[payload.name] = payload.order;
+      state.submitting = false;
+      state.error = false;
+    },
+    burgerOrderFailed: (state, error: Error) => {
+      state.error = error;
+      state.submitting = false;
+    },
+    setBurgerOrderSubmitting: (state, payload: never) => {
+      state.error = false;
+      state.submitting = true;
+    },
   },
   initialState,
-);
+  slice: 'cData',
+});

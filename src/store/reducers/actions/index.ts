@@ -1,9 +1,9 @@
 import * as actionTypes from './actionTypes';
 export {
   fetchIngredientsHandler,
-  ingredientSetHandler,
-  ingredientDecreaseHandler,
-  ingredientIncreaseHandler,
+  setIngredients as ingredientSetHandler,
+  decreaseIngredient as ingredientDecreaseHandler,
+  increaseIngredient as ingredientIncreaseHandler,
 } from './ingredientsActions';
 export { fetchOrders } from './ordersActions';
 export { submitBurgerOrder } from './contactDataActions';

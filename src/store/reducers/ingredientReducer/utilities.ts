@@ -1,5 +1,4 @@
 import { Iingredients } from '../../../types/ingredients';
-import { ISET_INGREDIENTS } from './types';
 
 export function reShapeIngredients(
   ingredients: Iingredients | null,
@@ -14,15 +13,13 @@ export function reShapeIngredients(
     : null;
 }
 
-export function setIngredientsDraft(
-  draft: {
+export function setIngredientsDraft<
+  D extends {
     ingredients: Iingredients | null;
     error: boolean;
-  },
-  action: ISET_INGREDIENTS,
-) {
+  }
+>(draft: D, ingredients: Iingredients | null) {
   draft.error = false;
-  const { ingredients } = action.payload;
   const reShapedIngredients = reShapeIngredients(ingredients);
   draft.ingredients = reShapedIngredients;
 }

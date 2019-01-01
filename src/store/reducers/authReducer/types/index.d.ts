@@ -18,27 +18,3 @@ export interface IauthReducerState {
   userId: string | null;
   authRedirectUrl: string;
 }
-interface IAuthStart {
-  type: typeof actionTypes.AUTH_START;
-}
-interface IAuthSuccess {
-  type: typeof actionTypes.AUTH_SUCCESS;
-  payload: {
-    localId: string;
-    idToken: string;
-    displayName?: string;
-  };
-}
-interface IAuthFail {
-  type: typeof actionTypes.AUTH_FAIL;
-    error: Error;
-}
-interface IAuthLogout {
-  type: typeof actionTypes.AUTH_LOGOUT;
-}
-interface IAuthRedirectUrl {
-  type: typeof actionTypes.SET_AUTH_REDIRECT_URL;
-  url: string;
-}
-
-export type AuthAction = IAuthStart | IAuthSuccess | IAuthFail | IAuthLogout|IAuthRedirectUrl;
