@@ -11446,10 +11446,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-robodux-alt@3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/robodux-alt/-/robodux-alt-3.1.2.tgz#968aaa0e658e3aa69b8c6c936a639cb0b343b9e8"
-  integrity sha512-6/pNpYnooYJcoD2upgJufM21x78W/i8vdM5WnGlbTJZIT1mwNOJMONcUY/QRLJAJPN7HUFHW7hiEmmipKY0WAA==
+robodux-alt@^4.0.0-alpha.2:
+  version "4.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/robodux-alt/-/robodux-alt-4.0.0-alpha.3.tgz#c35e7025aa3b2ac1b3d7bff797215edd4a6b5ea4"
+  integrity sha512-6ZLfKfqSpq5ee9aNDTxyRKiqu6jhzi+wq9lFNltfZHvMhQmkysu/3G8jNA3F7EDgs+Rdf3NFXCaNL9AVyr6akA==
   dependencies:
     immer "^1.9.3"
 

@@ -27,8 +27,11 @@ export interface IformattedOrder {
   name: string;
   totalPrice: string;
 }
+interface ExtendedError extends Error {
+ [x: string]: any 
+}
 export interface IordersReducerState {
   orders: IDbOrders | null;
   loading: boolean;
-  error: Error & { [x: string]: any } | null;
+  error: ExtendedError | null;
 }

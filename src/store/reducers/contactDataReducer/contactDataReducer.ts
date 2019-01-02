@@ -12,8 +12,9 @@ const initialState: IContactDataReducerState = {
 export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
-  selectors: { getCData },
+  selectors: { getState: getCData },
 } = robodux({
+  slice: 'cData',
   actions: {
     burgerOrderSuccessful: (
       state,
@@ -36,5 +37,4 @@ export const {
     },
   },
   initialState,
-  slice: 'cData',
 });

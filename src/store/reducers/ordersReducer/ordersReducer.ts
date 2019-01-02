@@ -1,7 +1,6 @@
-import { IordersReducerState, IordersReducerAction, IDbOrders } from './types';
-import produce from 'immer';
-import { actionTypes } from '../actions';
-import robodux from 'robodux-alt';
+import { IordersReducerState, IDbOrders } from './types';
+import robodux, { createSliceAlt } from 'robodux-alt';
+import { IStore } from '../../store';
 
 const initialState: IordersReducerState = {
   orders: null,
@@ -9,11 +8,11 @@ const initialState: IordersReducerState = {
   error: null,
 };
 
-const ordersRobodux = robodux({
+const ordersRobodux = createSliceAlt({
   slice: 'ords',
   initialState,
   actions: {
-    setOrders: (state, orders: IDbOrders) => {
+    setOrders: (state, orders: IDbOrders, _:IStore) => {
       state.error = null;
       state.orders = orders;
       state.loading = false;
@@ -29,7 +28,11 @@ const ordersRobodux = robodux({
   },
 });
 
-export const { reducer: ordersReducer, actions: ordersActions } = ordersRobodux;
+export const {
+  reducer: ordersReducer,
+  actions: ordersActions,
+  selectors: ordersSelectors,
+} = ordersRobodux;
 export default ordersReducer;
 
 /* export const ordersReducer = produce((draft, action: IordersReducerAction) => {
