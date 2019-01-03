@@ -1,6 +1,6 @@
 import { IauthReducerState } from './types';
 import robodux from 'robodux-alt';
-import { IStore } from '../../store';
+import { IStore } from '../../';
 
 const initialState: IauthReducerState = {
   authenticating: false,
@@ -17,7 +17,7 @@ interface IRAuthActions {
   authLogout: never;
   setAuthRedirectUrl: string;
 }
-const authRobodux = robodux<IauthReducerState, IRAuthActions, IStore>({
+const authRobodux =  robodux<IauthReducerState, IRAuthActions, IStore>({
   slice: 'auth',
   actions: {
     authStart: state => {
@@ -46,6 +46,10 @@ const authRobodux = robodux<IauthReducerState, IRAuthActions, IStore>({
   initialState,
 });
 
-export const { reducer: authReducer, actions: authActions } = authRobodux;
+export const {
+  reducer: authReducer,
+  actions: authActions,
+  selectors: authSelectors,
+} = authRobodux;
 
 export default authReducer;

@@ -1,7 +1,7 @@
-import produce from 'immer';
 import { IContactDataReducerState } from './types';
-import robodux from 'robodux-alt';
-import { IDbOrder } from '../ordersReducer/types';
+import robodux  from 'robodux-alt';
+import { IDbOrder } from '../ordersReducer/';
+import { IStore } from '../../store';
 
 const initialState: IContactDataReducerState = {
   error: false,
@@ -12,8 +12,8 @@ const initialState: IContactDataReducerState = {
 export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
-  selectors: { getState: getCData },
-} = robodux({
+  selectors: cDataSelectors,
+} =  robodux({
   slice: 'cData',
   actions: {
     burgerOrderSuccessful: (
@@ -22,6 +22,7 @@ export const {
         name: string;
         order: IDbOrder;
       },
+      _: IStore,
     ) => {
       state.orders[payload.name] = payload.order;
       state.submitting = false;
@@ -38,3 +39,5 @@ export const {
   },
   initialState,
 });
+
+export default contactDataReducer;

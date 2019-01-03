@@ -3,6 +3,7 @@ import { IingredientReducerState } from './types';
 import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
 import robodux from 'robodux-alt';
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
+import { IStore } from '../../store';
 
 const initialState: IingredientReducerState = {
   ingredients: null,
@@ -12,9 +13,10 @@ const initialState: IingredientReducerState = {
 export const {
   reducer: ingredientReducer,
   actions: ingredientActions,
+  selectors: ingredientSelectors,
 } = robodux({
   actions: {
-    increaseIngredient: (state, igkey: IingredientsKeys) => {
+    increaseIngredient: (state, igkey: IingredientsKeys, _: IStore) => {
       incrementKeyInObj(state.ingredients, igkey);
     },
     decreaseIngredient: (state, igkey: IingredientsKeys) => {

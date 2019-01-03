@@ -3,24 +3,34 @@ import { getTotalPrice } from '../../shared/getTotalPrice';
 import { updatePurchasable } from '../../shared/updatePurchasable';
 import { formatOrders } from '../reducers/ordersReducer/utilities';
 import { generateErrorMessage } from '../../shared/generateErrorMessage';
-import { IStore } from '../store';
+import { authSelectors } from '../reducers/authReducer';
+import { cDataSelectors } from '../reducers/contactDataReducer';
+import { ingredientSelectors } from '../reducers/ingredientReducer';
+import { ordersSelectors } from '../reducers/ordersReducer';
 
-export const selectIngredients = (state: IStore) => state.ings.ingredients;
-export const selectIngredientsError = (state: IStore) => state.ings.error;
-export const selectBurgerOrderSubmitting = (state: IStore) =>
-  state.cData.submitting;
-export const selectBurgerOrderError = (state: IStore) => state.cData.error;
-export const selectOrders = (state: IStore) => state.ords.orders;
-export const selectOrdersError = (state: IStore) => state.ords.error;
-export const selectOrdersLoading = (state: IStore) => state.ords.loading;
-export const selectAuthIdToken = (state: IStore) => state.auth.idToken;
-export const selectAuthUserId = (state: IStore) => state.auth.userId;
-export const selectAuthError = (state: IStore) => state.auth.error;
-export const selectAuthAuthenticating = (state: IStore) => {
-  return state.auth.authenticating;
-};
-export const selectAuthRedirectUrl = (state: IStore) =>
-  state.auth.authRedirectUrl;
+export const {
+  ingredients: selectIngredients,
+  error: selectIngredientsError,
+} = ingredientSelectors;
+
+export const {
+  submitting: selectBurgerOrderSubmitting,
+  error: selectBurgerOrderError,
+} = cDataSelectors;
+
+export const {
+  orders: selectOrders,
+  loading: selectOrdersLoading,
+  error: selectOrdersError,
+} = ordersSelectors;
+
+export const {
+  idToken: selectAuthIdToken,
+  error: selectAuthError,
+  userId: selectAuthUserId,
+  authenticating: selectAuthAuthenticating,
+  authRedirectUrl: selectAuthRedirectUrl,
+} = authSelectors;
 
 export const getTotalPriceFromStore = createSelector(
   selectIngredients,

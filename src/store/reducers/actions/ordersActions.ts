@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux';
-import { actionTypes } from './index';
 import axios from '../../../axios-orders';
 import { IDbOrders } from '../ordersReducer/types';
 import { ordersActions } from '../ordersReducer/ordersReducer';

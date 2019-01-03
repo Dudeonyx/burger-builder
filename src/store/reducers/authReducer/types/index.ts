@@ -1,5 +1,3 @@
-import { actionTypes } from '../../actions';
-
 export interface IAuthResponse {
   kind: string;
   localId: string;

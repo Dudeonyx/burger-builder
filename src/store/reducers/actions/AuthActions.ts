@@ -1,9 +1,7 @@
-import { actionTypes } from './index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
-import { IAuthResponse } from '../authReducer/types';
+import { IAuthResponse, authActions } from '../authReducer/';
 import { API_KEY } from '../../../shared/API_KEY';
-import { authActions } from '../authReducer/authReducer';
 
 const {
   authLogout,
@@ -54,7 +52,7 @@ export const authenticate = (
       dispatch(authSuccess(data));
       dispatch(authTimeout(expiresIn) as any);
       // tslint:disable-next-line: no-console
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       dispatch(authFail(error));
       // tslint:disable-next-line: no-console

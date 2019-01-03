@@ -1,6 +1,6 @@
 import { IordersReducerState, IDbOrders } from './types';
-import robodux, { createSliceAlt } from 'robodux-alt';
-// import { IStore } from '../../store';
+import robodux from 'robodux-alt';
+import { IStore } from '../../';
 
 const initialState: IordersReducerState = {
   orders: null,
@@ -8,11 +8,11 @@ const initialState: IordersReducerState = {
   error: null,
 };
 
-const ordersRobodux = createSliceAlt({
+const ordersRobodux = robodux({
   slice: 'ords',
   initialState,
   actions: {
-    setOrders: (state, orders: IDbOrders, _:IStore) => {
+    setOrders: (state, orders: IDbOrders, _: IStore) => {
       state.error = null;
       state.orders = orders;
       state.loading = false;

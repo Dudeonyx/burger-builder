@@ -3,13 +3,12 @@ import { Iingredients } from '../../../types/ingredients';
 import axios from '../../../axios-orders';
 import { ingredientActions } from '../ingredientReducer/ingredientReducer';
 
-const {
+export const {
+  setIngredients,
   decreaseIngredient,
   increaseIngredient,
-  setIngredients,
   setIngredientsError,
 } = ingredientActions;
-export { decreaseIngredient, increaseIngredient, setIngredients };
 export const fetchIngredientsHandler = (): Promise<VoidFunction> => {
   return (async (dispatch: Dispatch) => {
     // this.setState({ error: null });

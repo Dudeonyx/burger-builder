@@ -7,14 +7,15 @@ import withErrorHandler from '../../HOCs/withErrorHandler';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { connect } from 'react-redux';
 import Modal from '../../components/UI/Modal/Modal';
-import { IBurgerBuilderState } from './types';
+import { IBurgerBuilderState } from './types/';
 import {
-  ingredientIncreaseHandler,
-  ingredientDecreaseHandler,
-  ingredientSetHandler,
   fetchIngredientsHandler,
+  decreaseIngredient,
+  increaseIngredient,
+  setIngredients,
+  setAuthRedirectUrl,
 } from '../../store/reducers/actions';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, IStore } from '../../store/';
 import { RouteComponentProps } from 'react-router';
 import {
   selectIngredientsError,
@@ -23,8 +24,6 @@ import {
   getTotalPriceFromStore,
   getAuthenticated,
 } from '../../store/selectors/selectors';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/';
-import { IStore } from '../../store/store';
 
 const BurgerDisplay = lazy(() =>
   import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
@@ -155,9 +154,9 @@ const mapBurgerBuilderStateToProps = (state: IStore) => ({
 });
 
 const mapBurgerBuilderDispatchToProps = {
-  ingredientIncreaseHandler,
-  ingredientDecreaseHandler,
-  ingredientSetHandler,
+  ingredientIncreaseHandler: increaseIngredient,
+  ingredientDecreaseHandler: decreaseIngredient,
+  ingredientSetHandler: setIngredients,
   fetchIngredientsHandler,
   setAuthRedirectUrl,
 };
