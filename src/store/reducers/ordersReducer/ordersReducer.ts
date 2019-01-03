@@ -1,6 +1,6 @@
 import { IordersReducerState, IDbOrders } from './types';
 import robodux, { createSliceAlt } from 'robodux-alt';
-import { IStore } from '../../store';
+// import { IStore } from '../../store';
 
 const initialState: IordersReducerState = {
   orders: null,

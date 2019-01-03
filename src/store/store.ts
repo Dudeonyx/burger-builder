@@ -11,7 +11,6 @@ export interface IStore {
   cData: ReturnType<typeof contactDataReducer>;
   ords: ReturnType<typeof ordersReducer>;
   auth: ReturnType<typeof authReducer>;
-  // rAuth: ReturnType<typeof rAuthReducer>;
 }
 const rootReducer = combineReducers<IStore>({
   ings: ingredientReducer,

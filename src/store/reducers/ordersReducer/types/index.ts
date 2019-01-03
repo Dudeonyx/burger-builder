@@ -1,5 +1,4 @@
 import { Iingredients } from '../../../../types/ingredients';
-import { actionTypes } from '../../actions';
 
 export interface IDbOrder {
   basicInfo: {
@@ -28,7 +27,7 @@ export interface IformattedOrder {
   totalPrice: string;
 }
 interface ExtendedError extends Error {
- [x: string]: any 
+  [x: string]: any;
 }
 export interface IordersReducerState {
   orders: IDbOrders | null;
