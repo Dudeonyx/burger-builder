@@ -1,5 +1,5 @@
 import { IordersReducerState, IDbOrders } from './types';
-import robodux from 'robodux-alt';
+import { createSlice } from '@redux-ts-starter-kit/core';
 import { IStore } from '../../';
 
 const initialState: IordersReducerState = {
@@ -8,10 +8,10 @@ const initialState: IordersReducerState = {
   error: null,
 };
 
-const ordersRobodux = robodux({
+const ordersRobodux = createSlice({
   slice: 'ords',
   initialState,
-  actions: {
+  cases: {
     setOrders: (state, orders: IDbOrders, _: IStore) => {
       state.error = null;
       state.orders = orders;

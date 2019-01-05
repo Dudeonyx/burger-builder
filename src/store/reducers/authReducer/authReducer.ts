@@ -1,5 +1,5 @@
 import { IauthReducerState } from './types';
-import robodux from 'robodux-alt';
+import { createSlice } from '@redux-ts-starter-kit/core';
 import { IStore } from '../../';
 
 const initialState: IauthReducerState = {
@@ -17,9 +17,9 @@ interface IRAuthActions {
   authLogout: never;
   setAuthRedirectUrl: string;
 }
-const authRobodux =  robodux<IauthReducerState, IRAuthActions, IStore>({
+const authRobodux = createSlice<IRAuthActions, IauthReducerState, IStore>({
   slice: 'auth',
-  actions: {
+  cases: {
     authStart: state => {
       state.authenticating = true;
       state.error = null;

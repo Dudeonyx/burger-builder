@@ -1,5 +1,5 @@
 import { IContactDataReducerState } from './types';
-import robodux  from 'robodux-alt';
+import { createSlice } from '@redux-ts-starter-kit/core';
 import { IDbOrder } from '../ordersReducer/';
 import { IStore } from '../../store';
 
@@ -13,9 +13,9 @@ export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
   selectors: cDataSelectors,
-} =  robodux({
+} = createSlice({
   slice: 'cData',
-  actions: {
+  cases: {
     burgerOrderSuccessful: (
       state,
       payload: {

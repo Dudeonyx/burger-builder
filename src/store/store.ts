@@ -1,10 +1,11 @@
-import { createStore, combineReducers, applyMiddleware, Action } from 'redux';
-import { ingredientReducer } from './reducers/ingredientReducer/ingredientReducer';
-import { contactDataReducer } from './reducers/contactDataReducer/contactDataReducer';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import {configureStore, 
+  getDefaultMiddleware,
+} from '@redux-ts-starter-kit/core';
 import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
 import authReducer from './reducers/authReducer/authReducer';
+import contactDataReducer from './reducers/contactDataReducer';
+import ingredientReducer from './reducers/ingredientReducer';
+import { AnyAction } from 'redux';
 
 export interface IStore {
   ings: ReturnType<typeof ingredientReducer>;
@@ -12,17 +13,10 @@ export interface IStore {
   ords: ReturnType<typeof ordersReducer>;
   auth: ReturnType<typeof authReducer>;
 }
-const rootReducer = combineReducers<IStore>({
-  ings: ingredientReducer,
-  cData: contactDataReducer,
-  ords: ordersReducer,
-  auth: authReducer,
-  // rAuth: rAuthReducer,
-});
 
 const logger = (myStore: { getState: () => any }) => {
-  return (next: (arg0: Action) => any) => {
-    return (action: Action) => {
+  return (next: (arg0: AnyAction) => any) => {
+    return (action: AnyAction) => {
       // tslint:disable-next-line:no-console
       console.log('[Middleware logger] action: ', action);
       const result = next(action);
@@ -35,9 +29,14 @@ const logger = (myStore: { getState: () => any }) => {
   };
 };
 
-export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
-);
+export const [store,] = configureStore<IStore>({
+  reducer: {
+    ings: ingredientReducer,
+    cData: contactDataReducer,
+    ords: ordersReducer,
+    auth: authReducer,
+  },
+  middleware: [...getDefaultMiddleware(),],
+});
 
 export default store;

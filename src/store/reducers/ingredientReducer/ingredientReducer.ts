@@ -1,7 +1,7 @@
 import { setIngredientsDraft } from './utilities';
 import { IingredientReducerState } from './types';
 import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
-import robodux from 'robodux-alt';
+import { createSlice } from '@redux-ts-starter-kit/core';
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
 import { IStore } from '../../store';
 
@@ -14,8 +14,8 @@ export const {
   reducer: ingredientReducer,
   actions: ingredientActions,
   selectors: ingredientSelectors,
-} = robodux({
-  actions: {
+} = createSlice({
+  cases: {
     increaseIngredient: (state, igkey: IingredientsKeys, _: IStore) => {
       incrementKeyInObj(state.ingredients, igkey);
     },
