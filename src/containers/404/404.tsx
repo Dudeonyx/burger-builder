@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 const $404: FunctionComponent<RouteComponentProps> = props => {
   return (
     <div style={{ fontSize: '3rem' }}>
-      {'404 Error \n'} {props.location.pathname + 'not found. '}
+      {'404 Error \n.' + props.location.pathname + ' not found.'}
     </div>
   );
 };
