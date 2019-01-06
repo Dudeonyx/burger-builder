@@ -8,7 +8,7 @@
     "@emotion/styled": "^10.0.5",
     "@material-ui/core": "^3.8.1",
     "@material-ui/icons": "^3.0.1",
-    "@redux-ts-starter-kit/core": "^1.0.1-alpha.1",
+    "@redux-ts-starter-kit/core": "^0.1.0",
     "axios": "^0.18.0",
     "immer": "^1.9.3",
     "primeicons": "^1.0.0",

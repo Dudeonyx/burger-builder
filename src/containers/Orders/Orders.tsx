@@ -13,6 +13,7 @@ import {
   selectOrdersError,
   selectAuthIdToken,
   getOrdersErrorMessage,
+  selectAuthUserId,
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../../store/reducers/actions';
@@ -26,7 +27,7 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
 
   private fetchOrders = async () => {
     try {
-      await this.props.fetchOrders(this.props.token);
+      await this.props.fetchOrders(this.props.token, this.props.userId);
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error('[fetchOrders(Orders)]', error);
@@ -78,6 +79,7 @@ const mapOrderStateToProps = (state: IStore) => {
     error: selectOrdersError(state),
     errorMessage: getOrdersErrorMessage(state),
     token: selectAuthIdToken(state),
+    userId: selectAuthUserId(state),
   };
 };
 const mapOrdersDispatchToProps = { fetchOrders };

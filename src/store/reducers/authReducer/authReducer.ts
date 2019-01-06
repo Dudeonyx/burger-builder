@@ -17,7 +17,7 @@ interface IRAuthActions {
   authLogout: never;
   setAuthRedirectUrl: string;
 }
-const authRobodux = createSlice<IRAuthActions, IauthReducerState, IStore>({
+const authSlice = createSlice<IRAuthActions, IauthReducerState, IStore>({
   slice: 'auth',
   cases: {
     authStart: state => {
@@ -50,6 +50,6 @@ export const {
   reducer: authReducer,
   actions: authActions,
   selectors: authSelectors,
-} = authRobodux;
+} = authSlice;
 
 export default authReducer;

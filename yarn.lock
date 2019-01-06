@@ -1294,22 +1294,22 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@redux-ts-starter-kit/core@^1.0.1-alpha.1":
-  version "1.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@redux-ts-starter-kit/core/-/core-1.0.1-alpha.1.tgz#39724e42f006a0446030102c2994aab4f5c2072c"
-  integrity sha512-nANTodt5HWFz1cRu4wDh6dpUqHSwgXgKWopXDg/BONVe1JpMCqRrpUlzgNb4iJvbDgvy8dZFl8uoUGKRo7P/dw==
+"@redux-ts-starter-kit/core@^0.1.0":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@redux-ts-starter-kit/core/-/core-0.1.11.tgz#68274e27455d22c1f802409211a7010a3672a0f4"
+  integrity sha512-5lT04e6e8wSvKhBlK5E2TEec4hqMrcAaqdFyNUz1D/KPROPhcKdmwJsPIyvwTzI4BWYUStYlsI1rPVwbzoyBFA==
   dependencies:
-    "@redux-ts-starter-kit/slice" "^1.0.1-alpha.1"
+    "@redux-ts-starter-kit/slice" "^0.1.11"
     redux "^4.0.1"
     redux-devtools-extension "^2.13.7"
     redux-immutable-state-invariant "^2.1.0"
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@redux-ts-starter-kit/slice@^1.0.1-alpha.1":
-  version "1.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/@redux-ts-starter-kit/slice/-/slice-1.0.1-alpha.1.tgz#893aa1a0330e6facf247e281617f63eaaed47693"
-  integrity sha512-6Rwmtpb3YOtKqVLQ+LgytOFkmHOeQlvjCrTi6AakXvgLXb2HMWB8KoDXwmYn6ijH1+d06w3P2DOsjc1QyK5R9A==
+"@redux-ts-starter-kit/slice@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@redux-ts-starter-kit/slice/-/slice-0.1.11.tgz#437c664a94d33a89ce1dd65974950fdd70c67aa9"
+  integrity sha512-do/y1w6gu95y2uNUKo9iPzWOnEofG272MOgFs6E7o1ksorMllJgKM+K3eDpWu4on7oEnk5uwH4BuWXddIfEhCw==
   dependencies:
     immer "^1.9.3"
 

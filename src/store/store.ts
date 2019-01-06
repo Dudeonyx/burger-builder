@@ -1,11 +1,12 @@
-import {configureStore, 
+import {
+  configureStore,
   getDefaultMiddleware,
+  AnyAction,
 } from '@redux-ts-starter-kit/core';
 import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
 import authReducer from './reducers/authReducer/authReducer';
 import contactDataReducer from './reducers/contactDataReducer';
 import ingredientReducer from './reducers/ingredientReducer';
-import { AnyAction } from 'redux';
 
 export interface IStore {
   ings: ReturnType<typeof ingredientReducer>;

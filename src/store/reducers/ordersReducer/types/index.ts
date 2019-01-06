@@ -13,6 +13,7 @@ export interface IDbOrder {
     country: string;
   };
   deliveryMethod: string;
+  userId: string;
   ingredients: Iingredients;
   date: string;
   price: string;

@@ -6,6 +6,7 @@ export function generateOrder(
   customer: IContactDataState['customer'],
   ingredients: Iingredients,
   totalPrice: string,
+  userId: string,
 ) {
   const {
     deliveryMethod,
@@ -31,6 +32,7 @@ export function generateOrder(
     },
     deliveryMethod: deliveryMethod.value,
     ingredients,
+    userId,
     price: totalPrice,
     date: Date(),
   };

@@ -16,10 +16,11 @@ export const submitBurgerOrder = (
   ingredients: Iingredients,
   totalPrice: string,
   token: string | null,
+  userId: string | null,
 ): Promise<VoidFunction> => {
   return (async (dispatch: Dispatch) => {
     try {
-      const order = generateOrder(customer, ingredients, totalPrice);
+      const order = generateOrder(customer, ingredients, totalPrice, userId || '');
       dispatch(setBurgerOrderSubmitting());
       if (!order) {
         throw new Error(
