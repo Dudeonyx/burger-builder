@@ -111,13 +111,4 @@ const Input: FunctionComponent<IInputProps> = props => {
   }
 };
 
-// const isEqual = (prevProps: IInputProps, nextProps: IInputProps) => {
-//   return (
-//     nextProps.value === prevProps.value &&
-//     (nextProps.checked !== undefined
-//       ? nextProps.checked === prevProps.checked
-//       : true)
-//   );
-// };
-
 export default memo(Input);

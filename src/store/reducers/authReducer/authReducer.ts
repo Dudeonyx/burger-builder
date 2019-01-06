@@ -51,5 +51,3 @@ export const {
   actions: authActions,
   selectors: authSelectors,
 } = authSlice;
-
-export default authReducer;

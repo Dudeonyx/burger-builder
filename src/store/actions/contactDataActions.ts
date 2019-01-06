@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
-import { Iingredients } from '../../../types/ingredients';
-import axios from '../../../axios-orders';
-import { generateOrder } from '../contactDataReducer/utilities';
-import { IContactDataState } from '../../../containers/Checkout/ContactData/types';
-import { contactDataActions } from '../contactDataReducer/contactDataReducer';
+import { Iingredients } from '../../types/ingredients';
+import axios from '../../axios-orders';
+import { generateOrder } from '../reducers/contactDataReducer/utilities';
+import { IContactDataState } from '../../containers/Checkout/ContactData/types';
+import { contactDataActions } from '../reducers/contactDataReducer/contactDataReducer';
 
 const {
   burgerOrderFailed,

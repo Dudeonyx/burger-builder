@@ -1,14 +1,11 @@
 import React, {
   ComponentPropsWithoutRef,
-  ComponentPropsWithRef,
   ComponentType,
   ExoticComponent,
   ForwardRefExoticComponent,
   lazy,
-  PropsWithoutRef,
   ReactNode,
   RefAttributes,
-  RefForwardingComponent,
   Suspense,
   ReactElement,
 } from 'react';
@@ -26,11 +23,9 @@ export const suspensed: Suspensed = LazyComponent => {
   };
 };
 
-type Suspensed2 = <T extends ComponentType<any>>(
-  d: Promise<{ default: T }>,
-) => ComponentType<ComponentPropsWithoutRef<T>>;
-
-export const suspensed2: Suspensed2 = dynamicImport => {
+export const suspensed2 = <T extends ComponentType<any>>(
+  dynamicImport: Promise<{ default: T }>,
+): ComponentType<ComponentPropsWithoutRef<T>> => {
   const LazyComponent = lazy(() => dynamicImport) as ExoticComponent<any>;
   return function SuspensedComponent(props) {
     return (
@@ -42,10 +37,11 @@ export const suspensed2: Suspensed2 = dynamicImport => {
   // return SuspensedComponent;
 };
 
-export type Suspensed3 = <T extends ComponentType<any>>(
-  d: Promise<{ default: T }>,
-) => ForwardRefExoticComponent<ComponentPropsWithoutRef<T> & RefAttributes<T>>;
-export const suspensed3: Suspensed3 = dynamicImport => {
+export const suspensed3 = <T extends ComponentType<any>>(
+  dynamicImport: Promise<{ default: T }>,
+): ForwardRefExoticComponent<
+  ComponentPropsWithoutRef<T> & RefAttributes<T>
+> => {
   const LazyComponent = lazy(() => dynamicImport) as ExoticComponent<any>;
   return React.forwardRef((props, ref) => {
     return (

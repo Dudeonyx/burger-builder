@@ -4,9 +4,9 @@ import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
 import Modal from '../../../components/UI/Modal/Modal';
 import { IContactDataState } from './types';
-import { submitBurgerOrder } from '../../../store/reducers/actions';
+import { submitBurgerOrder } from '../../../store/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps } from '../../../store/types';
+import { GetConnectProps } from '../../../store/';
 import { RouteComponentProps } from 'react-router';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
@@ -18,9 +18,9 @@ import {
   selectAuthIdToken,
   selectBurgerOrderError,
   selectAuthUserId,
-} from '../../../store/selectors/selectors';
-import mapToInputs from '../../../components/UI/Input/mapToInputs';
-import { updateform } from '../../../components/UI/Input/InputUtilities';
+} from '../../../store/selectors/';
+import { mapToInputs } from '../../../components/UI/Input/';
+import { updateFormImmutably } from '../../../components/UI/Input/InputUtilities';
 import { IStore } from '../../../store/store';
 class ContactData extends Component<IContactDataProps, IContactDataState> {
   public state: IContactDataState = {
@@ -233,7 +233,7 @@ class ContactData extends Component<IContactDataProps, IContactDataState> {
   }
 
   private updateContactDataForm = (e: ChangeEvent<HTMLInputElement>) => {
-    const updatedCustomer = updateform(this.state.customer, e);
+    const updatedCustomer = updateFormImmutably(this.state.customer, e);
     this.setState({ customer: updatedCustomer });
   };
 

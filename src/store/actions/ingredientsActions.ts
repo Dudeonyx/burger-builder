@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
-import { Iingredients } from '../../../types/ingredients';
-import axios from '../../../axios-orders';
-import { ingredientActions } from '../ingredientReducer/ingredientReducer';
+import { Iingredients } from '../../types/ingredients';
+import axios from '../../axios-orders';
+import { ingredientActions } from '../reducers/ingredientReducer/ingredientReducer';
 
 export const {
   setIngredients,

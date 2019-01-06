@@ -1,9 +1,8 @@
 import { IInputRules, IInputConfig } from './types';
-import { isDraft } from 'immer';
 import { ChangeEvent } from 'react';
 import { verifyObjKey } from '../../../shared/verifyObjKey';
 
-export function updateform<F extends { [x: string]: IInputConfig }>(
+export function updateFormImmutably<F extends { [x: string]: IInputConfig }>(
   form: F,
   { target: { name, value } }: ChangeEvent<HTMLInputElement>,
 ) {
@@ -13,18 +12,6 @@ export function updateform<F extends { [x: string]: IInputConfig }>(
     console.error(`${name} not found in Form`);
     return form;
   }
-  if (isDraft(form)) {
-    return updateFormDraft<F>(form, name, value);
-  } else {
-    return updateFormImmutably<F>(form, name, value);
-  }
-}
-
-function updateFormImmutably<
-  F extends {
-    [x: string]: IInputConfig;
-  }
->(form: Readonly<F>, name: string, value: string) {
   const field = { ...form[name] };
   const validation = updateFormFieldValidationImmutably(
     field.validation,
@@ -38,11 +25,16 @@ function updateFormImmutably<
   return newForm;
 }
 
-function updateFormDraft<
-  F extends {
-    [x: string]: IInputConfig;
+export function updateFormDraft<F extends { [x: string]: IInputConfig }>(
+  form: F,
+  { target: { name, value } }: ChangeEvent<HTMLInputElement>,
+) {
+  // const { name, value } = event.target;
+  if (!verifyObjKey(form, name)) {
+    // tslint:disable-next-line:no-console
+    console.error(`${name} not found in Form`);
+    return form;
   }
->(form: F, name: string, value: string) {
   const field = form[name];
   field.value = value;
   updateFormFieldValidationDraft(field.validation, value);

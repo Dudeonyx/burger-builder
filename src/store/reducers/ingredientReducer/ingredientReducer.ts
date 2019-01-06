@@ -32,5 +32,3 @@ export const {
   initialState,
   slice: 'ings',
 });
-
-export default ingredientReducer;

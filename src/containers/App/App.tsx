@@ -27,7 +27,7 @@ import '../../components/UI/Modal/Modal';
 import Auth from '../Auth/Auth';
 import Logout from '../Auth/Logout/Logout';
 import $404 from '../404/404';
-import { checkPriorAuth } from '../../store/reducers/actions';
+import { checkPriorAuth } from '../../store/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../store/types';
 import { getAuthenticated } from '../../store/selectors/selectors';

@@ -16,7 +16,7 @@ import {
   selectAuthUserId,
 } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
-import { fetchOrders } from '../../store/reducers/actions';
+import { fetchOrders } from '../../store/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { IStore } from '../../store/store';
 

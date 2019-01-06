@@ -1,6 +1,6 @@
 import styled from '@emotion/styled/macro';
 import css from '@emotion/css/macro';
-const invalid = css`
+const invalidCss = css`
   border: 1px solid red;
   background-color: #fda49a;
 `;
@@ -18,7 +18,7 @@ const showValidMark = ({ valid }: { valid: boolean }) => {
   return valid ? validMark : inValidMark;
 };
 const validInput = ({ valid }: { valid: boolean }) => {
-  return valid ? null : invalid;
+  return valid ? null : invalidCss;
 };
 
 export const StyledInput = styled.div`

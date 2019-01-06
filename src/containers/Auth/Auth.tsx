@@ -1,11 +1,13 @@
 import Button from '../../components/UI/Button/Button';
 import React, { Component, ChangeEvent, MouseEvent } from 'react';
-import { IInputConfig } from '../../components/UI/Input/types';
-import { updateform } from '../../components/UI/Input/InputUtilities';
-import mapToInputs from '../../components/UI/Input/mapToInputs';
-import { authenticate } from '../../store/reducers/actions';
+import {
+  updateFormImmutably,
+  mapToInputs,
+  IInputConfig,
+} from '../../components/UI/Input/';
+import { authenticate } from '../../store/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps } from '../../store/types';
+import { GetConnectProps, IStore } from '../../store/';
 import { RouteComponentProps } from 'react-router';
 import {
   selectAuthAuthenticating,
@@ -13,11 +15,10 @@ import {
   getAuthErrorMessage,
   getPurchaseableFromStore,
   selectAuthRedirectUrl,
-} from '../../store/selectors/selectors';
+} from '../../store/selectors/';
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/';
-import { IStore } from '../../store/store';
+import { setAuthRedirectUrl } from '../../store/actions';
 
 export interface IAuthState {
   authFormData: {
@@ -88,7 +89,7 @@ class Auth extends Component<IAuthProps, IAuthState> {
   };
 
   private handleAuthFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newAuthFormData = updateform(this.state.authFormData, e);
+    const newAuthFormData = updateFormImmutably(this.state.authFormData, e);
     this.setState({ authFormData: newAuthFormData });
   };
 

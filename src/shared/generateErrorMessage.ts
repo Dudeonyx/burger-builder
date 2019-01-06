@@ -1,5 +1,3 @@
-import { getTotalPrice } from './getTotalPrice';
-
 export function generateErrorMessage(
   error:
     | (Error & {

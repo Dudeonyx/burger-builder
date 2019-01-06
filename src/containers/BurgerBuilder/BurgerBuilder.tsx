@@ -14,7 +14,7 @@ import {
   increaseIngredient,
   setIngredients,
   setAuthRedirectUrl,
-} from '../../store/reducers/actions';
+} from '../../store/actions';
 import { GetConnectProps, IStore } from '../../store/';
 import { RouteComponentProps } from 'react-router';
 import {

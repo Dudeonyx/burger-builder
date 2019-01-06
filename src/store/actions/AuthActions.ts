@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
-import { IAuthResponse, authActions } from '../authReducer/';
-import { API_KEY } from '../../../shared/API_KEY';
+import { IAuthResponse, authActions } from '../reducers/';
+import { API_KEY } from '../../shared/';
 
 const {
   authLogout,

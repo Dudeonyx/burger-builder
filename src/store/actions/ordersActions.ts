@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
-import axios from '../../../axios-orders';
-import { IDbOrders } from '../ordersReducer/types';
-import { ordersActions } from '../ordersReducer/ordersReducer';
+import axios from '../../axios-orders';
+import { IDbOrders } from '../reducers/ordersReducer/types';
+import { ordersActions } from '../reducers/ordersReducer/ordersReducer';
 
 const { setOrders, setOrdersError, setOrdersLoading } = ordersActions;
 

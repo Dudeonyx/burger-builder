@@ -11,7 +11,7 @@ import {
   getAuthenticated,
 } from '../../store/selectors/selectors';
 import { suspenseNode2 } from '../../HOCs/suspensed';
-import { setAuthRedirectUrl } from '../../store/reducers/actions/';
+import { setAuthRedirectUrl } from '../../store/actions';
 import { IStore } from '../../store/store';
 
 const ContactData = lazy(() =>
