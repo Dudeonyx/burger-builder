@@ -49,7 +49,6 @@ class App extends Component<AppProps> {
     const protectedRoutes = this.props.isAuth ? (
       <Switch>
         <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
-        {/* <Route path="/login" exact={false} component={Auth} /> */}
         <Route path="/logout" exact={false} component={Logout} />
         <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
         <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
@@ -60,7 +59,6 @@ class App extends Component<AppProps> {
       <Switch>
         <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
         <Route path="/login" exact={true} component={Auth} />
-        {/* <Route path="/logout" exact={true} component={Logout} /> */}
         <Redirect from="/all-orders" to="/" />
         <Redirect from="/checkout" to="/" />
         <Redirect from="/logout" to="/" />
