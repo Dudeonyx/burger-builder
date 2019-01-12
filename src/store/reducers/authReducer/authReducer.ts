@@ -1,8 +1,8 @@
-import { IauthReducerState } from './types';
+import { IauthReducerState as IAuthReducerState } from './types';
 import { createSlice } from '@redux-ts-starter-kit/core';
 import { IStore } from '../../';
 
-const initialState: IauthReducerState = {
+const initialState: IAuthReducerState = {
   authenticating: false,
   error: null,
   idToken: null,
@@ -10,14 +10,14 @@ const initialState: IauthReducerState = {
   displayName: null,
   authRedirectUrl: '/',
 };
-interface IRAuthActions {
+interface IAuthActions {
   authStart: never;
   authSuccess: { localId: string; idToken: string };
   authFail: Error;
   authLogout: never;
   setAuthRedirectUrl: string;
 }
-const authSlice = createSlice<IRAuthActions, IauthReducerState, IStore>({
+const authSlice = createSlice<IAuthActions, IAuthReducerState, IStore>({
   slice: 'auth',
   cases: {
     authStart: state => {

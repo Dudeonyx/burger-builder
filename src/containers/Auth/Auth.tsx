@@ -1,10 +1,6 @@
 import Button from '../../components/UI/Button/Button';
 import React, { Component, ChangeEvent, MouseEvent } from 'react';
-import {
-  updateFormImmutably,
-  mapToInputs,
-  IInputConfig,
-} from '../../components/UI/Input/';
+import { updateFormImmutably, mapToInputs } from '../../components/UI/Input/';
 import { authenticate } from '../../store/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps, IStore } from '../../store/';
@@ -19,6 +15,7 @@ import {
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
 import { setAuthRedirectUrl } from '../../store/actions';
+import { IInputConfig } from '../../components/UI/Input/types';
 
 export interface IAuthState {
   authFormData: {

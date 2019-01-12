@@ -52,7 +52,7 @@ class App extends Component<AppProps> {
         <Route path="/logout" exact={false} component={Logout} />
         <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
         <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
-        <Redirect from="/login" to="/" />
+        {/* <Redirect from="/login" to="/" /> */}
         <Route component={$404} />
       </Switch>
     ) : (

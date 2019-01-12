@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IInputConfig } from './';
-import Input from './';
+import { IInputConfig } from './types';
+import Input from './Input';
 
 export const mapToInputs = (onChange: React.ChangeEventHandler) => (
   obj: IInputConfig,

@@ -1,27 +1,33 @@
-import { IordersReducerState, IDbOrders } from './types';
+import { IordersReducerState as IOrdersReducerState, IDbOrders } from './types';
 import { createSlice } from '@redux-ts-starter-kit/core';
 import { IStore } from '../../';
 
-const initialState: IordersReducerState = {
+const initialState: IOrdersReducerState = {
   orders: null,
   loading: false,
   error: null,
 };
 
-const ordersRobodux = createSlice({
+interface IOrdersActions {
+  setOrders: IDbOrders;
+  setOrdersError: Error;
+  setOrdersLoading: never;
+}
+
+const ordersRobodux = createSlice<IOrdersActions, IOrdersReducerState, IStore>({
   slice: 'ords',
   initialState,
   cases: {
-    setOrders: (state, orders: IDbOrders, _: IStore) => {
+    setOrders: (state, orders) => {
       state.error = null;
       state.orders = orders;
       state.loading = false;
     },
-    setOrdersError: (state, error: Error) => {
+    setOrdersError: (state, error) => {
       state.error = error;
       state.loading = false;
     },
-    setOrdersLoading: (state, n: never) => {
+    setOrdersLoading: state => {
       state.loading = true;
       state.error = null;
     },

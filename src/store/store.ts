@@ -3,10 +3,12 @@ import {
   getDefaultMiddleware,
   AnyAction,
 } from '@redux-ts-starter-kit/core';
-import { ordersReducer } from './reducers/ordersReducer/ordersReducer';
-import authReducer from './reducers/authReducer/authReducer';
-import contactDataReducer from './reducers/contactDataReducer';
-import ingredientReducer from './reducers/ingredientReducer';
+import {
+  contactDataReducer,
+  authReducer,
+  ordersReducer,
+  ingredientReducer,
+} from './reducers/';
 
 export interface IStore {
   ings: ReturnType<typeof ingredientReducer>;
