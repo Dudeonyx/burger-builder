@@ -8,8 +8,11 @@ import {
   authReducer,
   ordersReducer,
   ingredientReducer,
+  IauthReducerState,
+  IordersReducerState,
+  IContactDataReducerState,
+  IingredientReducerState,
 } from './reducers/';
-import { Action } from 'redux';
 
 const logger = (myStore: { getState: () => any }) => {
   return (next: (arg0: AnyAction) => any) => {
@@ -26,13 +29,13 @@ const logger = (myStore: { getState: () => any }) => {
   };
 };
 export interface IStore {
-  ings: ReturnType<typeof ingredientReducer>;
-  cData: ReturnType<typeof contactDataReducer>;
-  ords: ReturnType<typeof ordersReducer>;
-  auth: ReturnType<typeof authReducer>;
+  ings: IingredientReducerState;
+  cData: IContactDataReducerState;
+  ords: IordersReducerState;
+  auth: IauthReducerState;
 }
 
-export const [store, kjkjj,] = configureStore({
+export const [store, kjkjj,] = configureStore<IStore>({
   reducer: {
     ings: ingredientReducer,
     cData: contactDataReducer,
