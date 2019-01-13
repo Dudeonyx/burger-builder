@@ -9,13 +9,7 @@ import {
   ordersReducer,
   ingredientReducer,
 } from './reducers/';
-
-export interface IStore {
-  ings: ReturnType<typeof ingredientReducer>;
-  cData: ReturnType<typeof contactDataReducer>;
-  ords: ReturnType<typeof ordersReducer>;
-  auth: ReturnType<typeof authReducer>;
-}
+import { Action } from 'redux';
 
 const logger = (myStore: { getState: () => any }) => {
   return (next: (arg0: AnyAction) => any) => {
@@ -31,8 +25,14 @@ const logger = (myStore: { getState: () => any }) => {
     };
   };
 };
+export interface IStore {
+  ings: ReturnType<typeof ingredientReducer>;
+  cData: ReturnType<typeof contactDataReducer>;
+  ords: ReturnType<typeof ordersReducer>;
+  auth: ReturnType<typeof authReducer>;
+}
 
-export const [store,] = configureStore<IStore>({
+export const [store, kjkjj,] = configureStore({
   reducer: {
     ings: ingredientReducer,
     cData: contactDataReducer,
