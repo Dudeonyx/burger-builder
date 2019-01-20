@@ -4,13 +4,13 @@ import { Iingredients } from '../../../types/ingredients';
 import styled from '@emotion/styled/macro';
 
 const jsxArrayFromObject = <R extends string, O extends { [x in R]?: number }>(
-  GivenComponent: ComponentType<{ type: R }>,
+  GivenComponent: ComponentType<{ className: R }>,
   inputObject: O,
-): Array<ReactElement<{ type: R }>> => {
+): Array<ReactElement<{ className: R }>> => {
   return (Object.entries(inputObject) as Array<[R, number]>)
     .map(([igKey, igVal,]) => {
       return [...Array(igVal),].map((_, i) => {
-        return <GivenComponent {...{ type: igKey }} key={igKey + (i + 1)} />;
+        return <GivenComponent className={igKey} key={igKey + (i + 1)} />;
       });
     })
     .reduce((arr, subArr) => [...arr, ...subArr,], []);
@@ -69,9 +69,12 @@ const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
   }
   return (
     <StyledBurgerDisplay>
-      <BurgerIngredient type="bread-top" />
+      <BurgerIngredient className="bread-top">
+        <div className="seeds1" />
+        <div className="seeds2" />
+      </BurgerIngredient>
       {allIngredients}
-      <BurgerIngredient type="bread-bottom" />
+      <BurgerIngredient className="bread-bottom" />
     </StyledBurgerDisplay>
   );
 };

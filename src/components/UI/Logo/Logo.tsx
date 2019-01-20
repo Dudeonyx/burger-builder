@@ -43,11 +43,7 @@ export interface ILogoProps {
 /** Site Logo
  * @implements {ILogoProps}
  */
-const Logo: FunctionComponent<ILogoProps> = ({
-  link,
-  height = '',
-  HQ = false,
-}) =>
+const Logo: FunctionComponent<ILogoProps> = ({ link, height, HQ = false }) =>
   HQ ? (
     <Suspense
       fallback={

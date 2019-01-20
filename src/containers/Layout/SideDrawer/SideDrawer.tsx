@@ -46,7 +46,7 @@ const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
     <>
       <Backdrop show={open} hider={hider} />
       <StyledSideDrawer open={open} onClick={hider}>
-        <Logo height="11%" link="##" HQ={true} />
+        <Logo height="11%" link="/" HQ={true} />
         <nav>
           <NavigationItems isAuth={isAuth} />
         </nav>

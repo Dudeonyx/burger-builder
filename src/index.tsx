@@ -1,17 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import App from './containers/App/App';
 import './index.css';
 import './normalize.css';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { checkPriorAuth } from './store/actions';
+
+store.dispatch(checkPriorAuth());
 
 const app = (
   <Provider store={store}>
     <Router basename="/burger-builder">
-      <App />
+      <Route component={App} />
     </Router>
   </Provider>
 );

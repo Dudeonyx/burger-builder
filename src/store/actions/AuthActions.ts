@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import axios from 'axios';
 import { IAuthResponse, authActions } from '../reducers/';
 import { API_KEY } from '../../shared/';
+import { ThunkDispatch } from 'redux-thunk';
 
 const {
   authLogout,
@@ -51,8 +52,6 @@ export const authenticate = (
       localStorage.setItem('localId', data.localId);
       dispatch(authSuccess(data));
       dispatch(authTimeout(expiresIn) as any);
-      // tslint:disable-next-line: no-console
-      // console.log(response);
     } catch (error) {
       dispatch(authFail(error));
       // tslint:disable-next-line: no-console
@@ -68,21 +67,23 @@ export const onAuthLogout = () => {
   return authLogout();
 };
 
-export const checkPriorAuth = () => (dispatch: Dispatch) => {
+export const checkPriorAuth = () => (
+  dispatch: ThunkDispatch<any, any, any>,
+) => {
   const idToken = localStorage.getItem('idToken');
   if (!idToken) {
-    dispatch(authLogout());
+    dispatch(onAuthLogout());
   } else {
     const expiry = localStorage.getItem('expiryDate');
     const expiryDate = new Date(expiry != null ? expiry : '');
     const localId = localStorage.getItem('localId');
     if (expiryDate > new Date() && localId != null) {
       dispatch(authSuccess({ idToken, localId }));
-      dispatch(authTimeout(
-        (expiryDate.getTime() - new Date().getTime()) / 1000,
-      ) as any);
+      dispatch(
+        authTimeout((expiryDate.getTime() - new Date().getTime()) / 1000),
+      );
     } else {
-      dispatch(authLogout());
+      dispatch(onAuthLogout());
     }
   }
 };
