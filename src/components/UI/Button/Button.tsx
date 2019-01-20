@@ -3,7 +3,39 @@ import React, {
   ButtonHTMLAttributes,
   ReactNode,
 } from 'react';
-import styles from './Button.module.css';
+import styled from '@emotion/styled/macro';
+
+const StyledButton = styled.button`
+  & {
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+  }
+
+  &:first-of-type {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  &.Success {
+    color: #5c9210;
+  }
+
+  &.Danger {
+    color: #944317;
+  }
+
+  &:disabled {
+    color: darkgray;
+    cursor: not-allowed;
+  }
+`;
 
 /** @export
  * @interface IButtonProps
@@ -21,6 +53,12 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    */
   btnType?: 'Danger' | 'Success' | '';
 
+  /**
+   * Same as default button `type` prop
+   *
+   * @type {('submit' | 'reset' | 'button')}
+   * @memberof IButtonProps
+   */
   type?: 'submit' | 'reset' | 'button';
 
   /**@type {MouseEventHandler}
@@ -35,15 +73,13 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * @export
  */
 const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
-  ({ children, className, btnType = '', ...rest }, ref) => {
+  ({ className, btnType = '', ...rest }, ref) => {
     return (
-      <button
-        className={[className, styles.Button, styles[btnType],].join(' ')}
+      <StyledButton
+        className={[className, btnType,].join(' ')}
         {...rest}
         ref={ref}
-      >
-        {children}
-      </button>
+      />
     );
   },
 );

@@ -1,32 +1,66 @@
 import React, { ComponentType, FunctionComponent, ReactElement } from 'react';
 import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
-import styles from './BurgerDisplay.module.css';
 import { Iingredients } from '../../../types/ingredients';
+import styled from '@emotion/styled/macro';
 
-export const jsxArrayFromObject = <
-  R extends string,
-  O extends { [x in R]?: number }
->(
+const jsxArrayFromObject = <R extends string, O extends { [x in R]?: number }>(
   GivenComponent: ComponentType<{ type: R }>,
   inputObject: O,
 ): Array<ReactElement<{ type: R }>> => {
-  const useable = (Object.entries(inputObject) as Array<[R, number]>)
+  return (Object.entries(inputObject) as Array<[R, number]>)
     .map(([igKey, igVal,]) => {
       return [...Array(igVal),].map((_, i) => {
-        // const myprops: P = {} as P;
-        //  myprops[propName] = igKey as unknown as P[keyof P];
-        // // };
         return <GivenComponent {...{ type: igKey }} key={igKey + (i + 1)} />;
       });
     })
     .reduce((arr, subArr) => [...arr, ...subArr,], []);
-
-  return useable;
 };
+
+const StyledBurgerDisplay = styled.div`
+  & {
+    height: 250px;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: auto;
+    overflow: auto;
+    text-align: center;
+  }
+
+  @media (min-width: 360px) and (min-height: 400px) {
+    & {
+      height: 310px;
+      width: 350px;
+    }
+  }
+
+  @media (min-width: 500px) and (min-height: 401px) {
+    & {
+      height: 310px;
+      width: 330px;
+    }
+  }
+  @media (min-width: 500px) and (max-height: 400px) {
+    & {
+      height: 310px;
+      width: 350px;
+    }
+  }
+  @media (min-width: 1000px) and (min-height: 600px) {
+    & {
+      height: 400px;
+      width: 420px;
+    }
+  }
+  @media (min-width: 700px) and (min-height: 900px) {
+    & {
+      height: 700px;
+      width: 680px;
+    }
+  }
+`;
 export interface IburgerDisplay {
   ingredients: Iingredients;
-  // ingredients: {Iingredients: any};
-  // ingredients: any;
 }
 const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
   let allIngredients = jsxArrayFromObject(BurgerIngredient, props.ingredients);
@@ -34,11 +68,11 @@ const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
     allIngredients = <p>Please start adding ingredients</p> as any;
   }
   return (
-    <div className={styles.Burger}>
+    <StyledBurgerDisplay>
       <BurgerIngredient type="bread-top" />
       {allIngredients}
       <BurgerIngredient type="bread-bottom" />
-    </div>
+    </StyledBurgerDisplay>
   );
 };
 

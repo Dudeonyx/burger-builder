@@ -11,7 +11,7 @@ const {
   setAuthRedirectUrl,
 } = authActions;
 
-export { setAuthRedirectUrl, authLogout };
+export { setAuthRedirectUrl };
 
 const authTimeout = (expiresIn: string | number) => {
   return (dispatch: Dispatch) => {
@@ -59,6 +59,13 @@ export const authenticate = (
       console.error('[authenticate Action Error]', error);
     }
   };
+};
+
+export const onAuthLogout = () => {
+  localStorage.removeItem('expiryDate');
+  localStorage.removeItem('idToken');
+  localStorage.removeItem('localId');
+  return authLogout();
 };
 
 export const checkPriorAuth = () => (dispatch: Dispatch) => {

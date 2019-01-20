@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import { authLogout } from '../../../store/actions';
+import { onAuthLogout } from '../../../store/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../../store/types';
 
@@ -10,7 +10,7 @@ const Logout: React.SFC<LogoutProps> = ({ onLogout }) => {
 };
 
 const mapLogoutDispatchToProps = {
-  onLogout: authLogout,
+  onLogout: onAuthLogout,
 };
 
 const connectLogout = connect(

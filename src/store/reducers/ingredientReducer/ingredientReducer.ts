@@ -21,18 +21,30 @@ export const {
   reducer: ingredientReducer,
   actions: ingredientActions,
   selectors: ingredientSelectors,
-} = createSlice<IngredientActions, IingredientReducerState, IStore>({
+} = createSlice({
   cases: {
-    increaseIngredient: (state, igkey) => {
+    increaseIngredient: (
+      state,
+      igkey: IngredientActions['increaseIngredient'],
+    ) => {
       incrementKeyInObj(state.ingredients, igkey);
     },
-    decreaseIngredient: (state, igkey) => {
+    decreaseIngredient: (
+      state,
+      igkey: IngredientActions['decreaseIngredient'],
+    ) => {
       decrementKeyInObj(state.ingredients, igkey);
     },
-    setIngredients: (state, ingredients) => {
+    setIngredients: (
+      state,
+      ingredients: IngredientActions['setIngredients'],
+    ) => {
       setIngredientsDraft(state, ingredients);
     },
-    setIngredientsError: (state, error) => {
+    setIngredientsError: (
+      state,
+      error: IngredientActions['setIngredientsError'],
+    ) => {
       state.error = error;
     },
   },

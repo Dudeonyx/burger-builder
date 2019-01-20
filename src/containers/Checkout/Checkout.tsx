@@ -45,7 +45,7 @@ class Checkout extends Component<ICheckoutProps, ICheckoutState> {
   }
 
   private checkoutCancel = () => {
-    this.props.history.goBack();
+    this.props.history.push('/');
   };
   private checkoutContinue = () => {
     setTimeout(

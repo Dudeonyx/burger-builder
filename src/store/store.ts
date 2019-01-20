@@ -35,14 +35,13 @@ export interface IStore {
   auth: IauthReducerState;
 }
 
-export const [store, kjkjj,] = configureStore<IStore>({
+export const store = configureStore<IStore>({
   reducer: {
     ings: ingredientReducer,
     cData: contactDataReducer,
     ords: ordersReducer,
     auth: authReducer,
   },
-  middleware: [...getDefaultMiddleware(),],
 });
 
 export default store;

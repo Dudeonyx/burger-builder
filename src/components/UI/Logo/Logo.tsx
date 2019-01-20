@@ -3,7 +3,24 @@ import { Link } from 'react-router-dom';
 import { Img } from 'the-platform/Img';
 import logolow from '../../../assets/images/26.1 burger-logo.png';
 import logo from './../../../assets/images/26.1 burger-logo.png.png';
-import styles from './Logo.module.css';
+import styled from '@emotion/styled/macro';
+
+const StyledLogo = styled(Link)`
+  & {
+    height: ${({ height }: { height?: string }) => (height ? height : '90%')};
+    padding: 1px;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: bisque;
+    border-radius: 5px;
+  }
+  & img {
+    height: 80%;
+  }
+`;
 
 /** @export
  * @interface ILogoProps
@@ -34,19 +51,19 @@ const Logo: FunctionComponent<ILogoProps> = ({
   HQ ? (
     <Suspense
       fallback={
-        <Link to={link} className={styles.Logo} style={{ height }}>
+        <StyledLogo to={link} height={height}>
           <img src={logolow} alt="A Burger Logo" />
-        </Link>
+        </StyledLogo>
       }
     >
-      <Link to={link} className={styles.Logo} style={{ height }}>
+      <StyledLogo to={link} height={height}>
         <Img src={logo} alt="A Burger Logo" />
-      </Link>
+      </StyledLogo>
     </Suspense>
   ) : (
-    <Link to={link} className={styles.Logo} style={{ height }}>
+    <StyledLogo to={link} height={height}>
       <img src={logolow} alt="A Burger Logo" />
-    </Link>
+    </StyledLogo>
   );
 
 export default Logo;
