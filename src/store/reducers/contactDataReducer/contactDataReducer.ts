@@ -9,7 +9,7 @@ const initialState: IContactDataReducerState = {
   orders: {},
 };
 
-interface CDataActions {
+interface ICDataActions {
   burgerOrderSuccessful: {
     name: string;
     order: IDbOrder;
@@ -22,7 +22,7 @@ export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
   selectors: cDataSelectors,
-} = createSlice<CDataActions, IContactDataReducerState, IStore>({
+} = createSlice<ICDataActions, IContactDataReducerState, 'cData'>({
   slice: 'cData',
   cases: {
     burgerOrderSuccessful: (state, payload) => {

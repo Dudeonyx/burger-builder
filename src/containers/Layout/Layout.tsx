@@ -1,10 +1,6 @@
 import React, { lazy, PureComponent, Suspense } from 'react';
 import Toolbar from './Toolbar/Toolbar';
-import styles from './Layout.module.css';
-import {
-  selectAuthIdToken,
-  getAuthenticated,
-} from '../../store/selectors/selectors';
+import { getAuthenticated } from '../../store/selectors/selectors';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../store/types';
 import { IStore } from '../../store/store';
@@ -66,7 +62,7 @@ class Layout extends PureComponent<LayoutProps, ILayoutState> {
             hider={this.hideSideDrawerHandler}
           />
         </Suspense>
-        <main className={styles.Main}>{this.props.children}</main>
+        <main style={{ margin: '2px 10px 10px' }}>{this.props.children}</main>
       </>
     );
   }
@@ -78,10 +74,7 @@ const mapLayoutStateToProps = (state: IStore) => {
   };
 };
 
-const connectLayout = connect(
-  mapLayoutStateToProps,
-  {},
-);
+const connectLayout = connect(mapLayoutStateToProps);
 
 type LayoutProps = GetConnectProps<typeof connectLayout>;
 

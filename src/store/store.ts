@@ -1,18 +1,15 @@
-import {
-  configureStore,
-  getDefaultMiddleware,
-  AnyAction,
-} from '@redux-ts-starter-kit/core';
+import { configureStore } from '@redux-ts-starter-kit/core';
 import {
   contactDataReducer,
   authReducer,
   ordersReducer,
   ingredientReducer,
-  IauthReducerState,
+  IAuthReducerState,
   IordersReducerState,
   IContactDataReducerState,
   IingredientReducerState,
 } from './reducers/';
+import { AnyAction } from 'redux';
 
 const logger = (myStore: { getState: () => any }) => {
   return (next: (arg0: AnyAction) => any) => {
@@ -32,7 +29,7 @@ export interface IStore {
   ings: IingredientReducerState;
   cData: IContactDataReducerState;
   ords: IordersReducerState;
-  auth: IauthReducerState;
+  auth: IAuthReducerState;
 }
 
 export const store = configureStore<IStore>({

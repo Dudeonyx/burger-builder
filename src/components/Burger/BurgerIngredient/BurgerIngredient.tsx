@@ -1,5 +1,8 @@
-import { IBurgerIngredientProps } from './types';
 import styled from '@emotion/styled/macro';
+import { IingredientsKeys } from '../../../types/ingredients';
+export interface IBurgerIngredientProps {
+  className: 'bread-bottom' | 'bread-top' | IingredientsKeys;
+}
 
 const BurgerIngredient = styled.div`
   ${(props: IBurgerIngredientProps) => null}

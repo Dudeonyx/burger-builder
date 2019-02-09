@@ -14,7 +14,7 @@ interface IOrdersActions {
   setOrdersLoading: never;
 }
 
-const ordersRobodux = createSlice<IOrdersActions, IOrdersReducerState, IStore>({
+const ordersRobodux = createSlice<IOrdersActions, IOrdersReducerState, 'ords'>({
   slice: 'ords',
   initialState,
   cases: {

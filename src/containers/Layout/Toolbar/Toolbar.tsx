@@ -6,13 +6,33 @@ import React, {
 } from 'react';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from './DrawerToggle/DrawerToggle';
-import styles from './Toolbar.module.css';
 import Logo from '../../../components/UI/Logo/Logo';
+import styled from '@emotion/styled/macro';
 
-// const Logo = lazy(() =>
-//   import(/* webpackChunkName: "Logo" */ '../../../components/UI/Logo/Logo')
-// );
+const StyledToolbar = styled.header`
+  & {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px;
+    background-color: chocolate;
+    color: whitesmoke;
+    height: 3em;
+  }
 
+  & > nav {
+    height: 100%;
+  }
+
+  @media (max-width: 499px) {
+    .DesktopOnly {
+      display: none;
+    }
+  }
+`;
 export interface IToolbarProps {
   drawerToggler: MouseEventHandler;
   isAuth: boolean;
@@ -22,13 +42,13 @@ const Toolbar: FunctionComponent<IToolbarProps> = ({
   isAuth,
 }) => {
   return (
-    <header className={styles.Toolbar}>
+    <StyledToolbar>
       <DrawerToggle clicked={drawerToggler} />
       <Logo link="/" HQ={true} />
-      <nav className={styles.DesktopOnly}>
+      <nav className="DesktopOnly">
         <NavigationItems isAuth={isAuth} />
       </nav>
-    </header>
+    </StyledToolbar>
   );
 };
 

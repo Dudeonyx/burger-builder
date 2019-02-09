@@ -23,28 +23,16 @@ export const {
   selectors: ingredientSelectors,
 } = createSlice({
   cases: {
-    increaseIngredient: (
-      state,
-      igkey: IngredientActions['increaseIngredient'],
-    ) => {
+    increaseIngredient: (state, igkey: IngredientActions['increaseIngredient']) => {
       incrementKeyInObj(state.ingredients, igkey);
     },
-    decreaseIngredient: (
-      state,
-      igkey: IngredientActions['decreaseIngredient'],
-    ) => {
+    decreaseIngredient: (state, igkey: IngredientActions['decreaseIngredient']) => {
       decrementKeyInObj(state.ingredients, igkey);
     },
-    setIngredients: (
-      state,
-      ingredients: IngredientActions['setIngredients'],
-    ) => {
+    setIngredients: (state, ingredients: IngredientActions['setIngredients']) => {
       setIngredientsDraft(state, ingredients);
     },
-    setIngredientsError: (
-      state,
-      error: IngredientActions['setIngredientsError'],
-    ) => {
+    setIngredientsError: (state, error: IngredientActions['setIngredientsError']) => {
       state.error = error;
     },
   },

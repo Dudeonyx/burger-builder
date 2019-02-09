@@ -8,7 +8,7 @@ export interface IAuthResponse {
   refreshToken: string;
   expiresIn: string;
 }
-export interface IauthReducerState {
+export interface IAuthReducerState {
   authenticating: boolean;
   error: Error & { [x: string]: any } | null;
   displayName: string | null;

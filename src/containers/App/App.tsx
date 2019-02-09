@@ -1,4 +1,4 @@
-import React, { lazy, Component } from 'react';
+import React, { lazy, Component, SFC } from 'react';
 import { Route, Switch, RouteComponentProps, Redirect } from 'react-router-dom';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
@@ -16,12 +16,8 @@ import { connect } from 'react-redux';
 import { GetConnectProps } from '../../store/types';
 import { getAuthenticated } from '../../store/selectors/selectors';
 import { IStore } from '../../store/store';
-const Orders = lazy(() =>
-  import(/* webpackChunkName: "Orders" */ '../Orders/Orders'),
-);
-const Checkout = lazy(() =>
-  import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'),
-);
+const Orders = lazy(() => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'));
+const Checkout = lazy(() => import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'));
 const BurgerBuilder = lazy(() =>
   import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
@@ -30,38 +26,32 @@ const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
 
-class App extends Component<AppProps> {
-  // public componentDidMount = () => {
-  //   this.props.checkPriorAuth();
-  // };
-
-  public render() {
-    const protectedRoutes = this.props.isAuth ? (
-      <Switch>
-        <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
-        <Route path="/logout" exact={false} component={Logout} />
-        <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
-        <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
-        {/* <Redirect from="/login" to="/" /> */}
-        <Route component={$404} />
-      </Switch>
-    ) : (
-      <Switch>
-        <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
-        <Route path="/login" exact={true} component={Auth} />
-        <Redirect from="/all-orders" to="/" />
-        <Redirect from="/checkout" to="/" />
-        <Redirect from="/logout" to="/" />
-        <Route component={$404} />
-      </Switch>
-    );
-    return (
-      <Layout>
-        <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
-      </Layout>
-    );
-  }
-}
+const App: SFC<AppProps> = props => {
+  const protectedRoutes = props.isAuth ? (
+    <Switch>
+      <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+      <Route path="/logout" exact={false} component={Logout} />
+      <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
+      <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
+      {/* <Redirect from="/login" to="/" /> */}
+      <Route component={$404} />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+      <Route path="/login" exact={true} component={Auth} />
+      <Redirect from="/all-orders" to="/" />
+      <Redirect from="/checkout" to="/" />
+      <Redirect from="/logout" to="/" />
+      <Route component={$404} />
+    </Switch>
+  );
+  return (
+    <Layout>
+      <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
+    </Layout>
+  );
+};
 
 const mapAppStateToProps = (state: IStore) => ({
   isAuth: getAuthenticated(state),
