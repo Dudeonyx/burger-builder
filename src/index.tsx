@@ -9,9 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { checkPriorAuth } from './store/actions';
 
-React;
-
-// store.dispatch(checkPriorAuth());
+store.dispatch(checkPriorAuth());
 
 const app = (
   <Provider store={store}>
