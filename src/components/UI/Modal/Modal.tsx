@@ -29,7 +29,6 @@ const StyledModal = styled.div`
   text-align: center;
   padding: 20px;
   max-height: 99vh;
-  background-color: #ddd66c;
   border-radius: 10px;
   top: 50%;
   left: 50%;
@@ -59,23 +58,14 @@ const Modal: FunctionComponent<IModalProps> = ({
   children,
   show = false,
   hider,
-  bgColor,
+  bgColor = '#ddd66c',
   zIndex,
   minWidth,
 }) => {
   return (
     <>
-      <Backdrop
-        show={show}
-        hider={hider}
-        zIndex={zIndex ? zIndex - 100 : undefined}
-      />
-      <StyledModal
-        show={show}
-        bgColor={bgColor}
-        minWidth={minWidth}
-        zIndex={zIndex}
-      >
+      <Backdrop show={show} hider={hider} zIndex={zIndex ? zIndex - 100 : undefined} />
+      <StyledModal show={show} bgColor={bgColor} minWidth={minWidth} zIndex={zIndex}>
         {children}
       </StyledModal>
     </>

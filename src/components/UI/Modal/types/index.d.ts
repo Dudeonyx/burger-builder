@@ -22,4 +22,5 @@ export interface IModalProps extends IStyledModal {
    * @default "() => {}"
    */
   hider: MouseEventHandler;
+  children?: React.ReactNode;
 }

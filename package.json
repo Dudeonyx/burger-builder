@@ -54,8 +54,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-syntax-jsx": "^7.0.0",
     "@storybook/addon-actions": "^4.1.4",
     "@storybook/addon-info": "^4.1.4",
     "@storybook/addon-links": "^4.1.4",
@@ -72,13 +70,8 @@
     "@types/storybook__addon-links": "^3.3.3",
     "@types/storybook__react": "^4.0.0",
     "@types/styled-components": "^4.1.2",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.4",
-    "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "gh-pages": "^2.0.1",
     "prettier-tslint": "^0.4.0",
-    "react-docgen-typescript-loader": "^3.0.0",
-    "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "redux-devtools-extension": "^2.13.7",
     "stylelint": "9.9.0",
     "stylelint-config-recommended": "^2.1.0",
