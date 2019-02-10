@@ -46,11 +46,12 @@ const App: SFC<AppProps> = props => {
       <Route component={$404} />
     </Switch>
   );
-  return (
+  return <div>HHHHHHHHHH</div>;
+  /* (;
     <Layout>
       <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
     </Layout>
-  );
+  ); */
 };
 
 const mapAppStateToProps = (state: IStore) => ({
@@ -61,6 +62,6 @@ const mapAppStateToProps = (state: IStore) => ({
 //   checkPriorAuth,
 // };
 const connectApp = connect(mapAppStateToProps);
-type AppProps = GetConnectProps<typeof connectApp> & RouteComponentProps;
+interface AppProps { isAuth: boolean } /* GetConnectProps<typeof connectApp> & RouteComponentProps; */
 
-export default connectApp(App);
+export default App;
