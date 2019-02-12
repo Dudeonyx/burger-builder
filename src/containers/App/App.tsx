@@ -1,13 +1,13 @@
-import React, { lazy, Component, SFC } from 'react';
+import React, { lazy, FC } from 'react';
 import { Route, Switch, RouteComponentProps, Redirect } from 'react-router-dom';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
 import { suspenseNode2 } from '../../HOCs/suspensed';
-import * as L from '../../components/UI/Loader/Loader';
-import * as ax from '../../axios-orders';
-import * as wE from '../../HOCs/withErrorHandler';
-import * as Btn from '../../components/UI/Button/Button';
-import * as M from '../../components/UI/Modal/Modal';
+import '../../components/UI/Loader/Loader';
+import '../../axios-orders';
+import '../../HOCs/withErrorHandler';
+import '../../components/UI/Button/Button';
+import '../../components/UI/Modal/Modal';
 import 'regenerator-runtime';
 import Auth from '../Auth/Auth';
 import Logout from '../Auth/Logout/Logout';
@@ -26,7 +26,7 @@ const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
 
-const App: SFC<AppProps> = props => {
+const App: FC<AppProps> = props => {
   const protectedRoutes = props.isAuth ? (
     <Switch>
       <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
@@ -46,12 +46,11 @@ const App: SFC<AppProps> = props => {
       <Route component={$404} />
     </Switch>
   );
-  return <div>HHHHHHHHHH</div>;
-  /* (;
+  return (
     <Layout>
       <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
     </Layout>
-  ); */
+  );
 };
 
 const mapAppStateToProps = (state: IStore) => ({
@@ -62,6 +61,6 @@ const mapAppStateToProps = (state: IStore) => ({
 //   checkPriorAuth,
 // };
 const connectApp = connect(mapAppStateToProps);
-interface AppProps { isAuth: boolean } /* GetConnectProps<typeof connectApp> & RouteComponentProps; */
+type AppProps = GetConnectProps<typeof connectApp> & RouteComponentProps;
 
-export default App;
+export default connectApp(App);

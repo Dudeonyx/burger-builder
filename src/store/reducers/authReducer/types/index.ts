@@ -1,18 +1,18 @@
 export interface IAuthResponse {
-  kind: string;
-  localId: string;
-  idToken: string;
-  email: string;
-  displayName: string;
-  registered: true;
-  refreshToken: string;
-  expiresIn: string;
+  readonly kind: string;
+  readonly localId: string;
+  readonly idToken: string;
+  readonly email: string;
+  readonly displayName: string;
+  readonly registered: true;
+  readonly refreshToken: string;
+  readonly expiresIn: string;
 }
 export interface IAuthReducerState {
-  authenticating: boolean;
-  error: Error & { [x: string]: any } | null;
-  displayName: string | null;
-  idToken: string | null;
-  userId: string | null;
-  authRedirectUrl: string;
+  readonly authenticating: boolean;
+  readonly error: Error & { [x: string]: any } | null;
+  readonly displayName: string | null;
+  readonly idToken: string | null;
+  readonly userId: string | null;
+  readonly authRedirectUrl: string;
 }

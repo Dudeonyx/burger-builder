@@ -1,7 +1,7 @@
 import { IDbOrders } from '../../ordersReducer/types';
 
 export interface IContactDataReducerState {
-  error: Error | false;
-  submitting: boolean;
-  orders: IDbOrders;
+  readonly error: Error | false;
+  readonly submitting: boolean;
+  readonly orders: IDbOrders;
 }

@@ -1,4 +1,4 @@
-// import styled from 'styled-components/macro';
+// import styled from 'styled-components';
 import React, { MouseEvent, Component, ChangeEvent } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';

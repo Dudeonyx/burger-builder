@@ -1,37 +1,38 @@
 import { Iingredients } from '../../../../types/ingredients';
 
 export interface IDbOrder {
-  basicInfo: {
-    name: string;
-    phone: string;
-    email: string;
+  readonly basicInfo: {
+    readonly name: string;
+    readonly phone: string;
+    readonly email: string;
   };
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
+  readonly address: {
+    readonly street: string;
+    readonly city: string;
+    readonly state: string;
+    readonly country: string;
   };
-  deliveryMethod: string;
-  userId: string;
-  ingredients: Iingredients;
-  date: string;
-  price: string;
+  readonly deliveryMethod: string;
+  readonly userId: string;
+  readonly ingredients: Iingredients;
+  readonly date: string;
+  readonly price: string;
 }
 export interface IDbOrders {
-  [x: string]: IDbOrder;
+  readonly [x: string]: IDbOrder;
 }
 export interface IformattedOrder {
-  id: string;
-  ingredients: Iingredients;
-  name: string;
-  totalPrice: string;
+  readonly id: string;
+  readonly ingredients: Iingredients;
+  readonly name: string;
+  readonly totalPrice: string;
 }
+// tslint:disable-next-line: interface-name
 interface ExtendedError extends Error {
   [x: string]: any;
 }
 export interface IordersReducerState {
-  orders: IDbOrders | null;
-  loading: boolean;
-  error: ExtendedError | null;
+  readonly orders: IDbOrders | null;
+  readonly loading: boolean;
+  readonly error: ExtendedError | null;
 }

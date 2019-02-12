@@ -1,9 +1,6 @@
 import styled from '@emotion/styled/macro';
 
 const Loader = styled.div`
-  & {
-    content: "Loading...";
-  }
   &,
   &:after {
     border-radius: 50%;
@@ -11,6 +8,7 @@ const Loader = styled.div`
     height: 10em;
   }
   & {
+    content: 'Loading...';
     margin: 60px auto;
     font-size: 10px;
     position: relative;
