@@ -4,14 +4,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import App from './containers/App/App';
 import './index.css';
-// import './normalize.css';
+import './normalize.css';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { checkPriorAuth } from './store/actions';
 
-// (window as any).React = React;
-React;
+(window as any).React = React;
 store.dispatch(checkPriorAuth());
 
 const app = (

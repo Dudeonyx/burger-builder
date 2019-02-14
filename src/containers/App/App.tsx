@@ -33,7 +33,7 @@ const App: FC<AppProps> = props => {
       <Route path="/logout" exact={false} component={Logout} />
       <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
       <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
-      {/* <Redirect from="/login" to="/" /> */}
+      <Route path="/login" exact={true} component={Auth} />
       <Route component={$404} />
     </Switch>
   ) : (

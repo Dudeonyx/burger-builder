@@ -4,13 +4,7 @@ import { IAuthResponse, authActions } from '../reducers/';
 import { API_KEY } from '../../shared/';
 import { ThunkDispatch } from 'redux-thunk';
 
-const {
-  authLogout,
-  authStart,
-  authSuccess,
-  authFail,
-  setAuthRedirectUrl,
-} = authActions;
+const { authLogout, authStart, authSuccess, authFail, setAuthRedirectUrl } = authActions;
 
 export { setAuthRedirectUrl };
 
@@ -22,15 +16,10 @@ const authTimeout = (expiresIn: string | number) => {
   };
 };
 
-const baseAuthUrl =
-  'https://www.googleapis.com/identitytoolkit/v3/relyingparty/';
+const baseAuthUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/';
 const loginPath = 'verifyPassword?key=';
 const signUpPath = 'signupNewUser?key=';
-export const authenticate = (
-  email: string,
-  password: string,
-  isSignup: boolean,
-) => {
+export const authenticate = (email: string, password: string, isSignup: boolean) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(authStart());
@@ -39,9 +28,7 @@ export const authenticate = (
         password,
         returnSecureToken: true,
       };
-      const url = `${baseAuthUrl}${
-        isSignup ? signUpPath : loginPath
-      }${API_KEY}`;
+      const url = `${baseAuthUrl}${isSignup ? signUpPath : loginPath}${API_KEY}`;
       const response = await axios.post<IAuthResponse>(url, authData);
       const { data } = response;
       const { expiresIn } = data;
@@ -67,9 +54,7 @@ export const onAuthLogout = () => {
   return authLogout();
 };
 
-export const checkPriorAuth = () => (
-  dispatch: ThunkDispatch<any, any, any>,
-) => {
+export const checkPriorAuth = () => (dispatch: ThunkDispatch<any, any, any>) => {
   const idToken = localStorage.getItem('idToken');
   if (!idToken) {
     dispatch(onAuthLogout());
@@ -79,9 +64,7 @@ export const checkPriorAuth = () => (
     const localId = localStorage.getItem('localId');
     if (expiryDate > new Date() && localId != null) {
       dispatch(authSuccess({ idToken, localId }));
-      dispatch(
-        authTimeout((expiryDate.getTime() - new Date().getTime()) / 1000),
-      );
+      dispatch(authTimeout((expiryDate.getTime() - new Date().getTime()) / 1000));
     } else {
       dispatch(onAuthLogout());
     }

@@ -15,11 +15,11 @@
     "immer": "^2.0.0",
     "primeicons": "^1.0.0",
     "primereact": "^3.0.0-beta.1",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
+    "react": "16.8.2",
+    "react-dom": "16.8.2",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.4",
+    "react-scripts": "^2.1.5",
     "react-test-renderer": "^16.7.0",
     "styled-components": "^4.1.3"
   },
@@ -37,15 +37,6 @@
     "lint_fix": "tslint --fix --force \"src/**/*.ts?(x)\"",
     "typecheck": "tsc",
     "analyzePrevious": "webpack-bundle-analyzer build/bundle-stats.json"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "space-in-parens": [
-        "warn",
-        "always"
-      ]
-    }
   },
   "browserslist": [
     ">0.2%",
@@ -70,6 +61,10 @@
     "@types/storybook__addon-links": "^3.3.3",
     "@types/storybook__react": "^4.0.0",
     "@types/styled-components": "^4.1.2",
+    "@typescript-eslint/eslint-plugin": "^1.3.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^1.3.0",
+    "@typescript-eslint/parser": "^1.3.0",
+    "eslint-plugin-react-hooks": "^1.0.1",
     "gh-pages": "^2.0.1",
     "prettier-tslint": "^0.4.0",
     "redux-devtools-extension": "^2.13.7",
@@ -79,6 +74,7 @@
     "tslint": "^5.12.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
+    "tslint-react-hooks": "^1.1.0",
     "typescript": "^3.3.3",
     "typescript-styled-plugin": "^0.13.0",
     "webpack-bundle-analyzer": "^3.0.3"

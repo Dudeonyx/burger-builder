@@ -2,56 +2,54 @@ import { ChangeEventHandler } from 'react';
 // import PropTypes from 'prop-types';
 // import { Test } from './Input.styles';
 
-interface IInputSelectConfig {
-  readonly type: 'radio' | 'select';
+interface IInputConfigBase {
   readonly id: string;
   readonly name: string;
   readonly placeholder?: string;
-  value: string;
+  readonly value: string;
   readonly label: string;
   readonly dataSet?: 'basicInfo' | 'address' | 'deliveryMethod';
   validation: IInputRules;
-  options: Array<{
+}
+interface IInputSelectConfig extends IInputConfigBase {
+  readonly type: 'select';
+  options: ReadonlyArray<{
     readonly id: string;
     readonly label: string;
     readonly value: string;
-    checked: boolean;
+    readonly defaultChecked?: boolean;
+  }>;
+}
+interface IInputRadioConfig extends IInputConfigBase {
+  readonly type: 'radio';
+  options: ReadonlyArray<{
+    readonly id: string;
+    readonly label: string;
+    readonly value: string;
+    readonly checked: boolean;
     readonly defaultChecked?: boolean;
   }>;
 }
 
-interface IInputTextConfig {
-  readonly type:
-    | 'text'
-    | 'email'
-    | 'street-address'
-    | 'country-name'
-    | 'tel'
-    | 'password';
-  readonly id: string;
-  readonly name: string;
-  readonly placeholder?: string;
-  value: string;
-  readonly label: string;
-  readonly dataSet?: 'basicInfo' | 'address' | 'deliveryMethod';
-  validation: IInputRules;
+interface IInputTextConfig extends IInputConfigBase {
+  readonly type: 'text' | 'email' | 'street-address' | 'country-name' | 'tel' | 'password';
 }
-export type IInputConfig = IInputTextConfig | IInputSelectConfig;
+export type IInputConfig = IInputTextConfig | IInputSelectConfig | IInputRadioConfig;
 interface IBaseInputRules {
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-  valid: boolean;
-  touched: boolean;
+  readonly required?: boolean;
+  readonly minLength?: number;
+  readonly maxLength?: number;
+  readonly valid: boolean;
+  readonly touched: boolean;
 }
 
 interface IisEmail {
-  isEmail?: true;
-  isNumeric?: false;
+  readonly isEmail?: true;
+  readonly isNumeric?: false;
 }
 interface IisNumeric {
-  isEmail?: false;
-  isNumeric?: true;
+  readonly isEmail?: false;
+  readonly isNumeric?: true;
 }
 export type IInputRules = IBaseInputRules & (IisEmail | IisNumeric);
 

@@ -1,0 +1,22 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": false
+      },
+      "project": "./tsconfig.json"
+  },
+    "extends": ["react-app"],
+    "plugins": ["@typescript-eslint/tslint"],
+    "rules": {
+        "@typescript-eslint/tslint/config": ["warn", {
+          "lintFile": "./tslint.json"
+      }],
+        "space-in-parens": [
+        "warn",
+        "always"
+      ]
+    }
+  }

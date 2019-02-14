@@ -1,6 +1,6 @@
 import Button from '../../components/UI/Button/Button';
-import React, { Component, ChangeEvent, MouseEvent } from 'react';
-import { updateFormImmutably, mapToInputs } from '../../components/UI/Input/';
+import React, { ChangeEvent, MouseEvent, useState, useEffect, FC, useCallback } from 'react';
+import { mapToInputs, updateInputFieldImmutably } from '../../components/UI/Input/';
 import { authenticate } from '../../store/actions';
 import { connect } from 'react-redux';
 import { GetConnectProps, IStore } from '../../store/';
@@ -11,11 +11,13 @@ import {
   getAuthErrorMessage,
   getPurchaseableFromStore,
   selectAuthRedirectUrl,
+  getAuthenticated,
 } from '../../store/selectors/';
 import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
 import { setAuthRedirectUrl } from '../../store/actions';
 import { IInputConfig } from '../../components/UI/Input/types';
+import { useName, useEmail, usePassword, useForm } from '../../shared/CustomHooks';
 
 export interface IAuthState {
   authFormData: {
@@ -26,127 +28,68 @@ export interface IAuthState {
   isSignUp: boolean;
   readonly redirectUrl: string;
 }
+const Auth: FC<IAuthProps> = props => {
+  // const [name, setName,] = useName();
+  // const [email, setEmail,] = useEmail();
+  // const [password, setPassword,] = usePassword();
+  const [formState, setForm,] = useForm('email', 'password', 'name');
+  const [isSignUp, setIsSignup,] = useState(true);
+  const [redirectUrl,] = useState(props.redirectUrl);
+  // const [submitSuccess, setSubmitSuccess,] = useState(false);
+  const { email, name, password } = formState;
+  useEffect(() => {
+    props.setAuthRedirectUrl('/');
+  }, []);
 
-class Auth extends Component<IAuthProps, IAuthState> {
-  constructor(props: IAuthProps) {
-    super(props);
+  useEffect(() => {
+    // tslint:disable-next-line: no-unused-expression
+    props.isAuth && props.history.push(redirectUrl);
+  });
 
-    this.state = {
-      authFormData: {
-        name: {
-          value: '',
-          type: 'text',
-          placeholder: 'Your Name',
-          id: 'Auth_name_id',
-          name: 'name',
-          label: 'Name:',
-          validation: {
-            required: true,
-            valid: false,
-            touched: false,
-            minLength: 5,
-          },
-        },
-        email: {
-          value: '',
-          type: 'email',
-          placeholder: 'Your Email',
-          id: 'Auth_email_id',
-          name: 'email',
-          label: 'Email:',
-          validation: {
-            required: true,
-            valid: false,
-            touched: false,
-            minLength: 5,
-            isEmail: true,
-          },
-        },
-        password: {
-          value: '',
-          type: 'password',
-          placeholder: 'Password',
-          id: 'Auth_word_id',
-          name: 'password',
-          label: 'Password:',
-          validation: {
-            required: true,
-            valid: false,
-            touched: false,
-            minLength: 6,
-          },
-        },
-      },
-      isSignUp: true,
-      redirectUrl: this.props.redirectUrl,
-    };
-  }
-  public componentDidMount = () => {
-    this.props.setAuthRedirectUrl('/');
+  const authError = props.error ? <p className="error">{props.errorMessage}</p> : null;
+
+  const switchAuthModeHandler = () => {
+    setIsSignup(!isSignUp);
   };
-
-  private handleAuthFormChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newAuthFormData = updateFormImmutably(this.state.authFormData, e);
-    this.setState({ authFormData: newAuthFormData });
-  };
-
-  public render() {
-    const { email, password } = this.state.authFormData;
-    const authError = this.props.error ? (
-      <p className="error">{this.props.errorMessage}</p>
-    ) : null;
-
-    const form = this.props.authenticating ? (
-      <Loader />
-    ) : (
-      <>
-        {authError}
-        <p className="info">{this.state.isSignUp ? 'SIGNUP' : 'LOGIN'}</p>
-        <form>
-          {[email, password,].map(this.mapInputs)}
-          <Button btnType="Success" onClick={this.submitHandler}>
-            SUBMIT
-          </Button>
-        </form>
-        <Button btnType="Danger" onClick={this.switchAuthModeHandler}>
-          SWITCH TO {this.state.isSignUp ? 'LOGIN' : 'SIGNUP'}
-        </Button>
-      </>
-    );
-    return (
-      <StyledAuth>
-        <div>{form}</div>
-      </StyledAuth>
-    );
-  }
-  private switchAuthModeHandler = () => {
-    this.setState(prevState => ({ isSignUp: !prevState.isSignUp }));
-  };
-  private submitHandler = async (e: MouseEvent) => {
+  const submitHandler = async (e: MouseEvent) => {
     e.preventDefault();
-    await this.props.onAuth(
-      this.state.authFormData.email.value,
-      this.state.authFormData.password.value,
-      this.state.isSignUp,
-    );
-    if (this.props.error) {
-      return;
-    }
-
-    // this.props.purchasable ?
-    this.props.history.push(this.state.redirectUrl);
-    // : this.props.history.push('/');
+    props.onAuth(email.value, password.value, isSignUp);
+    // setSubmitSuccess(false);
   };
-  private mapInputs = mapToInputs(this.handleAuthFormChange);
-}
+  const mapInputs = useCallback(mapToInputs(setForm), []);
+
+  const form = props.authenticating ? (
+    <Loader />
+  ) : (
+    <>
+      {authError}
+      <p className="info">{isSignUp ? 'SIGNUP' : 'LOGIN'}</p>
+      <form>
+        {[email, password,].map(mapInputs)}
+        <Button btnType="Success" onClick={submitHandler}>
+          SUBMIT
+        </Button>
+      </form>
+      <Button btnType="Danger" onClick={switchAuthModeHandler}>
+        SWITCH TO {isSignUp ? 'LOGIN' : 'SIGNUP'}
+      </Button>
+    </>
+  );
+  return (
+    <StyledAuth>
+      <div>{form}</div>
+    </StyledAuth>
+  );
+};
 
 const mapAuthStateToProps = (state: IStore) => {
   return {
     authenticating: selectAuthAuthenticating(state),
     error: selectAuthError(state),
     errorMessage: getAuthErrorMessage(state),
-    purchasable: getPurchaseableFromStore(state),
+    // purchasable: getPurchaseableFromStore(state),
     redirectUrl: selectAuthRedirectUrl(state),
+    isAuth: getAuthenticated(state),
   };
 };
 const mapAuthDispatchToProps = {
