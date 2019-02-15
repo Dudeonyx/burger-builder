@@ -1,4 +1,4 @@
-import React, { lazy, FC, useCallback } from 'react';
+import React, { lazy, FC, useCallback, useContext } from 'react';
 import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import { connect } from 'react-redux';
@@ -16,13 +16,20 @@ import {
 import { suspenseNode2 } from '../../HOCs/suspensed';
 import { setAuthRedirectUrl, submitBurgerOrder } from '../../store/actions';
 import { IStore } from '../../store/store';
+import { IngredientsContext, AuthContext } from '../App/App';
 
 const ContactData = lazy(() =>
   import(/* webpackChunkName: "ContactData", webpackPrefetch: true */ './ContactData/ContactData'),
 );
 
 const SContactData = suspenseNode2(ContactData);
+
+
 const Checkout: FC<ICheckoutProps> = props => {
+
+  const {ingredients,totalPrice} = useContext(IngredientsContext)!;
+  const isAuth = useContext(AuthContext);
+
   const checkoutCancel = useCallback(() => {
     props.history.push('/');
   }, []);
@@ -33,7 +40,7 @@ const Checkout: FC<ICheckoutProps> = props => {
 
   return (
     <div>
-      {props.ingredients && props.isAuth ? (
+      {ingredients && isAuth ? (
         <>
           <Route
             path={props.match.path + '/contact-data'}
@@ -41,9 +48,9 @@ const Checkout: FC<ICheckoutProps> = props => {
               SContactData({
                 ...p,
                 ...{
-                  totalPrice: props.totalPrice,
+                  totalPrice,
                   submitting: props.submitting,
-                  ingredients: props.ingredients,
+                  ingredients,
                   token: props.token,
                   error: props.error,
                   userId: props.userId,
@@ -53,8 +60,8 @@ const Checkout: FC<ICheckoutProps> = props => {
             }
           />
           <CheckoutSummary
-            ingredients={props.ingredients}
-            totalCost={props.totalPrice}
+            ingredients={ingredients}
+            totalCost={totalPrice}
             checkoutCancel={checkoutCancel}
             checkoutContinue={checkoutContinue}
             purchasable={props.purchaseable}
@@ -68,10 +75,7 @@ const Checkout: FC<ICheckoutProps> = props => {
 };
 
 const mapCheckoutStateToProps = (state: IStore) => ({
-  ingredients: selectIngredients(state),
-  totalPrice: getTotalPriceFromStore(state),
   purchaseable: getPurchaseableFromStore(state),
-  isAuth: getAuthenticated(state),
   submitting: selectBurgerOrderSubmitting(state),
   token: selectAuthIdToken(state),
   error: selectBurgerOrderError(state),

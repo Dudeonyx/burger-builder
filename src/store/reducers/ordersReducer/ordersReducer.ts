@@ -1,6 +1,5 @@
 import { IordersReducerState as IOrdersReducerState, IDbOrders } from './types';
 import { createSlice } from '@redux-ts-starter-kit/core';
-import { IStore } from '../../';
 
 const initialState: IOrdersReducerState = {
   orders: null,

@@ -35,18 +35,16 @@ const StyledToolbar = styled.header`
 `;
 export interface IToolbarProps {
   drawerToggler: MouseEventHandler;
-  isAuth: boolean;
 }
 const Toolbar: FunctionComponent<IToolbarProps> = ({
   drawerToggler,
-  isAuth,
 }) => {
   return (
     <StyledToolbar>
       <DrawerToggle clicked={drawerToggler} />
       <Logo link="/" HQ={true} />
       <nav className="DesktopOnly">
-        <NavigationItems isAuth={isAuth} />
+        <NavigationItems />
       </nav>
     </StyledToolbar>
   );

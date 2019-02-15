@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FC, useEffect } from 'react';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Loader from '../../components/UI/Loader/Loader';
@@ -20,14 +20,10 @@ import { fetchOrders } from '../../store/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { IStore } from '../../store/store';
 
-class Orders extends Component<IOrdersProps, IOrdersState> {
-  public componentDidMount = () => {
-    this.fetchOrders();
-  };
-
-  private fetchOrders = async () => {
+const Orders: FC<IOrdersProps> = props => {
+  const getOrders = async () => {
     try {
-      await this.props.fetchOrders(this.props.token, this.props.userId);
+      await props.fetchOrders(props.token, props.userId);
     } catch (error) {
       // tslint:disable-next-line:no-console
       console.error('[fetchOrders(Orders)]', error);
@@ -36,30 +32,7 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
     }
   };
 
-  public render() {
-    const allOrders = this.props.errorMessage ? (
-      <div>
-        <p>{this.props.errorMessage}</p>
-      </div>
-    ) : this.props.loading ? (
-      <Loader />
-    ) : this.props.formattedOrders.length > 0 ? (
-      this.props.formattedOrders.map(this.generateOrderArray)
-    ) : (
-      <div>
-        <p>Your order history is blank.</p>
-      </div>
-    );
-
-    return (
-      <StyledOrders>
-        <h3>Here Are Your Orders</h3>
-        <div className="OrderBox">{allOrders}</div>
-      </StyledOrders>
-    );
-  }
-
-  private generateOrderArray = (
+  const generateOrderBlock = (
     customer: IformattedOrder,
     _index: number,
     _array: IformattedOrder[],
@@ -70,7 +43,32 @@ class Orders extends Component<IOrdersProps, IOrdersState> {
       </div>
     );
   };
-}
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
+  const allOrders = props.errorMessage ? (
+    <div>
+      <p>{props.errorMessage}</p>
+    </div>
+  ) : props.loading ? (
+    <Loader />
+  ) : props.formattedOrders.length > 0 ? (
+    props.formattedOrders.map(generateOrderBlock)
+  ) : (
+    <div>
+      <p>Your order history is blank.</p>
+    </div>
+  );
+
+  return (
+    <StyledOrders>
+      <h3>Here Are Your Orders</h3>
+      <div className="OrderBox">{allOrders}</div>
+    </StyledOrders>
+  );
+};
 
 const mapOrderStateToProps = (state: IStore) => {
   return {
@@ -89,6 +87,5 @@ const connectOrders = connect(
   mapOrdersDispatchToProps,
 );
 
-export type IOrdersProps = RouteComponentProps &
-  GetConnectProps<typeof connectOrders>;
+export type IOrdersProps = RouteComponentProps & GetConnectProps<typeof connectOrders>;
 export default connectOrders(withErrorHandler(Orders, axios));

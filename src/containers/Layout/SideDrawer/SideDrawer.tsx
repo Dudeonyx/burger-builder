@@ -7,7 +7,6 @@ import Logo from '../../../components/UI/Logo/Logo';
 export interface ISideDrawerProps {
   open: boolean;
   hider: MouseEventHandler;
-  isAuth: boolean;
 }
 interface IStyledSideDrawerProps {
   open: boolean;
@@ -40,7 +39,6 @@ const StyledSideDrawer = styled.div`
 const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
   open,
   hider,
-  isAuth,
 }) => {
   return (
     <>
@@ -48,7 +46,7 @@ const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
       <StyledSideDrawer open={open} onClick={hider}>
         <Logo height="11%" link="/" HQ={true} />
         <nav>
-          <NavigationItems isAuth={isAuth} />
+          <NavigationItems />
         </nav>
       </StyledSideDrawer>
     </>

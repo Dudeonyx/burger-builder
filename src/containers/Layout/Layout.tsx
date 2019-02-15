@@ -1,81 +1,53 @@
-import React, { lazy, PureComponent, Suspense } from 'react';
+import React, { lazy, Suspense, useState, FC, useCallback, useRef } from 'react';
 import Toolbar from './Toolbar/Toolbar';
-import { getAuthenticated } from '../../store/selectors/selectors';
-import { connect } from 'react-redux';
-import { GetConnectProps } from '../../store/types';
-import { IStore } from '../../store/store';
 
 const SideDrawer = lazy(() =>
   import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
 );
 
-/** @interface ILayoutState */
-interface ILayoutState {
-  /**
-   * Show side drawer?
-   *
-   * @type {boolean}
-   * @memberof ILayoutState
-   */
-  showSideDrawer: boolean;
-}
 /**
  * A basic reuseable layout component
  * @class Layout
  * @extends {Component<{ children: JSX.Element }, ILayoutState>}
  */
-class Layout extends PureComponent<LayoutProps, ILayoutState> {
-  /**
-   * @implements {ILayoutState}
-   * @memberof Layout
-   */
-  public readonly state: ILayoutState = {
-    showSideDrawer: false,
-  };
+const Layout: FC = props => {
+  const [showSideDrawer, setShowSideDrawer,] = useState(false);
+
+  // const count = useRef(0);
 
   /**
    * Handler that hides the side drawer
    *
    * @memberof Layout
    */
-  public hideSideDrawerHandler = () => this.setState({ showSideDrawer: false });
+  const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), [setShowSideDrawer,]);
   /**
    * Handler that toggles the visibility
    * of the side drawer
    *
    * @memberof Layout
    */
-  public toggleSideDrawerHandler = () =>
-    this.setState(prevState => ({ showSideDrawer: !prevState.showSideDrawer }));
+  const toggleSideDrawerHandler = useCallback(() => setShowSideDrawer(prevState => !prevState), [
+    setShowSideDrawer,
+  ]);
 
-  public render() {
-    return (
-      <>
-        <Toolbar
-          drawerToggler={this.toggleSideDrawerHandler}
-          isAuth={this.props.isAuthenticated}
-        />
-        <Suspense fallback={null}>
-          <SideDrawer
-            isAuth={this.props.isAuthenticated}
-            open={this.state.showSideDrawer}
-            hider={this.hideSideDrawerHandler}
-          />
-        </Suspense>
-        <main style={{ margin: '2px 10px 10px' }}>{this.props.children}</main>
-      </>
-    );
-  }
-}
+  // const check = usePrevious(toggleSideDrawerHandler);
 
-const mapLayoutStateToProps = (state: IStore) => {
-  return {
-    isAuthenticated: getAuthenticated(state),
-  };
+  // console.log('using Prev:', check === toggleSideDrawerHandler, '\ncount:', count.current);
+
+  // useEffect(() => {
+  //   count.current = count.current + 1;
+  // });
+
+  return (
+    <>
+      <Toolbar drawerToggler={toggleSideDrawerHandler} />
+      <Suspense fallback={null}>
+        <SideDrawer open={showSideDrawer} hider={hideSideDrawerHandler} />
+      </Suspense>
+      <main style={{ margin: '2px 10px 10px' }}>{props.children}</main>
+    </>
+  );
 };
 
-const connectLayout = connect(mapLayoutStateToProps);
-
-type LayoutProps = GetConnectProps<typeof connectLayout>;
-
-export default connectLayout(Layout);
+export default Layout;

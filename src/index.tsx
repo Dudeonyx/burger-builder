@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { checkPriorAuth } from './store/actions';
 
-(window as any).React = React;
+// (window as any).React = React;
 store.dispatch(checkPriorAuth());
 
 const app = (

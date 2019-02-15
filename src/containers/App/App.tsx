@@ -1,4 +1,4 @@
-import React, { lazy, FC } from 'react';
+import React, { lazy, FC, createContext, useMemo, useRef, useEffect } from 'react';
 import { Route, Switch, RouteComponentProps, Redirect } from 'react-router-dom';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
@@ -14,8 +14,22 @@ import Logout from '../Auth/Logout/Logout';
 import $404 from '../404/404';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../store/types';
-import { getAuthenticated } from '../../store/selectors/selectors';
+import {
+  getAuthenticated,
+  selectIngredients,
+  getTotalPriceFromStore,
+} from '../../store/selectors/selectors';
 import { IStore } from '../../store/store';
+import { Iingredients } from '../../types/ingredients';
+import { usePrevious } from '../../shared/CustomHooks';
+
+export const AuthContext = createContext(false);
+
+export const IngredientsContext = createContext<{
+  ingredients: Iingredients | null;
+  totalPrice: string;
+} | null>(null);
+
 const Orders = lazy(() => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'));
 const Checkout = lazy(() => import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'));
 const BurgerBuilder = lazy(() =>
@@ -27,6 +41,16 @@ const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
 
 const App: FC<AppProps> = props => {
+  const ingsAndPrice = useMemo(
+    () => ({ ingredients: props.ingredients, totalPrice: props.totalPrice }),
+    [props.ingredients, props.totalPrice,],
+  );
+  const check = usePrevious(ingsAndPrice);
+  const count = useRef(0);
+  useEffect(() => {
+    count.current += 1;
+  });
+  console.log('equal:', check === ingsAndPrice, '\ncount:', count.current);
   const protectedRoutes = props.isAuth ? (
     <Switch>
       <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
@@ -47,14 +71,20 @@ const App: FC<AppProps> = props => {
     </Switch>
   );
   return (
-    <Layout>
-      <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
-    </Layout>
+    <AuthContext.Provider value={props.isAuth}>
+      <IngredientsContext.Provider value={ingsAndPrice}>
+        <Layout>
+          <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
+        </Layout>
+      </IngredientsContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
 const mapAppStateToProps = (state: IStore) => ({
   isAuth: getAuthenticated(state),
+  ingredients: selectIngredients(state),
+  totalPrice: getTotalPriceFromStore(state),
 });
 
 // const mapAppDispatchToProps = {

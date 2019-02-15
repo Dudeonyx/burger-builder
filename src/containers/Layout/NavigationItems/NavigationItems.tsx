@@ -1,10 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import styles from './NavigationItems.module.css';
+import { AuthContext } from '../../App/App';
 
-const NavigationItems: FunctionComponent<{
-  isAuth: boolean;
-}> = ({ isAuth }) => {
+const NavigationItems: FunctionComponent = () => {
+
+  const isAuth = useContext(AuthContext);
+  
   const navElements = (
     <>
       <NavigationItem link="/" linkName="BurgerBuilder" exact={true} />

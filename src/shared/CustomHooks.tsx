@@ -11,9 +11,11 @@ import {
 import { IInputConfig } from '../components/UI/Input/types';
 import { updateFormImmutably } from '../components/UI/Input';
 
-const fullForm = {
-  name: {
-    value: '',
+type DeliveryMethods = 'cheapest' | 'cheap' | 'normal' | 'expensive' | 'very_expensive';
+
+const makeForm = {
+  name: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'text',
     placeholder: 'Your Name',
     id: 'Auth_name_id',
@@ -25,9 +27,9 @@ const fullForm = {
       touched: false,
       minLength: 5,
     },
-  },
-  phone: {
-    value: '',
+  }),
+  phone: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'tel',
     placeholder: 'Your Phone no.',
     id: 'customer_phone_id',
@@ -41,9 +43,9 @@ const fullForm = {
       minLength: 5,
       isNumeric: true,
     },
-  },
-  password: {
-    value: '',
+  }),
+  password: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'password',
     placeholder: 'Password',
     id: 'Auth_word_id',
@@ -55,9 +57,9 @@ const fullForm = {
       touched: false,
       minLength: 6,
     },
-  },
-  email: {
-    value: '',
+  }),
+  email: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'email',
     placeholder: 'Your Email',
     id: 'Auth_email_id',
@@ -70,9 +72,9 @@ const fullForm = {
       minLength: 5,
       isEmail: true,
     },
-  },
-  street: {
-    value: '',
+  }),
+  street: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'street-address',
     placeholder: 'Your Street',
     id: 'customer_street_id',
@@ -85,9 +87,9 @@ const fullForm = {
       touched: false,
       minLength: 3,
     },
-  },
-  city: {
-    value: '',
+  }),
+  city: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'text',
     placeholder: 'Your City',
     id: 'customer_city_id',
@@ -100,9 +102,9 @@ const fullForm = {
       touched: false,
       minLength: 3,
     },
-  },
-  state: {
-    value: '',
+  }),
+  state: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'text',
     placeholder: 'Your State/Province',
     id: 'customer_state_id',
@@ -115,9 +117,9 @@ const fullForm = {
       touched: false,
       minLength: 3,
     },
-  },
-  country: {
-    value: '',
+  }),
+  country: (initialValue: string = '') => ({
+    value: initialValue,
     type: 'country-name',
     placeholder: 'Your Country',
     id: 'customer_country_id',
@@ -130,11 +132,11 @@ const fullForm = {
       touched: false,
       minLength: 3,
     },
-  },
-  deliveryMethod: {
+  }),
+  deliveryMethod: (initialValue: DeliveryMethods = 'normal') => ({
     id: 'customer_deliveryMethod_id',
     label: '',
-    value: 'normal',
+    value: initialValue,
     type: 'select',
     name: 'deliveryMethod',
     dataSet: 'deliveryMethod',
@@ -170,7 +172,7 @@ const fullForm = {
         label: 'Very Expensive',
       },
     ],
-  },
+  }),
 };
 
 export const useName = (initialValue: string = '') => {
@@ -322,9 +324,7 @@ export const useCountry = (initialValue: string = '') => {
 
   return country;
 };
-export const useDeliveryMethod = (
-  initialValue: 'cheapest' | 'cheap' | 'normal' | 'expensive' | 'very_expensive' = 'normal',
-) => {
+export const useDeliveryMethod = (initialValue: DeliveryMethods = 'normal') => {
   const deliveryMethod = useState<IInputConfig>({
     id: 'customer_deliveryMethod_id',
     label: '',
@@ -381,26 +381,25 @@ const fullForm2 = {
   deliveryMethod: useDeliveryMethod,
 };
 
-type Fields = Extract<keyof typeof fullForm, string>;
+type Fields = Extract<keyof typeof makeForm, string>;
 
 type FormUpdater = (event: ChangeEvent<HTMLInputElement>) => void;
 
 // tslint:disable-next-line: interface-name
 interface UseForm {
-  <A extends Fields>(...fields: [A]): [Record<A, IInputConfig>, FormUpdater];
-  <A extends Fields, B extends Fields>(...fields: [A, B]): [
+  <A extends Fields>(...fields: [A | [A, string]]): [Record<A, IInputConfig>, FormUpdater];
+  <A extends Fields, B extends Fields>(...fields: [A | [A, string], B | [B, string]]): [
     Record<A | B, IInputConfig>,
     FormUpdater
   ];
-  <A extends Fields, B extends Fields, C extends Fields>(...fields: [A, B, C]): [
-    Record<A | B | C, IInputConfig>,
-    FormUpdater
-  ];
+  <A extends Fields, B extends Fields, C extends Fields>(
+    ...fields: [A | [A, string], B | [B, string], C | [C, string]]
+  ): [Record<A | B | C, IInputConfig>, FormUpdater];
   <A extends Fields, B extends Fields, C extends Fields, D extends Fields>(
-    ...fields: [A, B, C, D]
+    ...fields: [A | [A, string], B | [B, string], C | [C, string], D | [D, string]]
   ): [Record<A | B | C | D, IInputConfig>, FormUpdater];
   <A extends Fields, B extends Fields, C extends Fields, D extends Fields, E extends Fields>(
-    ...fields: [A, B, C, D, E]
+    ...fields: [A | [A, string], B | [B, string], C | [C, string], D | [D, string], E | [E, string]]
   ): [Record<A | B | C | D | E, IInputConfig>, FormUpdater];
   <
     A extends Fields,
@@ -410,7 +409,14 @@ interface UseForm {
     E extends Fields,
     F extends Fields
   >(
-    ...fields: [A, B, C, D, E, F]
+    ...fields: [
+      A | [A, string],
+      B | [B, string],
+      C | [C, string],
+      D | [D, string],
+      E | [E, string],
+      F | [F, string]
+    ]
   ): [Record<A | B | C | D | E | F, IInputConfig>, FormUpdater];
   <
     A extends Fields,
@@ -421,7 +427,15 @@ interface UseForm {
     F extends Fields,
     G extends Fields
   >(
-    ...fields: [A, B, C, D, E, F, G]
+    ...fields: [
+      A | [A, string],
+      B | [B, string],
+      C | [C, string],
+      D | [D, string],
+      E | [E, string],
+      F | [F, string],
+      G | [G, string]
+    ]
   ): [Record<A | B | C | D | E | F | G, IInputConfig>, FormUpdater];
   <
     A extends Fields,
@@ -433,7 +447,16 @@ interface UseForm {
     G extends Fields,
     H extends Fields
   >(
-    ...fields: [A, B, C, D, E, F, G, H]
+    ...fields: [
+      A | [A, string],
+      B | [B, string],
+      C | [C, string],
+      D | [D, string],
+      E | [E, string],
+      F | [F, string],
+      G | [G, string],
+      H | [H, string]
+    ]
   ): [Record<A | B | C | D | E | F | G | H, IInputConfig>, FormUpdater];
   <
     A extends Fields,
@@ -446,14 +469,30 @@ interface UseForm {
     H extends Fields,
     I extends Fields
   >(
-    ...fields: [A, B, C, D, E, F, G, H, I]
+    ...fields: [
+      A | [A, string],
+      B | [B, string],
+      C | [C, string],
+      D | [D, string],
+      E | [E, string],
+      F | [F, string],
+      G | [G, string],
+      H | [H, string],
+      I | [I, string]
+    ]
   ): [Record<A | B | C | D | E | F | G | H | I, IInputConfig>, FormUpdater];
 }
 
 export const useForm: UseForm = (...fields: any[]): any => {
   const [form, setForm,] = useState(() => {
     const state = {};
-    fields.forEach(key => ((state as any)[key] = (fullForm as any)[key]));
+    fields.forEach(key => {
+      if (typeof key === 'string') {
+        (state as any)[key] = makeForm[key as keyof typeof makeForm]();
+      } else if (Array.isArray(key) && typeof key[0] === 'string') {
+        (state as any)[key[0]] = (makeForm as any)[key[0]](key[1]);
+      }
+    });
     return state;
   });
   const updateForm: FormUpdater = useCallback(
