@@ -21,7 +21,6 @@ import {
 } from '../../store/selectors/selectors';
 import { Store } from '../../store/store';
 import { Iingredients } from '../../types/ingredients';
-import Page from '../Page/Page';
 
 export const AuthContext = createContext(false);
 
@@ -35,10 +34,12 @@ const Checkout = lazy(() => import(/* webpackChunkName: "Checkout" */ '../Checko
 const BurgerBuilder = lazy(() =>
   import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
 );
+const Page = lazy(() => import(/* webpackChunkName: "Page" */ '../Page/Page'));
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
+const SPage = suspenseNode2(Page);
 
 const App: FC<AppProps> = props => {
   const ingsAndPrice = useMemo(
@@ -53,7 +54,7 @@ const App: FC<AppProps> = props => {
       <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
       <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
       <Route path="/login" exact={true} component={Auth} />
-      <Route path="/page" exact={true} component={Page} />
+      <Route path="/page" exact={true} render={() => SPage({})} />
       <Route component={$404} />
     </Switch>
   ) : (
@@ -63,7 +64,7 @@ const App: FC<AppProps> = props => {
       <Redirect from="/all-orders" to="/" />
       <Redirect from="/checkout" to="/" />
       <Redirect from="/logout" to="/" />
-      <Route path="/page" exact={true} component={Page} />
+      <Route path="/page" exact={true} render={() => SPage({})} />
       <Route component={$404} />
     </Switch>
   );
