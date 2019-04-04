@@ -5,12 +5,12 @@ const invalidCss = css`
   background-color: #fda49a;
 `;
 const validMark = css`
-  content: "✓";
+  content: '✓';
   position: absolute;
   color: #26b72b;
 `;
 const inValidMark = css`
-  content: "✖";
+  content: '✖';
   position: absolute;
   color: #f00;
 `;
@@ -21,7 +21,7 @@ const validInput = ({ valid }: { valid: boolean }) => {
   return valid ? null : invalidCss;
 };
 
-export const StyledInput = styled.div`
+export const StyledInput = styled.div<{ valid: boolean }>`
   &&&&&& {
     margin: 5px;
     margin-top: 0.9rem;

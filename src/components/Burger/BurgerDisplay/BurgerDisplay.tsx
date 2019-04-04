@@ -3,18 +3,38 @@ import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
 import { Iingredients } from '../../../types/ingredients';
 import styled from '@emotion/styled/macro';
 
-const jsxArrayFromObject = <R extends string, O extends { [x in R]?: number }>(
-  GivenComponent: ComponentType<{ className: R }>,
+const jsxArrayFromObject = <Cln extends string, O extends Partial<Record<Cln, number>>>(
+  GivenComponent: ComponentType<{ className: Cln }>,
   inputObject: O,
-): Array<ReactElement<{ className: R }>> => {
-  return (Object.entries(inputObject) as Array<[R, number]>)
-    .map(([igKey, igVal,]) => {
-      return [...Array(igVal),].map((_, i) => {
-        return <GivenComponent className={igKey} key={igKey + (i + 1)} />;
-      });
-    })
-    .reduce((arr, subArr) => [...arr, ...subArr,], []);
+): Array<ReactElement<{ className: Cln }>> => {
+  return (Object.entries(inputObject) as Array<[Cln, number]>).flatMap(([igKey, igVal]) => {
+    return [...Array(igVal)].map((_, i) => {
+      return <GivenComponent className={igKey} key={igKey + (i + 1)} />;
+    });
+  });
 };
+
+export interface IburgerDisplay {
+  ingredients: Iingredients;
+}
+const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
+  let allIngredients = jsxArrayFromObject(BurgerIngredient, props.ingredients);
+  if (allIngredients.length === 0) {
+    allIngredients = <p>Please start adding ingredients</p> as any;
+  }
+  return (
+    <StyledBurgerDisplay>
+      <BurgerIngredient className="bread-top">
+        <div className="seeds1" />
+        <div className="seeds2" />
+      </BurgerIngredient>
+      {allIngredients}
+      <BurgerIngredient className="bread-bottom" />
+    </StyledBurgerDisplay>
+  );
+};
+
+export default React.memo(burgerDisplay);
 
 const StyledBurgerDisplay = styled.div`
   & {
@@ -59,24 +79,3 @@ const StyledBurgerDisplay = styled.div`
     }
   }
 `;
-export interface IburgerDisplay {
-  ingredients: Iingredients;
-}
-const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
-  let allIngredients = jsxArrayFromObject(BurgerIngredient, props.ingredients);
-  if (allIngredients.length === 0) {
-    allIngredients = <p>Please start adding ingredients</p> as any;
-  }
-  return (
-    <StyledBurgerDisplay>
-      <BurgerIngredient className="bread-top">
-        <div className="seeds1" />
-        <div className="seeds2" />
-      </BurgerIngredient>
-      {allIngredients}
-      <BurgerIngredient className="bread-bottom" />
-    </StyledBurgerDisplay>
-  );
-};
-
-export default React.memo(burgerDisplay);

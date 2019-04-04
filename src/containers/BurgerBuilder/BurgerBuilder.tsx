@@ -14,13 +14,9 @@ import {
   setIngredients,
   setAuthRedirectUrl,
 } from '../../store/actions';
-import { GetConnectProps, IStore } from '../../store/';
+import { GetConnectProps, Store } from '../../store/';
 import { RouteComponentProps } from 'react-router';
-import {
-  selectIngredientsError,
-  getPurchaseableFromStore,
-  getTotalPriceFromStore,
-} from '../../store/selectors/selectors';
+import { selectIngredientsError, getPurchaseableFromStore } from '../../store/selectors/selectors';
 import { AuthContext, IngredientsContext } from '../App/App';
 
 const BurgerDisplay = lazy(() =>
@@ -33,15 +29,12 @@ const OrderSummary = lazy(() =>
 );
 
 const offlineStyle = { color: 'blue', cursor: 'pointer' };
-/**
- * @class BurgerBuilder
- * @extends {Component<IconnectIngredientsProps<RouteComponentProps>, IBurgerBuilderState>}
- */
-const BurgerBuilder: FC<IBurgerBuilderProps> = (props) => {
-  const [purchasing, setPurchasing,] = useState(false);
+
+const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
+  const [purchasing, setPurchasing] = useState(false);
 
   const isAuth = useContext(AuthContext);
-  const {ingredients, totalPrice} = useContext(IngredientsContext)!;
+  const { ingredients, totalPrice } = useContext(IngredientsContext)!;
 
   useEffect(() => {
     props.setAuthRedirectUrl('/');
@@ -50,15 +43,15 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = (props) => {
     setTimeout(() => {
       import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
     }, 10000);
-  },[])
+  }, []);
 
   const purchaseStartHandler = useCallback(() => {
     import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
     setPurchasing(true);
-  },[]);
+  }, []);
   const purchaseCancelHandler = useCallback(() => {
     setPurchasing(false);
-  },[]);
+  }, []);
   const purchaseContinueHandler = useCallback(() => {
     if (!ingredients) {
       return;
@@ -72,7 +65,7 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = (props) => {
       props.setAuthRedirectUrl('/checkout');
       props.history.push('/login');
     }
-  },[]);
+  }, [ingredients, isAuth]);
 
   const offline = useCallback(() => {
     props.ingredientSetHandler({
@@ -81,69 +74,67 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = (props) => {
       meat: 0,
       salad: 0,
     });
-  },[]);
+  }, []);
 
-    let burger = props.error ? (
-      <Retry
-        retryHandler={props.fetchIngredientsHandler}
-        mainMessage="Ingredients Failed To Load. Please "
-        additionalMessage={
-          <span style={offlineStyle} onClick={offline}>
-            work offline for now?
-          </span>
-        }
-      />
-    ) : (
-      <Loader />
-    );
+  let burger = props.error ? (
+    <Retry
+      retryHandler={props.fetchIngredientsHandler}
+      mainMessage="Ingredients Failed To Load. Please "
+      additionalMessage={
+        <span style={offlineStyle} onClick={offline}>
+          work offline for now?
+        </span>
+      }
+    />
+  ) : (
+    <Loader />
+  );
 
-    let orderSummary = null;
+  let orderSummary = null;
 
-    if (ingredients) {
-      burger = (
-        <>
-          <React.Suspense fallback={<Loader />}>
-            <BurgerDisplay ingredients={ingredients} />
-          </React.Suspense>
-          <BuildControls
-            ingredients={ingredients}
-            price={props.totalPrice}
-            increase={props.ingredientIncreaseHandler}
-            decrease={props.ingredientDecreaseHandler}
-            purchaseable={props.purchaseable}
-            purchaseStart={purchaseStartHandler}
-          />
-        </>
-      );
-
-      orderSummary = (
-        <React.Suspense fallback={<Loader />}>
-          <OrderSummary
-            ingredients={ingredients}
-            totalCost={props.totalPrice}
-            purchaseCancel={purchaseCancelHandler}
-            purchaseContinue={purchaseContinueHandler}
-            isAuth={isAuth}
-          />
-        </React.Suspense>
-      );
-    }
-
-    return (
+  if (ingredients) {
+    burger = (
       <>
-        <Modal show={purchasing} hider={purchaseCancelHandler}>
-          {orderSummary}
-        </Modal>
-        {burger}
+        <React.Suspense fallback={<Loader />}>
+          <BurgerDisplay ingredients={ingredients} />
+        </React.Suspense>
+        <BuildControls
+          ingredients={ingredients}
+          price={totalPrice}
+          increase={props.ingredientIncreaseHandler}
+          decrease={props.ingredientDecreaseHandler}
+          purchaseable={props.purchaseable}
+          purchaseStart={purchaseStartHandler}
+        />
       </>
     );
-  
-}
 
-const mapBurgerBuilderStateToProps = (state: IStore) => ({
+    orderSummary = (
+      <React.Suspense fallback={<Loader />}>
+        <OrderSummary
+          ingredients={ingredients}
+          totalCost={totalPrice}
+          purchaseCancel={purchaseCancelHandler}
+          purchaseContinue={purchaseContinueHandler}
+          isAuth={isAuth}
+        />
+      </React.Suspense>
+    );
+  }
+
+  return (
+    <>
+      <Modal show={purchasing} hider={purchaseCancelHandler}>
+        {orderSummary}
+      </Modal>
+      {burger}
+    </>
+  );
+};
+
+const mapBurgerBuilderStateToProps = (state: Store) => ({
   error: selectIngredientsError(state),
   purchaseable: getPurchaseableFromStore(state),
-  totalPrice: getTotalPriceFromStore(state),
 });
 
 const mapBurgerBuilderDispatchToProps = {

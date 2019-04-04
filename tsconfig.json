@@ -9,6 +9,8 @@
       "es6",
       "esnext"
     ],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -21,6 +23,11 @@
     "jsx": "preserve",
     "isolatedModules": true
   },
+  "plugins": [
+    {
+      "name": "typescript-styled-plugin"
+    }
+  ],
   "include": [
     "src/"
   ]

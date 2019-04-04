@@ -1,7 +1,6 @@
 import { IContactDataReducerState } from './types';
 import { createSlice } from '@redux-ts-starter-kit/core';
 import { IDbOrder } from '../ordersReducer/';
-import { IStore } from '../../store';
 
 const initialState: IContactDataReducerState = {
   error: false,
@@ -9,7 +8,7 @@ const initialState: IContactDataReducerState = {
   orders: {},
 };
 
-interface ICDataActions {
+interface CDataActions {
   burgerOrderSuccessful: {
     name: string;
     order: IDbOrder;
@@ -22,7 +21,7 @@ export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
   selectors: cDataSelectors,
-} = createSlice<ICDataActions, IContactDataReducerState, 'cData'>({
+} = createSlice<CDataActions, IContactDataReducerState, 'cData'>({
   slice: 'cData',
   cases: {
     burgerOrderSuccessful: (state, payload) => {

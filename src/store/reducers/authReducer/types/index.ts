@@ -1,4 +1,4 @@
-export interface IAuthResponse {
+export interface AuthResponse {
   readonly kind: string;
   readonly localId: string;
   readonly idToken: string;
@@ -8,7 +8,7 @@ export interface IAuthResponse {
   readonly refreshToken: string;
   readonly expiresIn: string;
 }
-export interface IAuthReducerState {
+export interface AuthReducerState {
   readonly authenticating: boolean;
   readonly error: Error & { [x: string]: any } | null;
   readonly displayName: string | null;

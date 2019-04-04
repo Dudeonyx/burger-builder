@@ -1,12 +1,12 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import logolow from '../../../assets/images/26.1 burger-logo.png';
 import logo from './../../../assets/images/26.1 burger-logo.png.png';
 import styled from '@emotion/styled/macro';
 
-const StyledLogo = styled(Link)`
+const StyledLogo = styled(Link)<{ height?: string }>`
   & {
-    height: ${({ height }: { height?: string }) => (height ? height : '90%')};
+    height: ${({ height }) => (height ? height : '90%')};
     padding: 1px;
     box-sizing: border-box;
     text-decoration: none;
@@ -24,7 +24,7 @@ const StyledLogo = styled(Link)`
 /** @export
  * @interface ILogoProps
  */
-export interface ILogoProps {
+export interface LogoProps {
   /** @type {string}
    * @memberof ILogoProps
    */
@@ -42,7 +42,7 @@ export interface ILogoProps {
 /** Site Logo
  * @implements {ILogoProps}
  */
-const Logo: FunctionComponent<ILogoProps> = ({ link, height, HQ = false }) =>
+const Logo: FunctionComponent<LogoProps> = ({ link, height, HQ = false }) =>
   HQ ? (
     <StyledLogo to={link} height={height}>
       <img src={logo} alt="A Burger Logo" />

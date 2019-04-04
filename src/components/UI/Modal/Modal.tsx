@@ -19,7 +19,7 @@ const showHandler = ({ show }: IStyledModal) =>
         visibility: hidden;
       `;
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<IStyledModal>`
   position: fixed;
   z-index: ${({ zIndex }) => zIndex || 500};
   width: 90%;

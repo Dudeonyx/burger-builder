@@ -3,24 +3,24 @@ import Button from '../UI/Button/Button';
 import OrderText from '../OrderText/OrderText';
 import { IOrderIngredientsPrice } from '../OrderText/types';
 
-export interface IOrderSummary extends IOrderIngredientsPrice {
+export interface OrderSummaryProps extends IOrderIngredientsPrice {
   purchaseCancel: MouseEventHandler;
   purchaseContinue: MouseEventHandler;
   isAuth: boolean;
 }
 
-const OrderSummary: FunctionComponent<IOrderSummary> = ({
+const OrderSummary: FunctionComponent<OrderSummaryProps> = ({
   totalCost,
   ingredients,
   purchaseCancel,
   purchaseContinue,
   isAuth,
 }) => {
-  const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
-    <li style={{ textTransform: 'capitalize' }} key={igKey}>
-      {`${igKey}: ${igVal}`}
-    </li>
-  ));
+  // const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
+  //   <li style={{ textTransform: 'capitalize' }} key={igKey}>
+  //     {`${igKey}: ${igVal}`}
+  //   </li>
+  // ));
   // console.log( '[OrderSummary]' );
   return (
     <>

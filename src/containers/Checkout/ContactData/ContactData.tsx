@@ -1,27 +1,14 @@
 // import styled from 'styled-components';
-import React, { MouseEvent, Component, ChangeEvent, FC, useCallback, useContext } from 'react';
+import React, { MouseEvent, FC, useCallback } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import Loader from '../../../components/UI/Loader/Loader';
 import Modal from '../../../components/UI/Modal/Modal';
-import { IContactDataState } from './types';
-// import { submitBurgerOrder } from '../../../store/actions';
-import { connect } from 'react-redux';
-import { GetConnectProps } from '../../../store/';
 import { RouteComponentProps } from 'react-router';
 import withErrorHandler from '../../../HOCs/withErrorHandler';
 import axios from '../../../axios-orders';
 import { StyledContactData } from './ContactData.styles';
-import {
-  selectBurgerOrderSubmitting,
-  selectIngredients,
-  getTotalPriceFromStore,
-  selectAuthIdToken,
-  selectBurgerOrderError,
-  selectAuthUserId,
-} from '../../../store/selectors/';
-import { mapToInputs } from '../../../components/UI/Input/';
-import { IStore } from '../../../store/store';
-import { useForm } from '../../../shared/CustomHooks';
+import { makeMapToInputs } from '../../../components/UI/Input/';
+import { useForm, useCheckRefEquality } from '../../../shared/CustomHooks';
 import { submitBurgerOrder } from '../../../store/actions';
 import { Iingredients } from '../../../types/ingredients';
 const ContactData: FC<IContactDataProps> = props => {
@@ -33,18 +20,26 @@ const ContactData: FC<IContactDataProps> = props => {
     'city',
     'country',
     'state',
-    'deliveryMethod',
+    ['deliveryMethod', 'very_expensive',],
   );
   const { city, country, deliveryMethod, email, name, phone, state, street } = formState;
 
-  const mapToInput = useCallback(mapToInputs(setForm), [setForm,]);
+  useCheckRefEquality(city, 'city');
 
-  const cancel = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    // tslint:disable-next-line: no-unused-expression
-    e.currentTarget.form && e.currentTarget.form.reset();
-    props.history.goBack();
-  };
+  const mapToInput = useCallback(makeMapToInputs(setForm), [setForm,]);
+
+  useCheckRefEquality(mapToInput, 'mapToInput');
+
+  const cancel = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      // tslint:disable-next-line: no-unused-expression
+      e.currentTarget.form && e.currentTarget.form.reset();
+      props.history.goBack();
+    },
+    [props.history,],
+  );
+  useCheckRefEquality(cancel, 'cancel');
 
   const submitBurger = async (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.form && e.currentTarget.form.reportValidity()) {
@@ -53,7 +48,7 @@ const ContactData: FC<IContactDataProps> = props => {
         if (!props.ingredients) {
           throw new Error('Empty Ingredients object!!!');
         }
-        await submitBurgerOrder(
+        await props.submitBurgerOrder(
           formState,
           props.ingredients,
           props.totalPrice,

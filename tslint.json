@@ -1,3 +1,6 @@
 {
-  "extends": ["c:/github/linter-cfgs/tslint.json"] 
+  "extends": ["c:/github/linter-cfgs/tslint.json"],
+  "rules":{
+    "interface-name":false
+  }
 }

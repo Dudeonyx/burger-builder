@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, FC, useCallback, useRef } from 'react';
+import React, { lazy, Suspense, useState, FC, useCallback } from 'react';
 import Toolbar from './Toolbar/Toolbar';
 
 const SideDrawer = lazy(() =>
@@ -11,7 +11,7 @@ const SideDrawer = lazy(() =>
  * @extends {Component<{ children: JSX.Element }, ILayoutState>}
  */
 const Layout: FC = props => {
-  const [showSideDrawer, setShowSideDrawer,] = useState(false);
+  const [showSideDrawer, setShowSideDrawer] = useState(false);
 
   // const count = useRef(0);
 
@@ -20,7 +20,7 @@ const Layout: FC = props => {
    *
    * @memberof Layout
    */
-  const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), [setShowSideDrawer,]);
+  const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), [setShowSideDrawer]);
   /**
    * Handler that toggles the visibility
    * of the side drawer

@@ -4,17 +4,17 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import styled from '@emotion/styled/macro';
 import Logo from '../../../components/UI/Logo/Logo';
 
-export interface ISideDrawerProps {
+export interface SideDrawerProps {
   open: boolean;
   hider: MouseEventHandler;
 }
-interface IStyledSideDrawerProps {
+interface StyledSideDrawerProps {
   open: boolean;
 }
-const setTranslate = ({ open }: IStyledSideDrawerProps) => {
+const setTranslate = ({ open }: StyledSideDrawerProps) => {
   return open ? 'translateX(0)' : 'translateX(-100%)';
 };
-const StyledSideDrawer = styled.div`
+const StyledSideDrawer = styled.div<StyledSideDrawerProps>`
   & {
     position: fixed;
     top: 0;
@@ -36,10 +36,7 @@ const StyledSideDrawer = styled.div`
   }
 `;
 
-const SideDrawer: FunctionComponent<ISideDrawerProps> = ({
-  open,
-  hider,
-}) => {
+const SideDrawer: FunctionComponent<SideDrawerProps> = ({ open, hider }) => {
   return (
     <>
       <Backdrop show={open} hider={hider} />

@@ -2,6 +2,8 @@ import { IInputProps } from './types';
 import React, { FunctionComponent, memo } from 'react';
 import { StyledInput } from './input.styles';
 
+const isNever = (_arg: never): _arg is never => true;
+
 const emailPattern =
   '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?';
 const emailConfig = {
@@ -94,19 +96,13 @@ const Input: FunctionComponent<IInputProps> = props => {
       return (
         <>
           <label htmlFor={id} className="select" children={label} />
-          <select
-            id={id}
-            onChange={onChange}
-            name={name}
-            required={required}
-            value={value}
-          >
+          <select id={id} onChange={onChange} name={name} required={required} value={value}>
             {selectList}
           </select>
         </>
       );
     default:
-      const _o: never = props;
+      isNever(props);
       return null;
   }
 };

@@ -4,10 +4,7 @@ import CheckoutSummary from '../../components/CheckoutSummary/CheckoutSummary';
 import { connect } from 'react-redux';
 import { GetConnectProps } from '../../store/types';
 import {
-  selectIngredients,
-  getTotalPriceFromStore,
   getPurchaseableFromStore,
-  getAuthenticated,
   selectBurgerOrderSubmitting,
   selectAuthIdToken,
   selectBurgerOrderError,
@@ -15,7 +12,7 @@ import {
 } from '../../store/selectors/selectors';
 import { suspenseNode2 } from '../../HOCs/suspensed';
 import { setAuthRedirectUrl, submitBurgerOrder } from '../../store/actions';
-import { IStore } from '../../store/store';
+import { Store } from '../../store/store';
 import { IngredientsContext, AuthContext } from '../App/App';
 
 const ContactData = lazy(() =>
@@ -24,10 +21,8 @@ const ContactData = lazy(() =>
 
 const SContactData = suspenseNode2(ContactData);
 
-
 const Checkout: FC<ICheckoutProps> = props => {
-
-  const {ingredients,totalPrice} = useContext(IngredientsContext)!;
+  const { ingredients, totalPrice } = useContext(IngredientsContext)!;
   const isAuth = useContext(AuthContext);
 
   const checkoutCancel = useCallback(() => {
@@ -36,7 +31,7 @@ const Checkout: FC<ICheckoutProps> = props => {
   const checkoutContinue = useCallback(() => {
     setTimeout(() => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'), 8000);
     props.history.push(props.match.path + '/contact-data');
-  }, [props.match.path,]);
+  }, [props.match.path]);
 
   return (
     <div>
@@ -74,7 +69,7 @@ const Checkout: FC<ICheckoutProps> = props => {
   );
 };
 
-const mapCheckoutStateToProps = (state: IStore) => ({
+const mapCheckoutStateToProps = (state: Store) => ({
   purchaseable: getPurchaseableFromStore(state),
   submitting: selectBurgerOrderSubmitting(state),
   token: selectAuthIdToken(state),

@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import axios from 'axios';
-import { IAuthResponse, authActions } from '../reducers/';
+import { AuthResponse, authActions } from '../reducers/';
 import { API_KEY } from '../../shared/';
 import { ThunkDispatch } from 'redux-thunk';
 
@@ -29,7 +29,7 @@ export const authenticate = (email: string, password: string, isSignup: boolean)
         returnSecureToken: true,
       };
       const url = `${baseAuthUrl}${isSignup ? signUpPath : loginPath}${API_KEY}`;
-      const response = await axios.post<IAuthResponse>(url, authData);
+      const response = await axios.post<AuthResponse>(url, authData);
       const { data } = response;
       const { expiresIn } = data;
 

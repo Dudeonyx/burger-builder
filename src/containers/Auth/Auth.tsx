@@ -1,15 +1,14 @@
 import Button from '../../components/UI/Button/Button';
-import React, { ChangeEvent, MouseEvent, useState, useEffect, FC, useCallback } from 'react';
-import { mapToInputs, updateInputFieldImmutably } from '../../components/UI/Input/';
+import React, { MouseEvent, useState, useEffect, FC, useCallback, useLayoutEffect } from 'react';
+import { makeMapToInputs } from '../../components/UI/Input/';
 import { authenticate } from '../../store/actions';
 import { connect } from 'react-redux';
-import { GetConnectProps, IStore } from '../../store/';
+import { GetConnectProps, Store } from '../../store/';
 import { RouteComponentProps } from 'react-router';
 import {
   selectAuthAuthenticating,
   selectAuthError,
   getAuthErrorMessage,
-  getPurchaseableFromStore,
   selectAuthRedirectUrl,
   getAuthenticated,
 } from '../../store/selectors/';
@@ -17,7 +16,7 @@ import Loader from '../../components/UI/Loader/Loader';
 import { StyledAuth } from './Auth.styles';
 import { setAuthRedirectUrl } from '../../store/actions';
 import { IInputConfig } from '../../components/UI/Input/types';
-import { useName, useEmail, usePassword, useForm } from '../../shared/CustomHooks';
+import { useForm } from '../../shared/CustomHooks';
 
 export interface IAuthState {
   authFormData: {
@@ -29,34 +28,31 @@ export interface IAuthState {
   readonly redirectUrl: string;
 }
 const Auth: FC<IAuthProps> = props => {
-  // const [name, setName,] = useName();
-  // const [email, setEmail,] = useEmail();
-  // const [password, setPassword,] = usePassword();
-  const [formState, setForm,] = useForm('email', 'password', 'name');
-  const [isSignUp, setIsSignup,] = useState(true);
-  const [redirectUrl,] = useState(props.redirectUrl);
+  const [formState, setForm] = useForm('email', 'password', 'name');
+  const [isSignUp, setIsSignup] = useState(false);
+  const [redirectUrl] = useState(props.redirectUrl);
   // const [submitSuccess, setSubmitSuccess,] = useState(false);
-  const { email, name, password } = formState;
+  const { email, password } = formState;
   useEffect(() => {
     props.setAuthRedirectUrl('/');
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // tslint:disable-next-line: no-unused-expression
     props.isAuth && props.history.push(redirectUrl);
   });
 
   const authError = props.error ? <p className="error">{props.errorMessage}</p> : null;
 
-  const switchAuthModeHandler = () => {
-    setIsSignup(!isSignUp);
-  };
+  const switchAuthModeHandler = useCallback(() => {
+    setIsSignup(prev => !prev);
+  }, [setIsSignup]);
   const submitHandler = async (e: MouseEvent) => {
     e.preventDefault();
     props.onAuth(email.value, password.value, isSignUp);
     // setSubmitSuccess(false);
   };
-  const mapInputs = useCallback(mapToInputs(setForm), []);
+  const mapInputs = useCallback(makeMapToInputs(setForm), []);
 
   const form = props.authenticating ? (
     <Loader />
@@ -65,7 +61,7 @@ const Auth: FC<IAuthProps> = props => {
       {authError}
       <p className="info">{isSignUp ? 'SIGNUP' : 'LOGIN'}</p>
       <form>
-        {[email, password,].map(mapInputs)}
+        {[email, password].map(mapInputs)}
         <Button btnType="Success" onClick={submitHandler}>
           SUBMIT
         </Button>
@@ -82,7 +78,7 @@ const Auth: FC<IAuthProps> = props => {
   );
 };
 
-const mapAuthStateToProps = (state: IStore) => {
+const mapAuthStateToProps = (state: Store) => {
   return {
     authenticating: selectAuthAuthenticating(state),
     error: selectAuthError(state),

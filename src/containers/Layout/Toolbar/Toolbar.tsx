@@ -1,9 +1,4 @@
-import React, {
-  FunctionComponent,
-  lazy,
-  MouseEventHandler,
-  Suspense,
-} from 'react';
+import React, { FunctionComponent, MouseEventHandler } from 'react';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from './DrawerToggle/DrawerToggle';
 import Logo from '../../../components/UI/Logo/Logo';
@@ -36,9 +31,7 @@ const StyledToolbar = styled.header`
 export interface IToolbarProps {
   drawerToggler: MouseEventHandler;
 }
-const Toolbar: FunctionComponent<IToolbarProps> = ({
-  drawerToggler,
-}) => {
+const Toolbar: FunctionComponent<IToolbarProps> = ({ drawerToggler }) => {
   return (
     <StyledToolbar>
       <DrawerToggle clicked={drawerToggler} />

@@ -1,10 +1,8 @@
-import { RouteComponentProps } from 'react-router-dom';
-
 /**
  * @export
- * @interface IBurgerBuilderState
+ * @interface BurgerBuilderState
  */
-export interface IBurgerBuilderState {
+export interface BurgerBuilderState {
   /**
    * @type {boolean}
    * @memberof IBurgerBuilderState

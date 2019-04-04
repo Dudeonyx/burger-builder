@@ -3,7 +3,7 @@ import React, { Component, ComponentType } from 'react';
 import Modal from '../components/UI/Modal/Modal';
 import { generateErrorMessage } from '../shared/generateErrorMessage';
 
-export interface IWithErrorHandlerState {
+export interface WithErrorHandlerState {
   error: Error | null;
 }
 
@@ -17,7 +17,7 @@ function withErrorHandler<P extends {}>(
   axios: AxiosInstance,
 ) {
   return class WithErrorHandler extends Component<P> {
-    public state: IWithErrorHandlerState = {
+    public state: WithErrorHandlerState = {
       error: null,
     };
 

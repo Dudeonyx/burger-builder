@@ -1,20 +1,17 @@
 import { AxiosInstance } from 'axios';
-import React, { Component, lazy } from 'react';
+import React, { Component } from 'react';
 import Modal from '../components/UI/Modal/Modal';
 
-export interface IAxiosErrorBoundaryProps {
+export interface AxiosErrorBoundaryProps {
   axios: AxiosInstance;
 }
 
-export interface IAxiosErrorBoundaryState {
+export interface AxiosErrorBoundaryState {
   error: null | Error;
 }
 
-class AxiosErrorBoundary extends Component<
-  IAxiosErrorBoundaryProps,
-  IAxiosErrorBoundaryState
-> {
-  constructor(props: IAxiosErrorBoundaryProps) {
+class AxiosErrorBoundary extends Component<AxiosErrorBoundaryProps, AxiosErrorBoundaryState> {
+  constructor(props: AxiosErrorBoundaryProps) {
     super(props);
 
     this.state = {

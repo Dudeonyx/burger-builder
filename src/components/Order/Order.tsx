@@ -1,13 +1,11 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import css from '@emotion/css/macro';
-import React, { FunctionComponent } from 'react';
+import styled from '@emotion/styled/macro';
+import React, { FunctionComponent, useMemo } from 'react';
 import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
 import { Iingredients, IingredientsKeys } from '../../types/ingredients';
 // import styled from 'styled-components/macro';
 // tslint:disable-next-line:no-unused-expression
-jsx;
-const StyledOrder = css`
+// jsx;
+const StyledOrder = styled.div`
   & {
     text-align: center;
     padding: 10px;
@@ -20,7 +18,7 @@ const StyledOrder = css`
     justify-content: center;
   }
 
-  span {
+  .Breakdown {
     text-transform: capitalize;
     flex: 0.4 0.02 42%;
     margin: 5px 5px;
@@ -39,47 +37,42 @@ const StyledOrder = css`
     margin: 5px 0;
 
     @media (min-width: 500px) {
-      span {
+      .Breakdown {
         flex: 0.4 0.02 4.95rem;
       }
     }
   }
 `;
-interface IOrdersProps {
+interface OrdersProps {
   ingredients: Iingredients;
   name: string;
   totalPrice: string;
   id: string;
-  className?: string;
 }
 
-const Order: FunctionComponent<IOrdersProps> = ({
-  ingredients,
-  totalPrice,
-  name,
-  id,
-  className,
-}) => {
-  const breakdown = (Object.entries(ingredients) as Array<
-    [IingredientsKeys, number]
-  >).map(([igKey, igVal,]) => (
-    <span key={id + igKey + igVal}>
-      {igKey} - {igVal}
-      <br />
-      {igVal * INGREDIENT_PRICES[igKey] > 0 ? (
-        <>${(igVal * INGREDIENT_PRICES[igKey]).toFixed(2)}</>
-      ) : (
-        <>N/A</>
-      )}
-    </span>
-  ));
+const Order: FunctionComponent<OrdersProps> = ({ ingredients, totalPrice, name, id }) => {
+  const breakdown = useMemo(
+    () =>
+      (Object.entries(ingredients) as Array<[IingredientsKeys, number]>).map(([igKey, igVal]) => (
+        <span className="Breakdown" key={id + igKey + igVal}>
+          {igKey} - {igVal}
+          <br />
+          {igVal * INGREDIENT_PRICES[igKey] > 0 ? (
+            <>${(igVal * INGREDIENT_PRICES[igKey]).toFixed(2)}</>
+          ) : (
+            <>N/A</>
+          )}
+        </span>
+      )),
+    [ingredients, id],
+  );
   return (
-    <div css={StyledOrder}>
+    <StyledOrder>
       <h4>{`Name: ${name}`}</h4>
       {breakdown}
       <p>Base Cost: ${INGREDIENT_PRICES.base.toFixed(2)}</p>
       <h5>Total Cost: ${totalPrice}</h5>
-    </div>
+    </StyledOrder>
   );
 };
 

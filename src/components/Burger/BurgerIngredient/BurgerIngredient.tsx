@@ -1,11 +1,10 @@
 import styled from '@emotion/styled/macro';
 import { IingredientsKeys } from '../../../types/ingredients';
-export interface IBurgerIngredientProps {
+export interface BurgerIngredientProps {
   className: 'bread-bottom' | 'bread-top' | IingredientsKeys;
 }
 
-const BurgerIngredient = styled.div`
-  ${(props: IBurgerIngredientProps) => null}
+const BurgerIngredient = styled.div<BurgerIngredientProps>`
   &.bread-bottom {
     height: 13%;
     width: 80%;
@@ -38,7 +37,7 @@ const BurgerIngredient = styled.div`
   }
 
   &.bread-top > .seeds1:after {
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     position: absolute;
@@ -51,7 +50,7 @@ const BurgerIngredient = styled.div`
   }
 
   &.bread-top > .seeds1:before {
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     position: absolute;
@@ -76,7 +75,7 @@ const BurgerIngredient = styled.div`
   }
 
   &.bread-top > .seeds2:before {
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     position: absolute;

@@ -3,7 +3,6 @@ import { IingredientReducerState } from './types';
 import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
 import { createSlice } from '@redux-ts-starter-kit/core';
 import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
-import { IStore } from '../../store';
 
 const initialState: IingredientReducerState = {
   ingredients: null,

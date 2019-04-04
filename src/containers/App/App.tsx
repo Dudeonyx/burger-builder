@@ -1,4 +1,4 @@
-import React, { lazy, FC, createContext, useMemo, useRef, useEffect } from 'react';
+import React, { lazy, FC, createContext, useMemo } from 'react';
 import { Route, Switch, RouteComponentProps, Redirect } from 'react-router-dom';
 import ErrorBoundary from '../../HOCs/ErrorBoundary';
 import Layout from '../Layout/Layout';
@@ -19,9 +19,9 @@ import {
   selectIngredients,
   getTotalPriceFromStore,
 } from '../../store/selectors/selectors';
-import { IStore } from '../../store/store';
+import { Store } from '../../store/store';
 import { Iingredients } from '../../types/ingredients';
-import { usePrevious } from '../../shared/CustomHooks';
+import Page from '../Page/Page';
 
 export const AuthContext = createContext(false);
 
@@ -43,14 +43,9 @@ const SCheckout = suspenseNode2(Checkout);
 const App: FC<AppProps> = props => {
   const ingsAndPrice = useMemo(
     () => ({ ingredients: props.ingredients, totalPrice: props.totalPrice }),
-    [props.ingredients, props.totalPrice,],
+    [props.ingredients, props.totalPrice],
   );
-  const check = usePrevious(ingsAndPrice);
-  const count = useRef(0);
-  useEffect(() => {
-    count.current += 1;
-  });
-  console.log('equal:', check === ingsAndPrice, '\ncount:', count.current);
+
   const protectedRoutes = props.isAuth ? (
     <Switch>
       <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
@@ -58,6 +53,7 @@ const App: FC<AppProps> = props => {
       <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
       <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
       <Route path="/login" exact={true} component={Auth} />
+      <Route path="/page" exact={true} component={Page} />
       <Route component={$404} />
     </Switch>
   ) : (
@@ -67,6 +63,7 @@ const App: FC<AppProps> = props => {
       <Redirect from="/all-orders" to="/" />
       <Redirect from="/checkout" to="/" />
       <Redirect from="/logout" to="/" />
+      <Route path="/page" exact={true} component={Page} />
       <Route component={$404} />
     </Switch>
   );
@@ -81,15 +78,12 @@ const App: FC<AppProps> = props => {
   );
 };
 
-const mapAppStateToProps = (state: IStore) => ({
+const mapAppStateToProps = (state: Store) => ({
   isAuth: getAuthenticated(state),
   ingredients: selectIngredients(state),
   totalPrice: getTotalPriceFromStore(state),
 });
 
-// const mapAppDispatchToProps = {
-//   checkPriorAuth,
-// };
 const connectApp = connect(mapAppStateToProps);
 type AppProps = GetConnectProps<typeof connectApp> & RouteComponentProps;
 
