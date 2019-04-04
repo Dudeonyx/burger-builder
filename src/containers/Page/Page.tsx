@@ -1,14 +1,17 @@
 import React, {
   FunctionComponent,
   useState,
-  useMemo,
+  // useMemo,
   ReactChild,
   MouseEvent,
   useRef,
   useEffect,
+  ReactNode,
+  useMemo,
 } from 'react';
-import { useMakeLamda } from '../../shared/CustomHooks';
-import styled from '@emotion/styled';
+import { useForceUpdate, useMakeLamda } from '../../shared/CustomHooks';
+import styled from '@emotion/styled/macro';
+import css from '@emotion/css/macro';
 
 const Page: FunctionComponent = () => {
   const [state, setState] = useState(() =>
@@ -27,6 +30,7 @@ const Page: FunctionComponent = () => {
     },
     [],
   );
+  const [, forceUpdate] = useForceUpdate();
 
   const list = useMemo(
     () =>
@@ -40,6 +44,9 @@ const Page: FunctionComponent = () => {
 
   return (
     <>
+      <Div>
+        <Div as="button" onClick={forceUpdate} children={'Trigger Re-render'} />
+      </Div>
       {list}
       {/* <div>{Math.random() > 0.5 ? <p>{'There he is'}</p> : <p>{'Where\'s the baby?'}</p>}</div> */}
     </>
@@ -48,12 +55,7 @@ const Page: FunctionComponent = () => {
 
 export default Page;
 
-interface DivProps {
-  onClick: (...a: any[]) => void;
-  className?: string;
-  children: ReactChild;
-}
-const Div = React.memo(styled.div<DivProps>`
+const styles = css`
   margin: 5px;
   border: 1px black solid;
   border-radius: 6px;
@@ -62,4 +64,13 @@ const Div = React.memo(styled.div<DivProps>`
   text-shadow: 1px 1px 2px grey;
   font-variant: small-caps;
   font-weight: bold;
+`;
+interface DivProps {
+  onClick?: (...a: any[]) => void;
+  className?: string;
+  children?: ReactChild;
+  as?: ReactNode | keyof JSX.IntrinsicElements;
+}
+const Div = React.memo(styled.div<DivProps>`
+  ${styles}
 `);
