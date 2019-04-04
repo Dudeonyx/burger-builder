@@ -1,8 +1,6 @@
 import { Iingredients } from '../../../types/ingredients';
 
-export function reShapeIngredients(
-  ingredients: Iingredients | null,
-): Iingredients | null {
+export function reShapeIngredients(ingredients: Iingredients | null): Iingredients | null {
   return ingredients
     ? {
         salad: ingredients.salad,
@@ -13,13 +11,15 @@ export function reShapeIngredients(
     : null;
 }
 
-export function setIngredientsDraft<
+export function setIngredients<
   D extends {
     ingredients: Iingredients | null;
     error: boolean;
   }
->(draft: D, ingredients: Iingredients | null) {
-  draft.error = false;
-  const reShapedIngredients = reShapeIngredients(ingredients);
-  draft.ingredients = reShapedIngredients;
+>(state: D, ingredients: Iingredients | null) {
+  return {
+    ...state,
+    ingredients: reShapeIngredients(ingredients),
+    error: false,
+  };
 }

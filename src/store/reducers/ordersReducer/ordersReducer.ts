@@ -7,13 +7,13 @@ const initialState: IOrdersReducerState = {
   error: null,
 };
 
-interface IOrdersActions {
+interface OrdersActions {
   setOrders: IDbOrders;
   setOrdersError: Error;
   setOrdersLoading: never;
 }
 
-const ordersRobodux = createSlice<IOrdersActions, IOrdersReducerState, 'ords'>({
+const ordersSlice = createSlice<OrdersActions, IOrdersReducerState, 'ords'>({
   slice: 'ords',
   initialState,
   cases: {
@@ -37,4 +37,4 @@ export const {
   reducer: ordersReducer,
   actions: ordersActions,
   selectors: ordersSelectors,
-} = ordersRobodux;
+} = ordersSlice;

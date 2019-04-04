@@ -1,4 +1,4 @@
-import { setIngredientsDraft } from './utilities';
+import { setIngredients } from './utilities';
 import { IingredientReducerState } from './types';
 import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
 import { createSlice } from '@redux-ts-starter-kit/core';
@@ -23,13 +23,13 @@ export const {
 } = createSlice({
   cases: {
     increaseIngredient: (state, igkey: IingredientsKeys) => {
-      incrementKeyInObj(state.ingredients, igkey);
+      state.ingredients = incrementKeyInObj(state.ingredients, igkey);
     },
     decreaseIngredient: (state, igkey: IingredientsKeys) => {
-      decrementKeyInObj(state.ingredients, igkey);
+      state.ingredients = decrementKeyInObj(state.ingredients, igkey);
     },
     setIngredients: (state, ingredients: Iingredients | null) => {
-      setIngredientsDraft(state, ingredients);
+      state = setIngredients(state, ingredients);
     },
     setIngredientsError: (state, error: IngredientActions['setIngredientsError']) => {
       state.error = error;
