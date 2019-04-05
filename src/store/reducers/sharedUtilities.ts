@@ -13,21 +13,19 @@ export function isValidIncreaseAction<I extends { [x: string]: number }>(
 
 export function decrementKeyInObj<I extends { [x: string]: any }>(obj: I | null, key: keyof I) {
   if (isValidDecreaseAction(obj, key)) {
-    const newObj = {
+    return {
       ...obj,
-      [key]: obj[key] + 1,
+      [key]: obj[key] - 1,
     };
-    return newObj;
   }
   return obj;
 }
-export function incrementKeyInObj<I extends { [x: string]: any }>(obj: I | null, key: keyof I) {
+export function incrementKeyInObj<I extends { [x: string]: number }>(obj: I | null, key: keyof I) {
   if (isValidIncreaseAction(obj, key)) {
-    const newObj = {
+    return {
       ...obj,
       [key]: obj[key] + 1,
     };
-    return newObj;
   }
   return obj;
 }

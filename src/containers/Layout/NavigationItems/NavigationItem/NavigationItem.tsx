@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './NavigationItem.module.css';
+import styled from '@emotion/styled/macro';
 
 /** @export
  * @interface INavigationItem
  */
-export interface INavigationItemProps {
+export interface NavigationItemProps {
   /** Set if the url must be exact or not
    * @type {boolean}
    * @memberof INavigationItemProps
@@ -23,22 +23,74 @@ export interface INavigationItemProps {
   linkName: string;
 }
 /** Single nav item
- *  @param {INavigationItemProps} {
+ *  @param {NavigationItemProps} {
  *   exact,
  *   link,
  *   linkName
  * }
  */
-const NavigationItem: FunctionComponent<INavigationItemProps> = ({
+const NavigationItem: FunctionComponent<NavigationItemProps> = ({
   exact,
   link,
   linkName,
-}: INavigationItemProps) => (
-  <li className={styles.NavigationItem}>
-    <NavLink to={link} exact={exact} activeClassName={styles.active} >
+}: NavigationItemProps) => (
+  <StyledNavigationItem>
+    <NavLink to={link} exact={exact} activeClassName="active">
       <span>{linkName}</span>
     </NavLink>
-  </li>
+  </StyledNavigationItem>
 );
+
+const StyledNavigationItem = styled.li`
+  & {
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    margin: 5px 1px;
+    /* width: 100%; */
+  }
+  & a {
+    text-decoration: none;
+    box-sizing: border-box;
+    color: chocolate;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & a:hover,
+  & a:active,
+  & a.active {
+    color: lightseagreen;
+  }
+
+  @media (min-width: 500px) {
+    & {
+      flex: auto;
+      box-sizing: border-box;
+      height: 100%;
+      width: auto;
+      margin: 0px 1px;
+    }
+    & a {
+      text-decoration: none;
+      box-sizing: border-box;
+      height: 100%;
+      color: white;
+      border-bottom: 2px solid transparent;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    & a:hover,
+    & a:active,
+    & a.active {
+      border-bottom: 2px solid lightseagreen;
+      color: unset;
+      background-color: rgba(255, 255, 255, 0.192);
+    }
+  }
+`;
 
 export default NavigationItem;

@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState, FC, useCallback } from 'react';
 import Toolbar from './Toolbar/Toolbar';
+import { Loader } from '../../components/UI';
 
 const SideDrawer = lazy(() =>
   import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
@@ -12,37 +13,13 @@ const SideDrawer = lazy(() =>
  */
 const Layout: FC = props => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
-
-  // const count = useRef(0);
-
-  /**
-   * Handler that hides the side drawer
-   *
-   * @memberof Layout
-   */
-  const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), [setShowSideDrawer]);
-  /**
-   * Handler that toggles the visibility
-   * of the side drawer
-   *
-   * @memberof Layout
-   */
-  const toggleSideDrawerHandler = useCallback(() => setShowSideDrawer(prevState => !prevState), [
-    setShowSideDrawer,
-  ]);
-
-  // const check = usePrevious(toggleSideDrawerHandler);
-
-  // console.log('using Prev:', check === toggleSideDrawerHandler, '\ncount:', count.current);
-
-  // useEffect(() => {
-  //   count.current = count.current + 1;
-  // });
+  const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), []);
+  const toggleSideDrawerHandler = useCallback(() => setShowSideDrawer(prevState => !prevState), []);
 
   return (
     <>
       <Toolbar drawerToggler={toggleSideDrawerHandler} />
-      <Suspense fallback={null}>
+      <Suspense fallback={<Loader />}>
         <SideDrawer open={showSideDrawer} hider={hideSideDrawerHandler} />
       </Suspense>
       <main style={{ margin: '2px 10px 10px' }}>{props.children}</main>

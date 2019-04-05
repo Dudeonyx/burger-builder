@@ -20,20 +20,14 @@ export const {
   reducer: ingredientReducer,
   actions: ingredientActions,
   selectors: ingredientSelectors,
-} = createSlice({
+} = createSlice<IngredientActions, IingredientReducerState, 'ings'>({
   cases: {
-    increaseIngredient: (state, igkey: IingredientsKeys) => {
-      state.ingredients = incrementKeyInObj(state.ingredients, igkey);
-    },
-    decreaseIngredient: (state, igkey: IingredientsKeys) => {
-      state.ingredients = decrementKeyInObj(state.ingredients, igkey);
-    },
-    setIngredients: (state, ingredients: Iingredients | null) => {
-      state = setIngredients(state, ingredients);
-    },
-    setIngredientsError: (state, error: IngredientActions['setIngredientsError']) => {
-      state.error = error;
-    },
+    increaseIngredient: (state, igkey) =>
+      void (state.ingredients = incrementKeyInObj(state.ingredients, igkey)),
+    decreaseIngredient: (state, igkey) =>
+      void (state.ingredients = decrementKeyInObj(state.ingredients, igkey)),
+    setIngredients: (state, ingredients) => setIngredients(state, ingredients),
+    setIngredientsError: (state, error) => void (state.error = error),
   },
   initialState,
   slice: 'ings',
