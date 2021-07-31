@@ -1,5 +1,5 @@
-import { AuthReducerState } from './types';
-import { createSlice } from '@redux-ts-starter-kit/core';
+import { AuthReducerState } from "./types";
+import { CasesBuilder, createSlice } from "@redux-ts-starter-kit/slice";
 
 const initialState: AuthReducerState = {
   authenticating: false,
@@ -7,19 +7,23 @@ const initialState: AuthReducerState = {
   idToken: null,
   userId: null,
   displayName: null,
-  authRedirectUrl: '/',
+  authRedirectUrl: "/",
 };
 interface AuthActions {
-  authStart: never;
+  authStart: undefined;
   authSuccess: { localId: string; idToken: string };
   authFail: Error;
-  authLogout: never;
+  authLogout: undefined;
   setAuthRedirectUrl: string;
 }
-const authSlice = createSlice<AuthActions, AuthReducerState, 'auth'>({
-  slice: 'auth',
+const authSlice = createSlice<
+  "auth",
+  CasesBuilder<AuthReducerState, AuthActions>,
+  AuthReducerState
+>({
+  name: "auth",
   cases: {
-    authStart: state => {
+    authStart: (state) => {
       state.authenticating = true;
       state.error = null;
     },
@@ -33,7 +37,7 @@ const authSlice = createSlice<AuthActions, AuthReducerState, 'auth'>({
       state.authenticating = false;
       state.error = payload;
     },
-    authLogout: state => {
+    authLogout: (state) => {
       state.idToken = null;
       state.userId = null;
       state.displayName = null;
@@ -45,4 +49,8 @@ const authSlice = createSlice<AuthActions, AuthReducerState, 'auth'>({
   initialState,
 });
 
-export const { reducer: authReducer, actions: authActions, selectors: authSelectors } = authSlice;
+export const {
+  reducer: authReducer,
+  actions: authActions,
+  selectors: authSelectors,
+} = authSlice;

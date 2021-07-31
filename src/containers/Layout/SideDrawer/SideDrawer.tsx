@@ -1,8 +1,8 @@
-import React, { FunctionComponent, MouseEventHandler } from 'react';
-import Backdrop from '../../../components/UI/Backdrop/Backdrop';
-import NavigationItems from '../NavigationItems/NavigationItems';
-import styled from '@emotion/styled/macro';
-import Logo from '../../../components/UI/Logo/Logo';
+import { FunctionComponent, MouseEventHandler } from "react";
+import Backdrop from "../../../components/UI/Backdrop/Backdrop";
+import NavigationItems from "../NavigationItems/NavigationItems";
+import styled from "@emotion/styled/macro";
+import Logo from "../../../components/UI/Logo/Logo";
 
 export interface SideDrawerProps {
   open: boolean;
@@ -12,7 +12,7 @@ interface StyledSideDrawerProps {
   open: boolean;
 }
 const setTranslate = ({ open }: StyledSideDrawerProps) => {
-  return open ? 'translateX(0)' : 'translateX(-100%)';
+  return open ? "translateX(0)" : "translateX(-100%)";
 };
 const StyledSideDrawer = styled.div<StyledSideDrawerProps>`
   & {

@@ -2,13 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "allowJs": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2015.promise",
-      "es6",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
@@ -20,15 +14,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "isolatedModules": true
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true
   },
   "plugins": [
     {
       "name": "typescript-styled-plugin"
     }
   ],
-  "include": [
-    "src/"
-  ]
+  "include": ["src/"]
 }

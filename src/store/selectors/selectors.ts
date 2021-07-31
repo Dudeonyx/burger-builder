@@ -1,17 +1,15 @@
-import { createSelector } from 'reselect';
-import { getTotalPrice } from '../../shared/getTotalPrice';
-import { updatePurchasable } from '../../shared/updatePurchasable';
-import { formatOrders } from '../reducers/ordersReducer/utilities';
-import { generateErrorMessage } from '../../shared/generateErrorMessage';
-import { authSelectors } from '../reducers/authReducer';
-import { cDataSelectors } from '../reducers/contactDataReducer';
-import { ingredientSelectors } from '../reducers/ingredientReducer';
-import { ordersSelectors } from '../reducers/ordersReducer';
+import { getTotalPrice } from "../../shared/getTotalPrice";
+import { updatePurchasable } from "../../shared/updatePurchasable";
+import { formatOrders } from "../reducers/ordersReducer/utilities";
+import { generateErrorMessage } from "../../shared/generateErrorMessage";
+import { authSelectors } from "../reducers/authReducer";
+import { cDataSelectors } from "../reducers/contactDataReducer";
+import { ingredientSelectors } from "../reducers/ingredientReducer";
+import { ordersSelectors } from "../reducers/ordersReducer";
+import { createSelector } from "@redux-ts-starter-kit/slice";
 
-export const {
-  ingredients: selectIngredients,
-  error: selectIngredientsError,
-} = ingredientSelectors;
+export const { ingredients: selectIngredients, error: selectIngredientsError } =
+  ingredientSelectors;
 
 export const {
   submitting: selectBurgerOrderSubmitting,
@@ -34,30 +32,28 @@ export const {
 
 export const getTotalPriceFromStore = createSelector(
   selectIngredients,
-  ingredients => {
+  (ingredients) => {
     return getTotalPrice(ingredients);
-  },
+  }
 );
 export const getPurchaseableFromStore = createSelector(
   selectIngredients,
-  ingredients => updatePurchasable(ingredients),
+  (ingredients) => updatePurchasable(ingredients)
 );
 
-export const getFormattedOrders = createSelector(
-  selectOrders,
-  orders => formatOrders(orders),
+export const getFormattedOrders = createSelector(selectOrders, (orders) =>
+  formatOrders(orders)
 );
 export const getOrdersErrorMessage = createSelector(
   selectOrdersError,
-  error => generateErrorMessage(error),
+  (error) => generateErrorMessage(error)
 );
 
 export const getAuthenticated = createSelector(
   selectAuthIdToken,
-  token => !!token,
+  (token) => !!token
 );
 
-export const getAuthErrorMessage = createSelector(
-  selectAuthError,
-  error => generateErrorMessage(error),
+export const getAuthErrorMessage = createSelector(selectAuthError, (error) =>
+  generateErrorMessage(error)
 );

@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { IInputConfig } from './types';
+import React from 'react';
+import { InputConfig } from './types';
 import Input from './Input';
 
 export const makeMapToInputs = (onChange: React.ChangeEventHandler) => (
-  obj: IInputConfig,
+  obj: InputConfig,
   _index: number,
-  _array: IInputConfig[],
+  _array: InputConfig[],
 ) => {
   return <Input {...obj} key={obj.id} onChange={onChange} />;
 };

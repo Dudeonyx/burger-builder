@@ -2,17 +2,13 @@ import { Dispatch } from 'redux';
 import { Iingredients } from '../../types/ingredients';
 import axios from '../../axios-orders';
 import { generateOrder } from '../reducers/contactDataReducer/utilities';
-import { IContactDataState } from '../../containers/Checkout/ContactData/types';
+import { ContactDataState } from '../../containers/Checkout/ContactData/types';
 import { contactDataActions } from '../reducers/contactDataReducer/contactDataReducer';
 
-const {
-  burgerOrderFailed,
-  burgerOrderSuccessful,
-  setBurgerOrderSubmitting,
-} = contactDataActions;
+const { burgerOrderFailed, burgerOrderSuccessful, setBurgerOrderSubmitting } = contactDataActions;
 
 export const submitBurgerOrder = (
-  customer: IContactDataState['customer'],
+  customer: ContactDataState['customer'],
   ingredients: Iingredients,
   totalPrice: string,
   token: string | null,
@@ -23,9 +19,7 @@ export const submitBurgerOrder = (
       const order = generateOrder(customer, ingredients, totalPrice, userId || '');
       dispatch(setBurgerOrderSubmitting());
       if (!order) {
-        throw new Error(
-          'An error occurred while generating your order, pls try again',
-        );
+        throw new Error('An error occurred while generating your order, pls try again');
       }
       const response = await axios.post(
         '/orders.json' + (token != null ? '?auth=' + token : ''),

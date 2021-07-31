@@ -1,23 +1,14 @@
 import { IDbOrder } from '../ordersReducer/types';
-import { IContactDataState } from '../../../containers/Checkout/ContactData/types';
+import { ContactDataState } from '../../../containers/Checkout/ContactData/types';
 import { Iingredients } from '../../../types/ingredients';
 
 export function generateOrder(
-  customer: IContactDataState['customer'],
+  customer: ContactDataState['customer'],
   ingredients: Iingredients,
   totalPrice: string,
   userId: string,
 ) {
-  const {
-    deliveryMethod,
-    name,
-    city,
-    country,
-    email,
-    phone,
-    state,
-    street,
-  } = customer;
+  const { deliveryMethod, name, city, country, email, phone, state, street } = customer;
   const order: IDbOrder = {
     basicInfo: {
       name: name.value,

@@ -1,52 +1,91 @@
-import React, { lazy, FC, useState, useEffect, useCallback, useContext } from 'react';
+import { lazy, FC, useState, useEffect, useCallback, Suspense } from "react";
 
-import axios from '../../axios-orders';
-import Retry from '../../components/Retry/Retry';
-import Loader from '../../components/UI/Loader/Loader';
-import withErrorHandler from '../../HOCs/withErrorHandler';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import { connect } from 'react-redux';
-import Modal from '../../components/UI/Modal/Modal';
+import axios from "../../axios-orders";
+import Retry from "../../components/Retry/Retry";
+import Loader from "../../components/UI/Loader/Loader";
+import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
 import {
   fetchIngredientsHandler,
   decreaseIngredient,
   increaseIngredient,
   setIngredients,
   setAuthRedirectUrl,
-} from '../../store/actions';
-import { GetConnectProps, Store } from '../../store/';
-import { RouteComponentProps } from 'react-router';
-import { selectIngredientsError, getPurchaseableFromStore } from '../../store/selectors/selectors';
-import { AuthContext, IngredientsContext } from '../App/App';
+} from "../../store/actions";
+import { Store } from "../../store/";
+import { RouteComponentProps } from "react-router";
+import {
+  selectIngredientsError,
+  getPurchaseableFromStore,
+  selectIngredients,
+  getTotalPriceFromStore,
+  getAuthenticated,
+} from "../../store/selectors/selectors";
+// import { AuthContext } from '../App/App';
+import { useAxiosErrorHandler, useRedux } from "../../shared/CustomHooks";
 
-const BurgerDisplay = lazy(() =>
-  import(/* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
-  '../../components/Burger/BurgerDisplay/BurgerDisplay'),
+const BurgerDisplay = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "BurgerDisplay", webpackPrefetch: true */
+      "../../components/Burger/BurgerDisplay/BurgerDisplay"
+    )
 );
 
-const OrderSummary = lazy(() =>
-  import(/* webpackChunkName: "OrderSummary", webpackPrefetch: true */ '../../components/OrderSummary/OrderSummary'),
+const OrderSummary = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "OrderSummary", webpackPrefetch: true */ "../../components/OrderSummary/OrderSummary"
+    )
 );
 
-const offlineStyle = { color: 'blue', cursor: 'pointer' };
+const offlineStyle = { color: "blue", cursor: "pointer" };
 
-const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
+const mapBurgerBuilderStateToProps = (state: Store) => ({
+  error: selectIngredientsError(state),
+  purchaseable: getPurchaseableFromStore(state),
+  ingredients: selectIngredients(state),
+  totalPrice: getTotalPriceFromStore(state),
+  isAuth: getAuthenticated(state),
+});
+
+const mapBurgerBuilderDispatchToProps = {
+  ingredientIncreaseHandler: increaseIngredient,
+  ingredientDecreaseHandler: decreaseIngredient,
+  ingredientSetHandler: setIngredients,
+  fetchIngredientsHandler,
+  setAuthRedirectUrl,
+};
+
+const BurgerBuilder: FC<BurgerBuilderProps> = (props) => {
   const [purchasing, setPurchasing] = useState(false);
+  const axiosError = useAxiosErrorHandler(axios);
 
-  const isAuth = useContext(AuthContext);
-  const { ingredients, totalPrice } = useContext(IngredientsContext)!;
+  // const isAuth = useContext(AuthContext);
+  // const { totalPrice } = useContext(IngredientsContext);
+  const [
+    { isAuth, error, ingredients, purchaseable, totalPrice },
+    {
+      fetchIngredientsHandler,
+      ingredientDecreaseHandler,
+      ingredientIncreaseHandler,
+      ingredientSetHandler,
+      setAuthRedirectUrl,
+    },
+  ] = useRedux(mapBurgerBuilderStateToProps, mapBurgerBuilderDispatchToProps);
 
   useEffect(() => {
-    props.setAuthRedirectUrl('/');
-    props.ingredientSetHandler(null);
-    props.fetchIngredientsHandler();
+    setAuthRedirectUrl("/");
+    ingredientSetHandler(null);
+    fetchIngredientsHandler();
     setTimeout(() => {
-      import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
+      import(/* webpackChunkName: "Checkout" */ "../Checkout/Checkout");
     }, 10000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const purchaseStartHandler = useCallback(() => {
-    import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout');
+    import(/* webpackChunkName: "Checkout" */ "../Checkout/Checkout");
     setPurchasing(true);
   }, []);
   const purchaseCancelHandler = useCallback(() => {
@@ -59,26 +98,28 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
     setPurchasing(false);
     if (isAuth) {
       props.history.push({
-        pathname: '/checkout',
+        pathname: "/checkout",
       });
     } else {
-      props.setAuthRedirectUrl('/checkout');
-      props.history.push('/login');
+      setAuthRedirectUrl("/checkout");
+      props.history.push("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredients, isAuth]);
 
   const offline = useCallback(() => {
-    props.ingredientSetHandler({
+    ingredientSetHandler({
       bacon: 0,
       cheese: 0,
       meat: 0,
       salad: 0,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let burger = props.error ? (
+  let burger = error ? (
     <Retry
-      retryHandler={props.fetchIngredientsHandler}
+      retryHandler={fetchIngredientsHandler}
       mainMessage="Ingredients Failed To Load. Please "
       additionalMessage={
         <span style={offlineStyle} onClick={offline}>
@@ -95,22 +136,22 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
   if (ingredients) {
     burger = (
       <>
-        <React.Suspense fallback={<Loader />}>
+        <Suspense fallback={<Loader />}>
           <BurgerDisplay ingredients={ingredients} />
-        </React.Suspense>
+        </Suspense>
         <BuildControls
           ingredients={ingredients}
           price={totalPrice}
-          increase={props.ingredientIncreaseHandler}
-          decrease={props.ingredientDecreaseHandler}
-          purchaseable={props.purchaseable}
+          increase={ingredientIncreaseHandler}
+          decrease={ingredientDecreaseHandler}
+          purchaseable={purchaseable}
           purchaseStart={purchaseStartHandler}
         />
       </>
     );
 
     orderSummary = (
-      <React.Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader />}>
         <OrderSummary
           ingredients={ingredients}
           totalCost={totalPrice}
@@ -118,12 +159,13 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
           purchaseContinue={purchaseContinueHandler}
           isAuth={isAuth}
         />
-      </React.Suspense>
+      </Suspense>
     );
   }
 
   return (
     <>
+      {axiosError}
       <Modal show={purchasing} hider={purchaseCancelHandler}>
         {orderSummary}
       </Modal>
@@ -132,23 +174,10 @@ const BurgerBuilder: FC<IBurgerBuilderProps> = props => {
   );
 };
 
-const mapBurgerBuilderStateToProps = (state: Store) => ({
-  error: selectIngredientsError(state),
-  purchaseable: getPurchaseableFromStore(state),
-});
-
-const mapBurgerBuilderDispatchToProps = {
-  ingredientIncreaseHandler: increaseIngredient,
-  ingredientDecreaseHandler: decreaseIngredient,
-  ingredientSetHandler: setIngredients,
-  fetchIngredientsHandler,
-  setAuthRedirectUrl,
-};
-
-const connectBurgerBuilder = connect(
-  mapBurgerBuilderStateToProps,
-  mapBurgerBuilderDispatchToProps,
-);
-export type IBurgerBuilderProps = RouteComponentProps &
-  GetConnectProps<typeof connectBurgerBuilder>;
-export default connectBurgerBuilder(withErrorHandler(BurgerBuilder, axios));
+// const connectBurgerBuilder = connect(
+//   mapBurgerBuilderStateToProps,
+//   mapBurgerBuilderDispatchToProps,
+// );
+export type BurgerBuilderProps = RouteComponentProps; /* &
+  GetConnectProps<typeof connectBurgerBuilder>; */
+export default BurgerBuilder;

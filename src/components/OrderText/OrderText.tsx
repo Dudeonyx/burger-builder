@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import styled from '@emotion/styled/macro';
-import { IOrderTextProps } from './types';
+import { FunctionComponent } from "react";
+import styled from "@emotion/styled/macro";
+import { IOrderTextProps } from "./types";
 
 const StyledOrderText = styled.div`
   text-align: center;
@@ -30,9 +30,9 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
   totalCostPrefix,
   title,
 }) => {
-  const summary = Object.entries(ingredients).map(([igKey, igVal,]) => (
-    <li style={{ textTransform: 'capitalize' }} key={igKey}>
-      <span style={{ display: 'inline-block', minWidth: '3.7em' }}>
+  const summary = Object.entries(ingredients).map(([igKey, igVal]) => (
+    <li style={{ textTransform: "capitalize" }} key={igKey}>
+      <span style={{ display: "inline-block", minWidth: "3.7em" }}>
         {igKey}:
       </span>
       {` ${igVal}`}
@@ -40,12 +40,12 @@ const OrderText: FunctionComponent<IOrderTextProps> = ({
   ));
   return (
     <StyledOrderText>
-      {title ? <h3 style={{ fontWeight: 'bold' }}>{title}</h3> : null}
+      {title ? <h3 style={{ fontWeight: "bold" }}>{title}</h3> : null}
       <div>
         <ul>{summary}</ul>
       </div>
       {totalCostPrefix ? (
-        <p style={{ fontWeight: 'bold' }}>
+        <p style={{ fontWeight: "bold" }}>
           {totalCostPrefix} ${totalCost}
         </p>
       ) : null}

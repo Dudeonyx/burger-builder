@@ -1,9 +1,9 @@
-import React, { MouseEventHandler, ReactNode, SFC } from 'react';
+import { MouseEventHandler, ReactNode, SFC } from "react";
 
 const retryStyle = {
-  borderBottom: '1px solid lightblue',
-  color: 'lightblue',
-  cursor: 'pointer',
+  borderBottom: "1px solid lightblue",
+  color: "lightblue",
+  cursor: "pointer",
 };
 
 export interface IRetryProps {
@@ -20,17 +20,17 @@ const Retry: SFC<IRetryProps> = ({
   additionalMessage,
 }) => {
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h3 style={{ textAlign: 'center', textTransform: 'capitalize' }}>
+    <div style={{ textAlign: "center" }}>
+      <h3 style={{ textAlign: "center", textTransform: "capitalize" }}>
         {mainMessage ? mainMessage : `An Error Has Occured, Please `}
         <span onClick={retryHandler} style={retryStyle}>
-          {'Retry'}
+          {"Retry"}
         </span>
         .<br />
         {additionalMessage ? additionalMessage : null}
       </h3>
       {additionalInfo ? (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: "center" }}>
           <h4>Additional Error Info</h4>
           <p>{additionalInfo}</p>
         </div>

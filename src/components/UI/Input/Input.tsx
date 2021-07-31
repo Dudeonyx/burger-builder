@@ -1,5 +1,5 @@
-import { IInputProps } from './types';
-import React, { FunctionComponent, memo } from 'react';
+import { InputProps } from './types';
+import { FunctionComponent, memo } from 'react';
 import { StyledInput } from './input.styles';
 
 const isNever = (_arg: never): _arg is never => true;
@@ -13,7 +13,7 @@ const emailConfig = {
 /**
  * @interface FunctionComponent<IInputProps>
  */
-const Input: FunctionComponent<IInputProps> = props => {
+const Input: FunctionComponent<InputProps> = props => {
   const {
     type,
     id,

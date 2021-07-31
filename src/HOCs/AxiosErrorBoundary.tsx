@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Modal from '../components/UI/Modal/Modal';
 
 export interface AxiosErrorBoundaryProps {

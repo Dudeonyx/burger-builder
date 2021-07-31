@@ -1,6 +1,6 @@
-export function verifyObjKey<T extends {}>(
+export function verifyObjKey<T extends Record<string, any>>(
   obj: T,
-  key: string | number | symbol,
+  key: string | number | symbol
 ): key is keyof T {
-  return obj.hasOwnProperty(key);
+  return Object.hasOwnProperty.call(obj, key);
 }

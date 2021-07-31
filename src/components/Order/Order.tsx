@@ -1,5 +1,5 @@
 import styled from '@emotion/styled/macro';
-import React, { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { INGREDIENT_PRICES } from '../../shared/getTotalPrice';
 import { Iingredients, IingredientsKeys } from '../../types/ingredients';
 // import styled from 'styled-components/macro';

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo } from 'react';
+import { FunctionComponent, memo } from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import { IbuildControlsProps, Tcontrols } from './types/';
 import styled from '@emotion/styled/macro';
@@ -115,11 +115,7 @@ const buildControls: FunctionComponent<IbuildControlsProps> = ({
           disabled={ingredients[ctrl.type] <= 0}
         />
       ))}
-      <button
-        onClick={purchaseStart}
-        className="OrderButton"
-        disabled={!purchaseable}
-      >
+      <button onClick={purchaseStart} className="OrderButton" disabled={!purchaseable}>
         ORDER NOW
       </button>
     </StyledBuildControls>

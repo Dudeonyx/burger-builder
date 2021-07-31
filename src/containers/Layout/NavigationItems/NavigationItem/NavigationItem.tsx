@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import { NavLink } from 'react-router-dom';
-import styled from '@emotion/styled/macro';
+import { FunctionComponent } from "react";
+import { NavLink } from "react-router-dom";
+import styled from "@emotion/styled/macro";
 
 /** @export
  * @interface INavigationItem

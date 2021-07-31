@@ -1,12 +1,12 @@
-import React, { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
-import logolow from '../../../assets/images/26.1 burger-logo.png';
-import logo from './../../../assets/images/26.1 burger-logo.png.png';
-import styled from '@emotion/styled/macro';
+import { FunctionComponent } from "react";
+import { Link } from "react-router-dom";
+import logolow from "../../../assets/images/26.1 burger-logo.png";
+import logo from "./../../../assets/images/26.1 burger-logo.png.png";
+import styled from "@emotion/styled/macro";
 
 const StyledLogo = styled(Link)<{ height?: string }>`
   & {
-    height: ${({ height }) => (height ? height : '90%')};
+    height: ${({ height }) => (height ? height : "90%")};
     padding: 1px;
     box-sizing: border-box;
     text-decoration: none;

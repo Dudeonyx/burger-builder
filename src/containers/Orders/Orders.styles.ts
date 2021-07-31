@@ -1,5 +1,5 @@
-import styled from '@emotion/styled/macro';
-import css from '@emotion/css/macro';
+import styled from "@emotion/styled/macro";
+import { css } from "@emotion/react/macro";
 export const boxStyle = css`
   padding: 10px;
   box-sizing: border-box;

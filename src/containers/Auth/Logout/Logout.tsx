@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { Redirect } from 'react-router-dom';
-import { onAuthLogout } from '../../../store/actions';
-import { connect } from 'react-redux';
-import { GetConnectProps } from '../../../store/types';
+import { FC } from "react";
+import { Redirect } from "react-router-dom";
+import { onAuthLogout } from "../../../store/actions";
+import { connect } from "react-redux";
+import { GetConnectProps } from "../../../store/types";
 
 const Logout: FC<LogoutProps> = ({ onLogout }) => {
   onLogout();
@@ -13,10 +13,7 @@ const mapLogoutDispatchToProps = {
   onLogout: onAuthLogout,
 };
 
-const connectLogout = connect(
-  null,
-  mapLogoutDispatchToProps,
-);
+const connectLogout = connect(null, mapLogoutDispatchToProps);
 
 type LogoutProps = GetConnectProps<typeof connectLogout>;
 

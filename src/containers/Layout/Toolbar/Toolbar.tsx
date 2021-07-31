@@ -1,8 +1,8 @@
-import React, { FunctionComponent, MouseEventHandler } from 'react';
-import NavigationItems from '../NavigationItems/NavigationItems';
-import DrawerToggle from './DrawerToggle/DrawerToggle';
-import Logo from '../../../components/UI/Logo/Logo';
-import styled from '@emotion/styled/macro';
+import { FunctionComponent, MouseEventHandler } from "react";
+import NavigationItems from "../NavigationItems/NavigationItems";
+import DrawerToggle from "./DrawerToggle/DrawerToggle";
+import Logo from "../../../components/UI/Logo/Logo";
+import styled from "@emotion/styled/macro";
 
 const StyledToolbar = styled.header`
   & {

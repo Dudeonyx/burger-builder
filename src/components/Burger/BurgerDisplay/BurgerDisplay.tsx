@@ -1,26 +1,34 @@
-import React, { ComponentType, FunctionComponent, ReactElement } from 'react';
-import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
-import { Iingredients } from '../../../types/ingredients';
-import styled from '@emotion/styled/macro';
+import { ComponentType, FunctionComponent, memo, ReactElement } from "react";
+import BurgerIngredient from "../BurgerIngredient/BurgerIngredient";
+import { Iingredients } from "../../../types/ingredients";
+import styled from "@emotion/styled/macro";
 
-const jsxArrayFromObject = <Cln extends string, O extends Partial<Record<Cln, number>>>(
+const jsxArrayFromObject = <
+  Cln extends string,
+  O extends Partial<Record<Cln, number>>
+>(
   GivenComponent: ComponentType<{ className: Cln }>,
-  inputObject: O,
+  inputObject: O
 ): Array<ReactElement<{ className: Cln }>> => {
-  return (Object.entries(inputObject) as Array<[Cln, number]>).flatMap(([igKey, igVal]) => {
-    return [...Array(igVal)].map((_, i) => {
-      return <GivenComponent className={igKey} key={igKey + (i + 1)} />;
-    });
-  });
+  return (Object.entries(inputObject) as Array<[Cln, number]>).flatMap(
+    ([igKey, igVal]) => {
+      return [...Array(igVal)].map((_, i) => {
+        return <GivenComponent className={igKey} key={igKey + (i + 1)} />;
+      });
+    }
+  );
 };
 
 export interface IburgerDisplay {
   ingredients: Iingredients;
 }
-const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
-  let allIngredients = jsxArrayFromObject(BurgerIngredient, props.ingredients);
+const burgerDisplay: FunctionComponent<IburgerDisplay> = (props) => {
+  let allIngredients = jsxArrayFromObject(
+    BurgerIngredient as any,
+    props.ingredients as any
+  );
   if (allIngredients.length === 0) {
-    allIngredients = <p>Please start adding ingredients</p> as any;
+    allIngredients = (<p>Please start adding ingredients</p>) as any;
   }
   return (
     <StyledBurgerDisplay>
@@ -34,7 +42,7 @@ const burgerDisplay: FunctionComponent<IburgerDisplay> = props => {
   );
 };
 
-export default React.memo(burgerDisplay);
+export default memo(burgerDisplay);
 
 const StyledBurgerDisplay = styled.div`
   & {

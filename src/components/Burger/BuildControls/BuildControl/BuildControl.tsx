@@ -1,4 +1,4 @@
-import React, { FunctionComponent, MouseEventHandler } from 'react';
+import { FunctionComponent, MouseEventHandler } from 'react';
 import styled from '@emotion/styled/macro';
 
 

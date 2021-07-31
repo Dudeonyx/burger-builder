@@ -1,7 +1,10 @@
-import { IInputRules, IInputConfig, IInputRadioConfig } from './types';
-import { verifyObjKey } from '../../../shared/verifyObjKey';
+import { InputRules, InputConfig, InputRadioConfig } from "./types";
+import { verifyObjKey } from "../../../shared/verifyObjKey";
 
-export function checkFormFieldValidity(rules: Readonly<IInputRules>, value: string) {
+export function checkFormFieldValidity(
+  rules: Readonly<InputRules>,
+  value: string
+) {
   let isValid = true;
 
   if (!rules) {
@@ -9,7 +12,7 @@ export function checkFormFieldValidity(rules: Readonly<IInputRules>, value: stri
   }
 
   if (rules.required) {
-    isValid = value.trim() !== '' && isValid;
+    isValid = value.trim() !== "" && isValid;
   }
 
   if (rules.minLength) {
@@ -21,7 +24,8 @@ export function checkFormFieldValidity(rules: Readonly<IInputRules>, value: stri
   }
 
   if (rules.isEmail) {
-    const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    const pattern =
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     isValid = pattern.test(value) && isValid;
   } else if (rules.isNumeric) {
     const pattern = /^\d+$/;
@@ -32,35 +36,41 @@ export function checkFormFieldValidity(rules: Readonly<IInputRules>, value: stri
 }
 
 function updateCheckedFormItemImmutably(
-  options: Readonly<IInputRadioConfig['options']>,
-  value: string,
+  options: Readonly<InputRadioConfig["options"]>,
+  value: string
 ) {
-  return options.map(obj => {
-    return obj.value === value ? { ...obj, checked: true } : { ...obj, checked: false };
+  return options.map((obj) => {
+    return obj.value === value
+      ? { ...obj, checked: true }
+      : { ...obj, checked: false };
   });
 }
 
-function updateFormFieldValidationImmutably(rules: Readonly<IInputRules>, value: string) {
+function updateFormFieldValidationImmutably(
+  rules: Readonly<InputRules>,
+  value: string
+) {
   const valid = checkFormFieldValidity(rules, value);
   const newRules = { ...rules, valid, touched: true };
   // tslint:disable-next-line: no-console
   // console.log('[updateValidation] Rules not isDraft');
   return newRules;
 }
-export function updateFormImmutably<F extends { [x: string]: IInputConfig }>(
-  form: F,
-  name: keyof F,
-  value: string,
-) {
+export function updateFormImmutably<
+  F extends { [x: string]: InputConfig },
+  N extends keyof F
+>(form: F, name: N, value: string) {
   // const { name, value } = event.target;
   if (!verifyObjKey(form, name)) {
-    // tslint:disable-next-line:no-console
     console.error(`${name} not found in Form`);
     return form;
   }
-  const field: IInputConfig = { ...form[name] };
-  const validation = updateFormFieldValidationImmutably(field.validation, value);
-  if (field.type === 'radio') {
+  const field: InputConfig = { ...form[name] };
+  const validation = updateFormFieldValidationImmutably(
+    field.validation,
+    value
+  );
+  if (field.type === "radio") {
     const options = updateCheckedFormItemImmutably(field.options, value);
     const newForm = {
       ...form,
@@ -75,9 +85,12 @@ export function updateFormImmutably<F extends { [x: string]: IInputConfig }>(
     return newForm;
   }
 }
-export function updateInputFieldImmutably(field: IInputConfig, value: string) {
-  const validation = updateFormFieldValidationImmutably(field.validation, value);
-  if (field.type === 'radio') {
+export function updateInputFieldImmutably(field: InputConfig, value: string) {
+  const validation = updateFormFieldValidationImmutably(
+    field.validation,
+    value
+  );
+  if (field.type === "radio") {
     const options = updateCheckedFormItemImmutably(field.options, value);
     const newField = { ...field, value, validation, options };
     return newField;

@@ -1,6 +1,6 @@
-import styled from '@emotion/styled/macro';
-import { boxStyle } from '../Orders/Orders.styles';
-import css from '@emotion/css/macro';
+import styled from "@emotion/styled/macro";
+import { boxStyle } from "../Orders/Orders.styles";
+import { css } from "@emotion/react/macro";
 const flexColumn = css`
   display: flex;
   flex-flow: column;

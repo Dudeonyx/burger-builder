@@ -1,9 +1,5 @@
-import React, {
-  MouseEventHandler,
-  ButtonHTMLAttributes,
-  ReactNode,
-} from 'react';
-import styled from '@emotion/styled/macro';
+import { MouseEventHandler, ButtonHTMLAttributes, ReactNode, forwardRef } from "react";
+import styled from "@emotion/styled/macro";
 
 const StyledButton = styled.button`
   & {
@@ -51,7 +47,7 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * @default ''
    * @memberof IButtonProps
    */
-  btnType?: 'Danger' | 'Success' | '';
+  btnType?: "Danger" | "Success" | "";
 
   /**
    * Same as default button `type` prop
@@ -59,7 +55,7 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * @type {('submit' | 'reset' | 'button')}
    * @memberof IButtonProps
    */
-  type?: 'submit' | 'reset' | 'button';
+  type?: "submit" | "reset" | "button";
 
   /**@type {MouseEventHandler}
    * @memberof IButtonProps
@@ -72,16 +68,16 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * @implements {IButtonProps}
  * @export
  */
-const Button = React.forwardRef<HTMLButtonElement, IButtonProps>(
-  ({ className, btnType = '', ...rest }, ref) => {
+const Button = forwardRef<HTMLButtonElement, IButtonProps>(
+  ({ className, btnType = "", ...rest }, ref) => {
     return (
       <StyledButton
-        className={[className, btnType,].join(' ')}
+        className={[className, btnType].join(" ")}
         {...rest}
         ref={ref}
       />
     );
-  },
+  }
 );
 
 export default Button;

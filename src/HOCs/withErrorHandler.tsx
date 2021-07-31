@@ -1,7 +1,7 @@
-import { AxiosInstance } from 'axios';
-import React, { Component, ComponentType } from 'react';
-import Modal from '../components/UI/Modal/Modal';
-import { generateErrorMessage } from '../shared/generateErrorMessage';
+import { AxiosInstance } from "axios";
+import { Component, ComponentType } from "react";
+import Modal from "../components/UI/Modal/Modal";
+import { generateErrorMessage } from "../shared/generateErrorMessage";
 
 export interface WithErrorHandlerState {
   error: Error | null;
@@ -14,7 +14,7 @@ export interface WithErrorHandlerState {
  */
 function withErrorHandler<P extends {}>(
   WrappedComponent: ComponentType<P>,
-  axios: AxiosInstance,
+  axios: AxiosInstance
 ) {
   return class WithErrorHandler extends Component<P> {
     public state: WithErrorHandlerState = {
@@ -27,20 +27,20 @@ function withErrorHandler<P extends {}>(
 
     public componentWillMount() {
       this.req = axios.interceptors.request.use(
-        req => {
+        (req) => {
           this.setState({ error: null });
           return req;
         },
-        error => {
+        (error) => {
           throw error;
-        },
+        }
       );
       this.res = axios.interceptors.response.use(
-        req => req,
-        error => {
+        (req) => req,
+        (error) => {
           this.setState({ error });
           throw error;
-        },
+        }
       );
     }
 

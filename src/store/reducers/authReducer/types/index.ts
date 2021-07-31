@@ -10,7 +10,7 @@ export interface AuthResponse {
 }
 export interface AuthReducerState {
   readonly authenticating: boolean;
-  readonly error: Error & { [x: string]: any } | null;
+  readonly error: (Error & { [x: string]: any }) | null;
   readonly displayName: string | null;
   readonly idToken: string | null;
   readonly userId: string | null;

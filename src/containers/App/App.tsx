@@ -1,65 +1,89 @@
-import React, { lazy, FC, createContext, useMemo } from 'react';
-import { Route, Switch, RouteComponentProps, Redirect } from 'react-router-dom';
-import ErrorBoundary from '../../HOCs/ErrorBoundary';
-import Layout from '../Layout/Layout';
-import { suspenseNode2 } from '../../HOCs/suspensed';
-import '../../components/UI/Loader/Loader';
-import '../../axios-orders';
-import '../../HOCs/withErrorHandler';
-import '../../components/UI/Button/Button';
-import '../../components/UI/Modal/Modal';
-import 'regenerator-runtime';
-import Auth from '../Auth/Auth';
-import Logout from '../Auth/Logout/Logout';
-import $404 from '../404/404';
-import { connect } from 'react-redux';
-import { GetConnectProps } from '../../store/types';
+import { lazy, FC } from "react";
+import { Route, Switch, RouteComponentProps, Redirect } from "react-router-dom";
+import ErrorBoundary from "../../HOCs/ErrorBoundary";
+import Layout from "../Layout/Layout";
+import { suspenseNode2 } from "../../HOCs/suspensed";
+import "../../components/UI/Loader/Loader";
+import "../../axios-orders";
+import "../../components/UI/Button/Button";
+import "../../components/UI/Modal/Modal";
+import "regenerator-runtime";
+import Auth from "../Auth/Auth";
+import Logout from "../Auth/Logout/Logout";
+import $404 from "../404/404";
+import { connect } from "react-redux";
+import { GetConnectProps } from "../../store/types";
 import {
   getAuthenticated,
-  selectIngredients,
-  getTotalPriceFromStore,
-} from '../../store/selectors/selectors';
-import { Store } from '../../store/store';
-import { Iingredients } from '../../types/ingredients';
+  // selectIngredients,
+  // getTotalPriceFromStore,
+} from "../../store/selectors/selectors";
+import { Store } from "../../store/store";
+// import { Iingredients } from '../../types/ingredients';
+// import { ThemeProvider } from 'emotion-theming';
 
-export const AuthContext = createContext(false);
+// export const AuthContext = createContext(false);
 
-export const IngredientsContext = createContext<{
-  ingredients: Iingredients | null;
-  totalPrice: string;
-} | null>(null);
+// export const IngredientsContext = createContext<{
+//   ingredients: Iingredients | null;
+//   totalPrice: string;
+// }>({
+//   ingredients: null,
+//   totalPrice: '0.00',
+// });
 
-const Orders = lazy(() => import(/* webpackChunkName: "Orders" */ '../Orders/Orders'));
-const Checkout = lazy(() => import(/* webpackChunkName: "Checkout" */ '../Checkout/Checkout'));
-const BurgerBuilder = lazy(() =>
-  import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder'),
+const Orders = lazy(
+  () => import(/* webpackChunkName: "Orders" */ "../Orders/Orders")
 );
-const Page = lazy(() => import(/* webpackChunkName: "Page" */ '../Page/Page'));
+const Checkout = lazy(
+  () => import(/* webpackChunkName: "Checkout" */ "../Checkout/Checkout")
+);
+const BurgerBuilder = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "BurgerBuilder" */ "../BurgerBuilder/BurgerBuilder"
+    )
+);
+const Page = lazy(() => import(/* webpackChunkName: "Page" */ "../Page/Page"));
 
 const SBurgerBuilder = suspenseNode2(BurgerBuilder);
 const SOrders = suspenseNode2(Orders);
 const SCheckout = suspenseNode2(Checkout);
 const SPage = suspenseNode2(Page);
 
-const App: FC<AppProps> = props => {
-  const ingsAndPrice = useMemo(
-    () => ({ ingredients: props.ingredients, totalPrice: props.totalPrice }),
-    [props.ingredients, props.totalPrice],
-  );
+const App: FC<AppProps> = (props) => {
+  // const interval = useRef<any | null>(null);
+  // const [theme] = useState({
+  //   colors: {
+  //     primary: 'initial',
+  //   },
+  // });
+  // useEffect(() => {
+  //   interval.current = setInterval(() => {
+  //     setTheme(({ colors: { primary } }) => ({
+  //       colors: primary === 'hotpink' ? { primary: 'blue' } : { primary: 'hotpink' },
+  //     }));
+  //   }, 5000);
+  //   setTimeout(()=> clearInterval(interval.current),60000)
+  // }, []);
+  // const ingsAndPrice = useMemo(
+  //   () => ({ ingredients: props.ingredients, totalPrice: props.totalPrice }),
+  //   [props.ingredients, props.totalPrice],
+  // );
 
   const protectedRoutes = props.isAuth ? (
     <Switch>
-      <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+      <Route path="/" exact={true} render={(p) => SBurgerBuilder(p)} />
       <Route path="/logout" exact={false} component={Logout} />
-      <Route path="/all-orders" exact={true} render={p => SOrders(p)} />
-      <Route path="/checkout" exact={false} render={p => SCheckout(p)} />
+      <Route path="/all-orders" exact={true} render={(p) => SOrders(p)} />
+      <Route path="/checkout" exact={false} render={(p) => SCheckout(p)} />
       <Route path="/login" exact={true} component={Auth} />
       <Route path="/page" exact={true} render={() => SPage({})} />
       <Route component={$404} />
     </Switch>
   ) : (
     <Switch>
-      <Route path="/" exact={true} render={p => SBurgerBuilder(p)} />
+      <Route path="/" exact={true} render={(p) => SBurgerBuilder(p)} />
       <Route path="/login" exact={true} component={Auth} />
       <Redirect from="/all-orders" to="/" />
       <Redirect from="/checkout" to="/" />
@@ -69,20 +93,16 @@ const App: FC<AppProps> = props => {
     </Switch>
   );
   return (
-    <AuthContext.Provider value={props.isAuth}>
-      <IngredientsContext.Provider value={ingsAndPrice}>
-        <Layout>
-          <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
-        </Layout>
-      </IngredientsContext.Provider>
-    </AuthContext.Provider>
+    <Layout>
+      <ErrorBoundary>{protectedRoutes}</ErrorBoundary>
+    </Layout>
   );
 };
 
 const mapAppStateToProps = (state: Store) => ({
   isAuth: getAuthenticated(state),
-  ingredients: selectIngredients(state),
-  totalPrice: getTotalPriceFromStore(state),
+  // ingredients: selectIngredients(state),
+  // totalPrice: getTotalPriceFromStore(state),
 });
 
 const connectApp = connect(mapAppStateToProps);

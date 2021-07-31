@@ -1,16 +1,16 @@
-import styled from '@emotion/styled/macro';
-import css from '@emotion/css/macro';
+import styled from "@emotion/styled/macro";
+import { css } from "@emotion/react/macro";
 const invalidCss = css`
   border: 1px solid red;
   background-color: #fda49a;
 `;
 const validMark = css`
-  content: '✓';
+  content: "✓";
   position: absolute;
   color: #26b72b;
 `;
 const inValidMark = css`
-  content: '✖';
+  content: "✖";
   position: absolute;
   color: #f00;
 `;
@@ -38,7 +38,7 @@ export const StyledInput = styled.div<{ valid: boolean }>`
     position: absolute;
     top: -0.8rem;
     left: 0.4rem;
-    color: ${({ valid }) => (valid ? '#228c1d' : 'red')};
+    color: ${({ valid }) => (valid ? "#228c1d" : "red")};
     font-weight: 700;
   }
   label.radio {

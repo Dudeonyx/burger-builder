@@ -1,11 +1,10 @@
-import React, { FC, useEffect } from 'react';
-import Order from '../../components/Order/Order';
-import axios from '../../axios-orders';
-import Loader from '../../components/UI/Loader/Loader';
-import withErrorHandler from '../../HOCs/withErrorHandler';
-import { StyledOrders } from './Orders.styles';
-import { IformattedOrder as FormattedOrder } from '../../store/reducers/ordersReducer/types';
-import { GetConnectProps } from '../../store/types';
+import { FC, useEffect } from "react";
+import Order from "../../components/Order/Order";
+import axios from "../../axios-orders";
+import Loader from "../../components/UI/Loader/Loader";
+import { StyledOrders } from "./Orders.styles";
+import { IformattedOrder as FormattedOrder } from "../../store/reducers/ordersReducer/types";
+import { GetConnectProps } from "../../store/types";
 import {
   getFormattedOrders,
   selectOrdersLoading,
@@ -13,38 +12,41 @@ import {
   selectAuthIdToken,
   getOrdersErrorMessage,
   selectAuthUserId,
-} from '../../store/selectors/selectors';
-import { connect } from 'react-redux';
-import { fetchOrders } from '../../store/actions';
-import { RouteComponentProps } from 'react-router-dom';
-import { Store } from '../../store/store';
-import SwipeableListItem from '../../components/Swipe-list/swipeableListItem';
-const func = () => {};
-const Orders: FC<OrdersProps> = props => {
-  const generateOrderBlock = (
-    customer: FormattedOrder,
-    _index: number,
-    _array: FormattedOrder[],
-  ) => {
-    return (
-      <div className="OrderWrapper" key={customer.id}>
-        {/* tslint:disable-next-line: no-empty */}
-        <SwipeableListItem onSwipe={func}>
-          <Order {...customer} />
-        </SwipeableListItem>
-      </div>
-    );
-  };
+} from "../../store/selectors/selectors";
+import { connect } from "react-redux";
+import { fetchOrders } from "../../store/actions";
+import { RouteComponentProps } from "react-router-dom";
+import { Store } from "../../store/store";
+import SwipeableListItem from "../../components/Swipe-list/SwipeableListItem";
+import { useAxiosErrorHandler } from "../../shared/CustomHooks";
 
+const func = () => void 0;
+const generateOrderBlock = (
+  customer: FormattedOrder,
+  _index: number,
+  _array: FormattedOrder[]
+) => {
+  return (
+    <div className="OrderWrapper" key={customer.id}>
+      <SwipeableListItem onSwipe={func}>
+        <Order {...customer} />
+      </SwipeableListItem>
+    </div>
+  );
+};
+const Orders: FC<OrdersProps> = (props) => {
+  const axiosError = useAxiosErrorHandler(axios);
   useEffect(() => {
     (async () => {
       try {
         await props.fetchOrders(props.token, props.userId);
       } catch (error) {
         // tslint:disable-next-line:no-console
-        console.error('[fetchOrders(Orders)]', error);
+        console.error("[fetchOrders(Orders)]", error);
       } finally {
-        import(/* webpackChunkName: "BurgerBuilder" */ '../BurgerBuilder/BurgerBuilder');
+        import(
+          /* webpackChunkName: "BurgerBuilder" */ "../BurgerBuilder/BurgerBuilder"
+        );
       }
     })();
   }, [props.fetchOrders, props.token, props.userId]); // eslint-disable-line
@@ -64,10 +66,13 @@ const Orders: FC<OrdersProps> = props => {
   );
 
   return (
-    <StyledOrders>
-      <h3>Here Are Your Orders</h3>
-      <div className="OrderBox">{allOrders}</div>
-    </StyledOrders>
+    <>
+      {axiosError}
+      <StyledOrders>
+        <h3>Here Are Your Orders</h3>
+        <div className="OrderBox">{allOrders}</div>
+      </StyledOrders>
+    </>
   );
 };
 
@@ -83,10 +88,8 @@ const mapOrderStateToProps = (state: Store) => {
 };
 const mapOrdersDispatchToProps = { fetchOrders };
 
-const connectOrders = connect(
-  mapOrderStateToProps,
-  mapOrdersDispatchToProps,
-);
+const connectOrders = connect(mapOrderStateToProps, mapOrdersDispatchToProps);
 
-export type OrdersProps = RouteComponentProps & GetConnectProps<typeof connectOrders>;
-export default connectOrders(withErrorHandler(Orders, axios));
+export type OrdersProps = RouteComponentProps &
+  GetConnectProps<typeof connectOrders>;
+export default connectOrders(Orders);

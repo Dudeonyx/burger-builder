@@ -1,5 +1,5 @@
-import React, { FunctionComponent, MouseEventHandler } from 'react';
-import styled from '@emotion/styled/macro';
+import { FunctionComponent, MouseEventHandler } from "react";
+import styled from "@emotion/styled/macro";
 
 export interface StyledBackdropProps {
   zIndex?: number;
@@ -19,7 +19,11 @@ const StyledBackdrop = styled.div<StyledBackdropProps>`
   z-index: ${({ zIndex }) => zIndex || 100};
 `;
 
-const Backdrop: FunctionComponent<BackdropProps> = ({ show, hider, zIndex }) => {
+const Backdrop: FunctionComponent<BackdropProps> = ({
+  show,
+  hider,
+  zIndex,
+}) => {
   return show ? <StyledBackdrop onClick={hider} zIndex={zIndex} /> : null;
 };
 

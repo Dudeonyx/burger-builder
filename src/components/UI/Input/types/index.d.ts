@@ -2,16 +2,16 @@ import { ChangeEventHandler } from 'react';
 // import PropTypes from 'prop-types';
 // import { Test } from './Input.styles';
 
-interface IInputConfigBase {
+interface InputConfigBase {
   readonly id: string;
   readonly name: string;
   readonly placeholder?: string;
   readonly value: string;
   readonly label: string;
-  readonly dataSet?: 'basicInfo' | 'address' | 'deliveryMethod';
-  validation: IInputRules;
+  readonly dataSet?: string;
+  validation: InputRules;
 }
-interface IInputSelectConfig extends IInputConfigBase {
+interface InputSelectConfig extends InputConfigBase {
   readonly type: 'select';
   options: ReadonlyArray<{
     readonly id: string;
@@ -20,7 +20,7 @@ interface IInputSelectConfig extends IInputConfigBase {
     readonly defaultChecked?: boolean;
   }>;
 }
-interface IInputRadioConfig extends IInputConfigBase {
+interface InputRadioConfig extends InputConfigBase {
   readonly type: 'radio';
   options: ReadonlyArray<{
     readonly id: string;
@@ -31,11 +31,11 @@ interface IInputRadioConfig extends IInputConfigBase {
   }>;
 }
 
-interface IInputTextConfig extends IInputConfigBase {
+interface InputTextConfig extends InputConfigBase {
   readonly type: 'text' | 'email' | 'street-address' | 'country-name' | 'tel' | 'password';
 }
-export type IInputConfig = IInputTextConfig | IInputSelectConfig | IInputRadioConfig;
-interface IBaseInputRules {
+export type InputConfig = InputTextConfig | InputSelectConfig | InputRadioConfig;
+interface BaseInputRules {
   readonly required?: boolean;
   readonly minLength?: number;
   readonly maxLength?: number;
@@ -43,16 +43,16 @@ interface IBaseInputRules {
   readonly touched: boolean;
 }
 
-interface IisEmail {
+interface IsEmail {
   readonly isEmail?: true;
   readonly isNumeric?: false;
 }
-interface IisNumeric {
+interface IsNumeric {
   readonly isEmail?: false;
   readonly isNumeric?: true;
 }
-export type IInputRules = IBaseInputRules & (IisEmail | IisNumeric);
+export type InputRules = BaseInputRules & (IsEmail | IsNumeric);
 
-export type IInputProps = IInputConfig & {
+export type InputProps = InputConfig & {
   onChange: ChangeEventHandler;
 };

@@ -1,6 +1,6 @@
-import { IContactDataReducerState } from './types';
-import { createSlice } from '@redux-ts-starter-kit/core';
-import { IDbOrder } from '../ordersReducer/';
+import { IContactDataReducerState } from "./types";
+import { IDbOrder } from "../ordersReducer/";
+import { CasesBuilder, createSlice } from "@redux-ts-starter-kit/slice";
 
 const initialState: IContactDataReducerState = {
   error: false,
@@ -14,15 +14,19 @@ interface CDataActions {
     order: IDbOrder;
   };
   burgerOrderFailed: Error;
-  setBurgerOrderSubmitting: never;
+  setBurgerOrderSubmitting: undefined;
 }
 
 export const {
   actions: contactDataActions,
   reducer: contactDataReducer,
   selectors: cDataSelectors,
-} = createSlice<CDataActions, IContactDataReducerState, 'cData'>({
-  slice: 'cData',
+} = createSlice<
+  "cData",
+  CasesBuilder<IContactDataReducerState, CDataActions>,
+  IContactDataReducerState
+>({
+  name: "cData",
   cases: {
     burgerOrderSuccessful: (state, payload) => {
       state.orders[payload.name] = payload.order;
@@ -33,7 +37,7 @@ export const {
       state.error = error;
       state.submitting = false;
     },
-    setBurgerOrderSubmitting: state => {
+    setBurgerOrderSubmitting: (state) => {
       state.error = false;
       state.submitting = true;
     },

@@ -1,9 +1,9 @@
-import React, { lazy, Suspense, useState, FC, useCallback } from 'react';
-import Toolbar from './Toolbar/Toolbar';
-import { Loader } from '../../components/UI';
+import { lazy, Suspense, useState, FC, useCallback } from "react";
+import Toolbar from "./Toolbar/Toolbar";
+import { Loader } from "../../components/UI";
 
-const SideDrawer = lazy(() =>
-  import(/* webpackChunkName: "SideDrawer" */ './SideDrawer/SideDrawer'),
+const SideDrawer = lazy(
+  () => import(/* webpackChunkName: "SideDrawer" */ "./SideDrawer/SideDrawer")
 );
 
 /**
@@ -11,10 +11,13 @@ const SideDrawer = lazy(() =>
  * @class Layout
  * @extends {Component<{ children: JSX.Element }, ILayoutState>}
  */
-const Layout: FC = props => {
+const Layout: FC = (props) => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
   const hideSideDrawerHandler = useCallback(() => setShowSideDrawer(false), []);
-  const toggleSideDrawerHandler = useCallback(() => setShowSideDrawer(prevState => !prevState), []);
+  const toggleSideDrawerHandler = useCallback(
+    () => setShowSideDrawer((prevState) => !prevState),
+    []
+  );
 
   return (
     <>
@@ -22,7 +25,7 @@ const Layout: FC = props => {
       <Suspense fallback={<Loader />}>
         <SideDrawer open={showSideDrawer} hider={hideSideDrawerHandler} />
       </Suspense>
-      <main style={{ margin: '2px 10px 10px' }}>{props.children}</main>
+      <main style={{ margin: "2px 10px 10px" }}>{props.children}</main>
     </>
   );
 };

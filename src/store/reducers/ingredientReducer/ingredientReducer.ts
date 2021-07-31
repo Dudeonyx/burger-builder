@@ -1,8 +1,7 @@
-import { setIngredients } from './utilities';
-import { IingredientReducerState } from './types';
-import { incrementKeyInObj, decrementKeyInObj } from '../sharedUtilities';
-import { createSlice } from '@redux-ts-starter-kit/core';
-import { IingredientsKeys, Iingredients } from '../../../types/ingredients';
+import { IingredientReducerState } from "./types";
+import { incrementKeyInObj, decrementKeyInObj } from "../sharedUtilities";
+import { CasesBuilder, createSlice } from "@redux-ts-starter-kit/slice";
+import { IingredientsKeys, Iingredients } from "../../../types/ingredients";
 
 const initialState: IingredientReducerState = {
   ingredients: null,
@@ -20,15 +19,24 @@ export const {
   reducer: ingredientReducer,
   actions: ingredientActions,
   selectors: ingredientSelectors,
-} = createSlice<IngredientActions, IingredientReducerState, 'ings'>({
+} = createSlice<
+  "ings",
+  CasesBuilder<IingredientReducerState, IngredientActions>,
+  IingredientReducerState,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  {}
+>({
   cases: {
     increaseIngredient: (state, igkey) =>
       void (state.ingredients = incrementKeyInObj(state.ingredients, igkey)),
     decreaseIngredient: (state, igkey) =>
       void (state.ingredients = decrementKeyInObj(state.ingredients, igkey)),
-    setIngredients: (state, ingredients) => setIngredients(state, ingredients),
+    setIngredients: (state, ingredients) =>
+      void (state.ingredients = ingredients),
     setIngredientsError: (state, error) => void (state.error = error),
   },
   initialState,
-  slice: 'ings',
+  name: "ings",
 });
+
+ingredientActions.setIngredients(null);

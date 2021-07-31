@@ -1,5 +1,5 @@
-import { IordersReducerState as IOrdersReducerState, IDbOrders } from './types';
-import { createSlice } from '@redux-ts-starter-kit/core';
+import { IordersReducerState as IOrdersReducerState, IDbOrders } from "./types";
+import { CasesBuilder, createSlice } from "@redux-ts-starter-kit/slice";
 
 const initialState: IOrdersReducerState = {
   orders: null,
@@ -10,11 +10,15 @@ const initialState: IOrdersReducerState = {
 interface OrdersActions {
   setOrders: IDbOrders;
   setOrdersError: Error;
-  setOrdersLoading: never;
+  setOrdersLoading: undefined;
 }
 
-const ordersSlice = createSlice<OrdersActions, IOrdersReducerState, 'ords'>({
-  slice: 'ords',
+const ordersSlice = createSlice<
+  "ords",
+  CasesBuilder<IOrdersReducerState, OrdersActions>,
+  IOrdersReducerState
+>({
+  name: "ords",
   initialState,
   cases: {
     setOrders: (state, orders) => {
@@ -26,7 +30,7 @@ const ordersSlice = createSlice<OrdersActions, IOrdersReducerState, 'ords'>({
       state.error = error;
       state.loading = false;
     },
-    setOrdersLoading: state => {
+    setOrdersLoading: (state) => {
       state.loading = true;
       state.error = null;
     },

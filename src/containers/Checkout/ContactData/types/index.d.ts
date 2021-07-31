@@ -1,6 +1,6 @@
-import { IInputConfig } from '../../../../components/UI/Input/types';
+import { InputConfig } from '../../../../components/UI/Input/types';
 
-export interface IContactDataState {
+export interface ContactDataState {
   customer: {
     name: IInputConfig;
     phone: IInputConfig;

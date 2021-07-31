@@ -1,4 +1,4 @@
-import React, { FunctionComponent, lazy, Suspense } from 'react';
+import { FunctionComponent, lazy, Suspense } from 'react';
 import Loader from '../UI/Loader/Loader';
 import styled from '@emotion/styled/macro';
 import { ICheckoutSummaryProps } from './types';

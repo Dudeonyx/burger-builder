@@ -1,8 +1,8 @@
-import styled from '@emotion/styled/macro';
-import React, { FunctionComponent } from 'react';
-import Backdrop from '../Backdrop/Backdrop';
-import { IStyledModal, IModalProps } from './types';
-import css from '@emotion/css/macro';
+import styled from "@emotion/styled/macro";
+import { FunctionComponent, memo } from "react";
+import Backdrop from "../Backdrop/Backdrop";
+import { IStyledModal, IModalProps } from "./types";
+import { css } from "@emotion/react/macro";
 
 const showHandler = ({ show }: IStyledModal) =>
   show
@@ -58,18 +58,27 @@ const Modal: FunctionComponent<IModalProps> = ({
   children,
   show = false,
   hider,
-  bgColor = '#ddd66c',
+  bgColor = "#ddd66c",
   zIndex,
   minWidth,
 }) => {
   return (
     <>
-      <Backdrop show={show} hider={hider} zIndex={zIndex ? zIndex - 100 : undefined} />
-      <StyledModal show={show} bgColor={bgColor} minWidth={minWidth} zIndex={zIndex}>
+      <Backdrop
+        show={show}
+        hider={hider}
+        zIndex={zIndex ? zIndex - 100 : undefined}
+      />
+      <StyledModal
+        show={show}
+        bgColor={bgColor}
+        minWidth={minWidth}
+        zIndex={zIndex}
+      >
         {children}
       </StyledModal>
     </>
   );
 };
 
-export default React.memo(Modal);
+export default memo(Modal);

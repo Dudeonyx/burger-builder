@@ -1,18 +1,20 @@
 import * as React from 'react';
 import Retry from '../components/Retry/Retry';
+import { EmptyObject } from '../types/general';
 
 export interface IErrorBoundaryState {
   error: Error | null;
 }
 
 export default class ErrorBoundary extends React.Component<
+  // eslint-disable-next-line @typescript-eslint/ban-types
   {},
   IErrorBoundaryState
 > {
   public static getDerivedStateFromError(error: Error) {
     return { error };
   }
-  constructor(props: {}) {
+  constructor(props: EmptyObject) {
     super(props);
 
     this.state = {
